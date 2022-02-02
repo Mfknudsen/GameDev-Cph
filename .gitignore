@@ -1,8 +1,8 @@
-Pokemon/Assets/_Packages
-Pokemon/Library
-Pokemon/Temp
-Pokemon/Logs
-Pokemon/obj
+GameDev/Assets/_Packages
+GameDev/Library
+GameDev/Temp
+GameDev/Logs
+GameDev/obj
 Builds
 
 # Created by https://www.toptal.com/developers/gitignore/api/unity,rider
