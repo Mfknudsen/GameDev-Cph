@@ -25,10 +25,12 @@ namespace GameDev.Input
             }
         }
 
-        private UnityEvent<Vector2> moveEvent,
+        public UnityEvent<Vector2> moveEvent,
             rotEvent;
 
-        private UnityEvent interactEvent;
+        public UnityEvent interactEvent;
+
+        public UnityEvent<float> mouseScrollEvent;
 
         #endregion
 
@@ -48,12 +50,15 @@ namespace GameDev.Input
 
             #region Axis
 
-            //Vectors should be added both on "performed" and "canceled" to know the player is no longer giving input
+            //Vectors should be added both on "performed" and "canceled" to know the player is no longer giving input and return value to Vector2.zero
             player.MoveVector.performed += OnMoveAxisPerformed;
             player.MoveVector.canceled += OnMoveAxisPerformed;
 
             player.RotVector.performed += OnRotAxisPerformed;
             player.RotVector.canceled += OnRotAxisPerformed;
+
+            player.MouseScroll.performed += OnMouseScrollPerformed;
+            player.MouseScroll.canceled += OnMouseScrollPerformed;
 
             #endregion
 
@@ -83,8 +88,14 @@ namespace GameDev.Input
             rotEvent.Invoke(input);
         }
 
-        #endregion
+        private void OnMouseScrollPerformed(InputAction.CallbackContext context)
+        {
+            float input = context.ReadValue<float>();
+            mouseScrollEvent.Invoke(input);
+        }
 
+        #endregion
+        
         #region Buttons
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
