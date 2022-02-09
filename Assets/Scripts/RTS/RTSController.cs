@@ -1,5 +1,6 @@
 #region Packages
 
+using System;
 using GameDev.Input;
 
 #endregion
@@ -16,15 +17,25 @@ namespace GameDev.RTS
 
         #region Build In States
 
-        private void Start()
+        protected override void Start()
         {
-            InputManager.Instance.mouseScrollEvent.AddListener(OnMouseScrollUpdate);
+            InputManager.instance.mouseScrollEvent.AddListener(OnMouseScrollUpdate);
+        }
+
+        private void Update()
+        {
+            Move();
         }
 
         #endregion
 
         #region Internal
 
+        private void Move()
+        {
+            
+        }
+        
         private void OnMouseScrollUpdate(float input)
         {
             mouseScroll = input;

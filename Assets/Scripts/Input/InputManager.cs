@@ -8,43 +8,46 @@ using UnityEngine.InputSystem;
 
 namespace GameDev.Input
 {
-    public class InputManager
+    public class InputManager : MonoBehaviour
     {
         #region Values
 
-        private static InputManager instance;
+        public static InputManager instance;
 
-        public static InputManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new InputManager();
-
-                return instance;
-            }
-        }
-
-        public UnityEvent<Vector2> moveEvent,
+        [SerializeField] public UnityEvent<Vector2> moveEvent,
             rotEvent;
 
-        public UnityEvent interactEvent;
+        [SerializeField] public UnityEvent interactEvent,
+            jumpEvent;
 
-        public UnityEvent<float> mouseScrollEvent;
+        [SerializeField] public UnityEvent<float> mouseScrollEvent;
 
         #endregion
 
         #region Build In States
 
-        public InputManager()
+        private void Awake()
         {
+            if (instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+
             #region Setup Events
 
-            PlayerInput.PlayerActions player = new PlayerInput().Player;
+            PlayerInput playerInput = new PlayerInput();
+            playerInput.Enable();
+            PlayerInput.PlayerActions player = playerInput.Player;
 
             moveEvent = new UnityEvent<Vector2>();
             rotEvent = new UnityEvent<Vector2>();
             interactEvent = new UnityEvent();
+            jumpEvent = new UnityEvent();
+            mouseScrollEvent = new UnityEvent<float>();
 
             #endregion
 
@@ -66,6 +69,8 @@ namespace GameDev.Input
 
             //Buttons should only be added to "performed"
             player.Interact.performed += OnInteractPerformed;
+
+            player.Jump.performed += OnJumpPerformed;
 
             #endregion
         }
@@ -95,12 +100,17 @@ namespace GameDev.Input
         }
 
         #endregion
-        
+
         #region Buttons
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
             interactEvent.Invoke();
+        }
+
+        private void OnJumpPerformed(InputAction.CallbackContext context)
+        {
+            jumpEvent.Invoke();
         }
 
         #endregion

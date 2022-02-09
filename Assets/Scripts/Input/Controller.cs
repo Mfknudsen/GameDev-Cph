@@ -10,16 +10,19 @@ namespace GameDev.Input
     {
         #region Values
 
+        protected Transform objTransform;
         protected Vector2 moveDir, rotDir;
 
         #endregion
 
         #region Build In States
 
-        protected Controller()
+        protected virtual void Start()
         {
-            InputManager.Instance.moveEvent.AddListener(OnMoveAxisUpdate);
-            InputManager.Instance.rotEvent.AddListener(OnRotAxisUpdate);
+            objTransform = transform;
+
+            InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
+            InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
         }
 
         #endregion
