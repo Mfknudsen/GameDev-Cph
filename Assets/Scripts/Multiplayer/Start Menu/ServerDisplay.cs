@@ -2,6 +2,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 #endregion
 
@@ -48,6 +49,13 @@ namespace GameDev.Multiplayer.Start_Menu
         public void OnClick()
         {
             punMenu.SetSelectedDisplay(this);
+        }
+
+        public void Highlight(bool set)
+        {
+            GetComponent<Image>().color = set ? 
+                Color.green : 
+                Color.black;
         }
 
         #endregion

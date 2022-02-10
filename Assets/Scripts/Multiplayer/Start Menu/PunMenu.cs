@@ -1,10 +1,12 @@
 #region Packages
 
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 #endregion
 
@@ -22,6 +24,8 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private ServerDisplay selectedDisplay;
 
+        private List<RoomInfo> activeServers = new List<RoomInfo>();
+
         #endregion
 
         #region Build In States
@@ -37,12 +41,19 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public void SetSelectedDisplay(ServerDisplay set)
         {
+            if (selectedDisplay != null)
+                selectedDisplay.Highlight(false);
+
             selectedDisplay = set;
+
+            selectedDisplay.Highlight(true);
         }
 
         #endregion
 
         #region In
+
+        #region Buttons
 
         public void HostNew()
         {
@@ -96,6 +107,10 @@ namespace GameDev.Multiplayer.Start_Menu
             PhotonNetwork.JoinRoom(selectedDisplay.GetServerName());
         }
 
+        #endregion
+
+        #region Pun Callbacks
+
         public override void OnConnectedToMaster()
         {
             PhotonNetwork.JoinLobby(TypedLobby.Default);
@@ -108,21 +123,47 @@ namespace GameDev.Multiplayer.Start_Menu
             PhotonNetwork.LoadLevel("TestWorld");
         }
 
-        #endregion
-
-        #region Internal
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            messageDisplay.text = message;
+        }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
+            return;
+            bool selectedStillExits = false;
+            string selectedName = selectedDisplay ? selectedDisplay.GetServerName() : "";
+            selectedDisplay = null;
+
+            //Destroy Current Visual List Content 
+            foreach (Transform t in listTransform)
+                Destroy(t.gameObject);
+
+            //Check The Updated Info
             foreach (RoomInfo roomInfo in roomList)
             {
-                string serverName = roomInfo.Name;
-                int playerCount = roomInfo.PlayerCount;
-                
-                Instantiate(serverDisplayPrefab, listTransform).GetComponent<ServerDisplay>()
-                    .Setup(serverName, playerCount, this);
+                if (roomInfo.RemovedFromList)
+                    activeServers.Remove(activeServers.First(s =>
+                        s.Name.Equals(roomInfo.Name)));
+                else if (!activeServers.Any(s =>
+                             s.Equals(roomInfo.Name)))
+                    activeServers.Add(roomInfo);
+            }
+
+            //Setup Visual List Content
+            foreach (RoomInfo activeServer in activeServers)
+            {
+                ServerDisplay display = Instantiate(serverDisplayPrefab, listTransform).GetComponent<ServerDisplay>();
+                display.Setup(activeServer.Name, activeServer.PlayerCount, this);
+
+                if (selectedStillExits || selectedName.Equals("")) continue;
+
+                SetSelectedDisplay(display);
+                selectedStillExits = true;
             }
         }
+
+        #endregion
 
         #endregion
     }
