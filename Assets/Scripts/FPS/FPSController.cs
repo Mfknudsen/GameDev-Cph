@@ -11,40 +11,49 @@ namespace GameDev.FPS
     {
         #region Values
 
-        [SerializeField] private float moveSpeed, rotSpeed, distance, jumpForce;
+        [SerializeField] private float moveSpeed,
+            rotSpeed,
+            distance,
+            jumpForce;
+
         [SerializeField] private LayerMask layerMask;
+        
         protected bool jumping, isGrounded;
 
         private Timer jumpTimer;
 
-        private Rigidbody rigidbody;
+        private Rigidbody rb;
 
         #endregion
 
-        #region Build In States
+        #region Internal
 
-        protected override void Start()
+        protected override void StartOwned()
         {
-            base.Start();
+            base.StartOwned();
 
-            rigidbody = GetComponent<Rigidbody>();
+            rb = GetComponent<Rigidbody>();
 
             InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
         }
 
-        private void Update()
+        protected override void StartUnowned()
+        {
+            base.StartUnowned();
+
+            GetComponentInChildren<Camera>().enabled = false;
+            GetComponentInChildren<AudioListener>().enabled = false;
+        }
+
+        protected override void UpdateOwned()
         {
             jumpTimer?.Update();
-            
+
             Rotate();
             Move();
             Jump();
             GroundDetect();
         }
-
-        #endregion
-
-        #region Internal
 
         protected virtual void Move()
         {
@@ -63,7 +72,7 @@ namespace GameDev.FPS
             if (!isGrounded) return;
 
             if (!jumping) return;
-            rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
             isGrounded = false;
             jumpTimer = new Timer(0.05f);
@@ -73,8 +82,8 @@ namespace GameDev.FPS
         {
             if (isGrounded) return;
 
-            if(jumpTimer != null && !jumpTimer.IsDone()) return;
-            
+            if (jumpTimer != null && !jumpTimer.IsDone()) return;
+
             Ray ray = new Ray(objTransform.position, -objTransform.up);
             if (Physics.Raycast(ray, distance, layerMask))
                 isGrounded = true;

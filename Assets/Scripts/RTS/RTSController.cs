@@ -1,13 +1,12 @@
 #region Packages
 
-using System;
 using GameDev.Input;
 
 #endregion
 
 namespace GameDev.RTS
 {
-    public sealed class RTSController : Controller
+    public sealed class RtsController : Controller
     {
         #region Values
 
@@ -22,20 +21,23 @@ namespace GameDev.RTS
             InputManager.instance.mouseScrollEvent.AddListener(OnMouseScrollUpdate);
         }
 
-        private void Update()
-        {
-            Move();
-        }
-
         #endregion
 
         #region Internal
 
+        protected override void UpdateOwned()
+        {
+            Move();
+        }
+
+        protected override void UpdateUnowned()
+        {
+        }
+
         private void Move()
         {
-            
         }
-        
+
         private void OnMouseScrollUpdate(float input)
         {
             mouseScroll = input;
