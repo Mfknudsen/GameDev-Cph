@@ -5,7 +5,7 @@ on:
     - ci
 
 jobs:
-  Build for Platforms:
+  Build_for_Platforms:
     name: Build_for_$({ matrix.targetPlatform })
     runs-on: ubuntu-20.04
     strategy:
