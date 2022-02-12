@@ -6,7 +6,7 @@ on:
 
 jobs:
   Build_for_Platforms:
-    name: Build_for_$({ matrix.targetPlatform })
+    name: Build_for_${{ matrix.targetPlatform }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -23,16 +23,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: Library
-          key: Library-$({ matrix.targetPlatform })
+          key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
       - uses: game-ci/unity-builder@v2
         env:
-          UNITY_SERIAL: $({ secrets.UNITY_SERIAL })
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
         with:
-          targetPlatform: $({ matrix.targetPlatform })               
+          targetPlatform: ${{ matrix.targetPlatform }}               
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Build-$({ matrix.targetPlatform })
-          path: build/$({ matrix.targetPlatform })
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
