@@ -2,21 +2,22 @@ name: Build Project
 on:
   push:
     branches:
-    - ci
+    - main
 
 jobs:
   Build_for_Platforms:
-    name: Build_for_${{ matrix.targetPlatform }}
-    runs-on: ubuntu-20.04
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         targetPlatform:
           - StandaloneWindows 
           - StandaloneLinux64 
-    steps: 
+          
+    steps:
       - uses: actions/checkout@v2
-        with:  
+        with:
           fetch-depth: 0
           lfs: true
 
@@ -30,7 +31,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          targetPlatform: ${{ matrix.targetPlatform }}               
+          targetPlatform: ${{ matrix.targetPlatform }}
 
       - uses: actions/upload-artifact@v2
         with:
