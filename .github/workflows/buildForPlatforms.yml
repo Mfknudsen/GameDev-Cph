@@ -6,7 +6,7 @@ on:
 
 jobs:
   Build for Platforms:
-    name: Build for $({ matrix.targetPlatform })
+    name: Build_for_$({ matrix.targetPlatform })
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
