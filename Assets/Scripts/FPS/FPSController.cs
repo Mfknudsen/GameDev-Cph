@@ -1,5 +1,6 @@
 #region Packages
 
+using GameDev.Common;
 using GameDev.Input;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace GameDev.FPS
             jumpForce;
 
         [SerializeField] private LayerMask layerMask;
-        
+
         protected bool jumping, isGrounded;
 
         private Timer jumpTimer;
@@ -26,40 +27,52 @@ namespace GameDev.FPS
 
         #endregion
 
-        #region Internal
+        #region Build In States
 
-        protected override void StartOwned()
+        protected override void Start()
         {
-            base.StartOwned();
+            base.Start();
 
             rb = GetComponent<Rigidbody>();
 
-            InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
+            if (photonView.IsMine)
+                InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
+            else
+            {
+                Destroy(rb);
+
+                GetComponentInChildren<Camera>().enabled = false;
+                GetComponentInChildren<AudioListener>().enabled = false;
+            }
         }
 
-        protected override void StartUnowned()
+        private void Update()
         {
-            base.StartUnowned();
-
-            GetComponentInChildren<Camera>().enabled = false;
-            GetComponentInChildren<AudioListener>().enabled = false;
+            if (photonView.IsMine)
+            {
+                Rotate();
+                GroundDetect();
+            }
         }
 
-        protected override void UpdateOwned()
+        private void FixedUpdate()
         {
-            jumpTimer?.Update();
-
-            Rotate();
-            Move();
-            Jump();
-            GroundDetect();
+            if (photonView.IsMine)
+            {
+                Move();
+                Jump();
+            }
         }
+
+        #endregion
+
+        #region Internal
 
         protected virtual void Move()
         {
             Vector3 forward = moveDir.y * objTransform.forward,
                 side = moveDir.x * objTransform.right;
-            objTransform.position += (forward + side).normalized * (moveSpeed * Time.deltaTime);
+            rb.MovePosition(objTransform.position += (forward + side).normalized * (moveSpeed * Time.deltaTime));
         }
 
         protected virtual void Rotate()
@@ -82,7 +95,7 @@ namespace GameDev.FPS
         {
             if (isGrounded) return;
 
-            if (jumpTimer != null && !jumpTimer.IsDone()) return;
+            if (jumpTimer != null && !jumpTimer.GetDone()) return;
 
             Ray ray = new Ray(objTransform.position, -objTransform.up);
             if (Physics.Raycast(ray, distance, layerMask))

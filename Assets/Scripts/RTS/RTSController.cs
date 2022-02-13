@@ -1,5 +1,6 @@
 #region Packages
 
+using System;
 using GameDev.Input;
 
 #endregion
@@ -18,21 +19,20 @@ namespace GameDev.RTS
 
         protected override void Start()
         {
+            base.Start();
+
             InputManager.instance.mouseScrollEvent.AddListener(OnMouseScrollUpdate);
+        }
+
+        private void Update()
+        {
+            if (photonView.IsMine)
+                Move();
         }
 
         #endregion
 
         #region Internal
-
-        protected override void UpdateOwned()
-        {
-            Move();
-        }
-
-        protected override void UpdateUnowned()
-        {
-        }
 
         private void Move()
         {

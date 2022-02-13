@@ -1,6 +1,7 @@
 #region Packages
 
 using GameDev.Input;
+using Photon.Pun;
 using UnityEngine;
 
 #endregion
@@ -11,6 +12,7 @@ namespace GameDev.FPS
     {
         #region Values
 
+        [SerializeField] private PhotonView pv;
         [SerializeField] private float rotSpeed;
         private float dir;
         private Transform objTransform;
@@ -23,11 +25,16 @@ namespace GameDev.FPS
         {
             objTransform = transform;
 
-            InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+            pv ??= GetComponent<PhotonView>();
+
+            if (pv.IsMine)
+                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
         }
 
         private void Update()
         {
+            if (!pv.IsMine) return;
+
             Vector3 eulerAngles = objTransform.rotation.eulerAngles;
             eulerAngles.x += dir * rotSpeed * Time.deltaTime;
 

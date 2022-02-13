@@ -2275,6 +2275,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1215939076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1215939078}
+  - component: {fileID: 1215939077}
+  m_Layer: 0
+  m_Name: Room Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1215939077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215939076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8167f1a21b4314046b2bbfea2e2af603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerManagerPrefab: {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
+--- !u!4 &1215939078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215939076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1258715574
 GameObject:
   m_ObjectHideFlags: 0
@@ -3139,6 +3183,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1922381966}
   m_CullTransparentMesh: 1
+--- !u!1 &1930237814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930237816}
+  - component: {fileID: 1930237815}
+  m_Layer: 0
+  m_Name: Timer Updater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1930237815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930237814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc3af63332dd0404aac68d584abfd98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1930237816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930237814}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1958373772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3168,6 +3255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4be86648c35274197ddd9a3dc58b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManagerPrefab: {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
   messageDisplay: {fileID: 845496520}
   displayNameInputField: {fileID: 387821124}
   serverNameInputField: {fileID: 748468928}
@@ -3218,6 +3306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+  - {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
 --- !u!4 &2045141772
 Transform:
   m_ObjectHideFlags: 0

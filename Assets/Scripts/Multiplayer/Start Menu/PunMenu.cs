@@ -2,11 +2,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using GameDev.Common;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 #endregion
 
@@ -15,6 +15,8 @@ namespace GameDev.Multiplayer.Start_Menu
     public class PunMenu : MonoBehaviourPunCallbacks
     {
         #region Values
+
+        [SerializeField] private GameObject playerManagerPrefab;
 
         [SerializeField] private TextMeshProUGUI messageDisplay;
         [SerializeField] private TMP_InputField displayNameInputField, serverNameInputField;
@@ -34,6 +36,65 @@ namespace GameDev.Multiplayer.Start_Menu
         {
             PhotonNetwork.ConnectUsingSettings();
         }
+
+        #region Pun Callbacks
+
+        public override void OnConnectedToMaster()
+        {
+            PhotonNetwork.JoinLobby(TypedLobby.Default);
+        }
+
+        public override void OnJoinedRoom()
+        {
+            PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
+
+            PhotonNetwork.LoadLevel("TestWorld");
+
+            Timer respawnTimer = new Timer(0.1f);
+            respawnTimer.timerEvent.AddListener(() =>
+                PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity));
+        }
+
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            messageDisplay.text = message;
+        }
+
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            bool selectedStillExits = false;
+            string selectedName = selectedDisplay ? selectedDisplay.GetServerName() : "";
+            selectedDisplay = null;
+
+            //Destroy Current Visual List Content 
+            foreach (Transform t in listTransform)
+                Destroy(t.gameObject);
+
+            //Check The Updated Info
+            foreach (RoomInfo roomInfo in roomList)
+            {
+                if (roomInfo.RemovedFromList)
+                    activeServers.Remove(activeServers.First(s =>
+                        s.Name.Equals(roomInfo.Name)));
+                else if (!activeServers.Any(s =>
+                             s.Name.Equals(roomInfo.Name)))
+                    activeServers.Add(roomInfo);
+            }
+
+            //Setup Visual List Content
+            foreach (RoomInfo activeServer in activeServers)
+            {
+                ServerDisplay display = Instantiate(serverDisplayPrefab, listTransform).GetComponent<ServerDisplay>();
+                display.Setup(activeServer.Name, activeServer.PlayerCount, this);
+
+                if (selectedStillExits || selectedName.Equals("")) continue;
+
+                SetSelectedDisplay(display);
+                selectedStillExits = true;
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -57,6 +118,12 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public void HostNew()
         {
+            if (displayNameInputField.text == "")
+            {
+                messageDisplay.text = "You Must Have A Nickname";
+                return;
+            }
+            
             if (serverNameInputField.text == "")
             {
                 messageDisplay.text = "New Server Must A Name";
@@ -86,6 +153,12 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public void JoinSelected()
         {
+            if (displayNameInputField.text == "")
+            {
+                messageDisplay.text = "You Must Have A Nickname";
+                return;
+            }
+
             if (selectedDisplay == null)
             {
                 messageDisplay.text = "Please Select A Room From The List";
@@ -97,70 +170,8 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "Server Is Full";
                 return;
             }
-
-            if (displayNameInputField.text == "")
-            {
-                messageDisplay.text = "Must Have A Nickname";
-                return;
-            }
-
+            
             PhotonNetwork.JoinRoom(selectedDisplay.GetServerName());
-        }
-
-        #endregion
-
-        #region Pun Callbacks
-
-        public override void OnConnectedToMaster()
-        {
-            PhotonNetwork.JoinLobby(TypedLobby.Default);
-        }
-
-        public override void OnJoinedRoom()
-        {
-            PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
-
-            PhotonNetwork.LoadLevel("TestWorld");
-        }
-
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            messageDisplay.text = message;
-        }
-
-        public override void OnRoomListUpdate(List<RoomInfo> roomList)
-        {
-            return;
-            bool selectedStillExits = false;
-            string selectedName = selectedDisplay ? selectedDisplay.GetServerName() : "";
-            selectedDisplay = null;
-
-            //Destroy Current Visual List Content 
-            foreach (Transform t in listTransform)
-                Destroy(t.gameObject);
-
-            //Check The Updated Info
-            foreach (RoomInfo roomInfo in roomList)
-            {
-                if (roomInfo.RemovedFromList)
-                    activeServers.Remove(activeServers.First(s =>
-                        s.Name.Equals(roomInfo.Name)));
-                else if (!activeServers.Any(s =>
-                             s.Equals(roomInfo.Name)))
-                    activeServers.Add(roomInfo);
-            }
-
-            //Setup Visual List Content
-            foreach (RoomInfo activeServer in activeServers)
-            {
-                ServerDisplay display = Instantiate(serverDisplayPrefab, listTransform).GetComponent<ServerDisplay>();
-                display.Setup(activeServer.Name, activeServer.PlayerCount, this);
-
-                if (selectedStillExits || selectedName.Equals("")) continue;
-
-                SetSelectedDisplay(display);
-                selectedStillExits = true;
-            }
         }
 
         #endregion

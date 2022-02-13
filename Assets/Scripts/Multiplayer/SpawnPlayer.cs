@@ -1,7 +1,5 @@
 #region Packages
 
-using Photon.Pun;
-using Unity.Mathematics;
 using UnityEngine;
 
 #endregion
@@ -16,14 +14,12 @@ namespace GameDev.Multiplayer
 
         #endregion
 
-        #region Build In States
+        #region In
 
-        private void Start()
+        public void Spawn(PlayerManager manager)
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = false;
-
-            PhotonNetwork.Instantiate(playerPrefab.name, transform.position, quaternion.identity);
+            Transform trans = transform;
+            manager.CreateController(playerPrefab, trans.position, trans.rotation);
         }
 
         #endregion

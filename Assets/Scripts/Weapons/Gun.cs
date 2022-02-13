@@ -8,6 +8,5 @@ namespace GameDev.Weapons
     {
         [SerializeField] protected int magMaxSize, magCurSize, bulletsPerTap;
         [SerializeField] protected float spread, reloadTime;
-        protected bool reloading, readyToShoot;
     }
 }

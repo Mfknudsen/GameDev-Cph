@@ -1,4 +1,9 @@
+#region Packages
+
+using GameDev.Character;
 using UnityEngine;
+
+#endregion
 
 namespace GameDev.Weapons.HitScan.Human
 {
@@ -6,12 +11,13 @@ namespace GameDev.Weapons.HitScan.Human
     {
         public override void Trigger()
         {
-            if (allowButtonHold) attacking = UnityEngine.Input.GetKey(KeyCode.Mouse0);
-            else attacking = UnityEngine.Input.GetKeyDown(KeyCode.Mouse0);
+            if (trigger.GetCanFire()) shooting = UnityEngine.Input.GetKey(KeyCode.Mouse0);
+            else shooting = UnityEngine.Input.GetKeyDown(KeyCode.Mouse0);
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.R) && magCurSize < magMaxSize && !reloading) Reload();
 
-            if (readyToShoot && attacking && !reloading && magCurSize > 0) {
+            if (shooting && !reloading && magCurSize > 0)
+            {
                 Shoot();
             }
         }
@@ -30,37 +36,31 @@ namespace GameDev.Weapons.HitScan.Human
 
         private void Shoot()
         {
-            readyToShoot = false;
+            float spreadX = Random.Range(-spread, spread);
+            float spreadY = Random.Range(-spread, spread);
 
-            float spread_x = Random.Range(-spread, spread);
-            float spread_y = Random.Range(-spread, spread);
+            Vector3 direction = originPoint.transform.forward + new Vector3(spreadX, spreadY, 0);
 
-            Vector3 direction = firstPersonCam.transform.forward + new Vector3(spread_x, spread_y, 0);
-
-            if (Physics.Raycast(firstPersonCam.transform.position, direction, out rayHit, range, whatIsEnemy))
+            if (Physics.Raycast(originPoint.transform.position, direction, out RaycastHit rayHit, Mathf.Infinity,
+                    hitMask))
             {
-                Debug.Log(rayHit.collider.name);
-
-                // if (rayHit.collider.CompareTag("Alien"))
-                //     rayHit.collider.GetComponent<Info>().TakeDamage(damage);
+                Health health = rayHit.transform.gameObject.GetComponent<Health>();
+                if (health)
+                    health.ApplyDamage(
+                        ammo.GetDamage(),
+                        ammo.GetDamageType(),
+                        ammo.GetSpecialDamageType());
             }
 
             magCurSize--;
 
-            Invoke("ResetShot", timeBetweenAttacking);
-        }
-
-        private void ResetShot()
-        {
-            readyToShoot = true;
+            trigger.Pull();
         }
 
         private void Start()
         {
             magMaxSize = 25;
             magCurSize = 25;
-            readyToShoot = true;
-            ammo.SetDamage(12);
         }
 
         private void Update()

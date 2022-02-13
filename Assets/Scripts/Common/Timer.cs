@@ -1,13 +1,11 @@
 #region Packages
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 #endregion
 
-namespace GameDev
+namespace GameDev.Common
 {
     public class Timer
     {
@@ -24,17 +22,20 @@ namespace GameDev
         public Timer(float duration)
         {
             this.duration = duration;
-         
+
             current = 0;
 
             timerEvent = new UnityEvent();
+            timerEvent.AddListener(() => TimerUpdater.instance.timers.Remove(this));
+
+            TimerUpdater.instance.timers.Add(this);
         }
 
         #endregion
 
         #region Getters
 
-        public bool IsDone()
+        public bool GetDone()
         {
             return done;
         }
@@ -53,7 +54,7 @@ namespace GameDev
                 return;
 
             done = true;
-            
+
             timerEvent.Invoke();
         }
 

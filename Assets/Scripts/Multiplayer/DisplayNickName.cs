@@ -1,5 +1,6 @@
 #region Packages
 
+using GameDev.Character;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,8 @@ namespace GameDev.Multiplayer
         [SerializeField] private TextMeshPro textDisplay;
         [SerializeField] private PhotonView photonView;
 
+        [SerializeField] private Health health;
+
         private Transform objTransform;
 
         #endregion
@@ -27,8 +30,6 @@ namespace GameDev.Multiplayer
 
             if (photonView.IsMine)
                 gameObject.SetActive(false);
-            else
-                textDisplay.text = photonView.Owner.NickName;
         }
 
         private void Update()
@@ -38,6 +39,12 @@ namespace GameDev.Multiplayer
 
             objTransform.rotation =
                 Quaternion.LookRotation(objTransform.position - Camera.main.transform.position);
+
+            if (photonView.IsMine) return;
+            
+            textDisplay.text = photonView.Owner.NickName +
+                               "\n HP: " + health.GetCurrentHp() +
+                               " AP: " + health.GetCurrentAp();
         }
 
         #endregion

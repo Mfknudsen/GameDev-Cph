@@ -1,6 +1,9 @@
+using UnityEngine;
+
 namespace GameDev.Weapons.Ammo.HitScan
 {
-    public abstract class HitScanAmmo : Ammo
+    [CreateAssetMenu(menuName = "GameDev/Ammo")]
+    public  class HitScanAmmo : Ammo
     {
     }
 }

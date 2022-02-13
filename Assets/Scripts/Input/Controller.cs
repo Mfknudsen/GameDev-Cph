@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace GameDev.Input
 {
-    public abstract class Controller : MonoBehaviour
+    public abstract class Controller : MonoBehaviourPunCallbacks
     {
         #region Values
 
-        [SerializeField] private PhotonView photonView;
+        [SerializeField] protected PhotonView photonView;
         protected Transform objTransform;
         protected Vector2 moveDir, rotDir;
 
@@ -26,40 +26,15 @@ namespace GameDev.Input
             photonView ??= GetComponent<PhotonView>();
 
             if (photonView.IsMine)
-                StartOwned();
-            else
-                StartUnowned();
-        }
-
-        private void Update()
-        {
-            if (photonView.IsMine)
-                UpdateOwned();
-            else
-                UpdateUnowned();
+            {
+                InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
+                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+            }
         }
 
         #endregion
 
         #region Internal
-
-        protected virtual void StartOwned()
-        {
-            InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
-            InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
-        }
-
-        protected virtual void StartUnowned()
-        {
-        }
-
-        protected virtual void UpdateOwned()
-        {
-        }
-
-        protected virtual void UpdateUnowned()
-        {
-        }
 
         private void OnMoveAxisUpdate(Vector2 input)
         {
