@@ -291,7 +291,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 4970067498224136342}
-  rotSpeed: 20
+  rotSpeed: 50
+  minAngle: -80
+  maxAngle: 80
 --- !u!20 &3032176330648000718
 Camera:
   m_ObjectHideFlags: 0
@@ -356,6 +358,7 @@ GameObject:
   - component: {fileID: 3701948936917307133}
   - component: {fileID: 3032176331367780360}
   - component: {fileID: 5698880210423070353}
+  - component: {fileID: 3400118522709157707}
   - component: {fileID: 3032176331367780363}
   - component: {fileID: 3032176331367780362}
   - component: {fileID: 3032176331367780361}
@@ -375,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3032176331367780367}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 3, z: 8.28}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3032176330648000716}
@@ -451,14 +454,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8977863453321a42b1c39b843a7f953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 4970067498224136342}
+  pv: {fileID: 0}
   moveSpeed: 5
-  rotSpeed: 20
+  rotSpeed: 50
   distance: 1
   jumpForce: 5
   layerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 328
 --- !u!114 &5698880210423070353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +477,18 @@ MonoBehaviour:
   pv: {fileID: 4970067498224136342}
   healthPreset: {fileID: 11400000, guid: f00d7e0f49b2ab34fa4c744bd85959df, type: 2}
   healthType: 0
+--- !u!114 &3400118522709157707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032176331367780367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7a4cb4e8d99744f9069275317d48c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &3032176331367780363
 MeshFilter:
   m_ObjectHideFlags: 0

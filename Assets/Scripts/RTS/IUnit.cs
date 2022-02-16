@@ -8,10 +8,8 @@ namespace GameDev.RTS
 {
     public interface IUnit
     {
+        void Select(Selector selector);
+        
         void SetWaypoint(Vector3 waypointPos);
-
-        void DamageIn(float damage);
-
-        void HealIn(float heal);
     }
 }

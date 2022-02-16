@@ -1,6 +1,7 @@
 #region Packages
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #endregion
@@ -11,7 +12,9 @@ namespace GameDev.Interaction
     {
         #region Values
 
-        [SerializeField] private List<GameObject> gameObjectsToTrigger;
+        [SerializeField] private GameObject uiMessagePrefab;
+
+        [SerializeField] private List<GameObject> gameObjectsToTrigger = new List<GameObject>();
 
         #endregion
 
@@ -29,16 +32,39 @@ namespace GameDev.Interaction
             }
         }
 
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.GetComponent<InteractionSelector>() is { } selector)
                 selector.Add(this);
         }
 
-        private void OnCollisionExit(Collision other)
+        private void OnTriggerExit(Collider other)
         {
             if (other.gameObject.GetComponent<InteractionSelector>() is { } selector)
-                selector.Add(this);
+                selector.Remove(this);
+        }
+
+        #endregion
+
+        #region Getters
+
+        public GameObject GetUIPrefab()
+        {
+            return uiMessagePrefab;
+        }
+
+        #endregion
+
+        #region In
+
+        public void Trigger()
+        {
+            foreach (GameObject obj in gameObjectsToTrigger)
+            {
+                IInteract[] interacts = obj.GetComponents<MonoBehaviour>().OfType<IInteract>().Select(o => o).ToArray();
+                foreach (IInteract interact in interacts)
+                    interact.TriggerInteraction();
+            }
         }
 
         #endregion

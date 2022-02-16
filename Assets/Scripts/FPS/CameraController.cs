@@ -8,13 +8,14 @@ using UnityEngine;
 
 namespace GameDev.FPS
 {
-    public sealed class FPSCamera : MonoBehaviour
+    public sealed class CameraController : MonoBehaviour
     {
         #region Values
 
         [SerializeField] private PhotonView pv;
         [SerializeField] private float rotSpeed;
-        private float dir;
+        [SerializeField] private float minAngle, maxAngle;
+        private float dir, current = -45;
         private Transform objTransform;
 
         #endregion
@@ -24,6 +25,7 @@ namespace GameDev.FPS
         private void Start()
         {
             objTransform = transform;
+            objTransform.localEulerAngles = Vector3.left * current;
 
             pv ??= GetComponent<PhotonView>();
 
@@ -34,17 +36,11 @@ namespace GameDev.FPS
         private void Update()
         {
             if (!pv.IsMine) return;
+            
+            current += dir * rotSpeed * Time.deltaTime;
+            current = Mathf.Clamp(current, minAngle, maxAngle);
 
-            Vector3 eulerAngles = objTransform.rotation.eulerAngles;
-            eulerAngles.x += dir * rotSpeed * Time.deltaTime;
-
-            float check = eulerAngles.x - 180;
-            if (check < 100 && check > 0)
-                eulerAngles.x = 280;
-            else if (check > -100 && check < 0)
-                eulerAngles.x = 80;
-
-            objTransform.rotation = Quaternion.Euler(eulerAngles);
+            objTransform.localEulerAngles = Vector3.left * current;
         }
 
         #endregion
@@ -53,7 +49,7 @@ namespace GameDev.FPS
 
         private void OnRotAxisUpdate(Vector2 input)
         {
-            dir = -input.y;
+            dir = input.y;
         }
 
         #endregion

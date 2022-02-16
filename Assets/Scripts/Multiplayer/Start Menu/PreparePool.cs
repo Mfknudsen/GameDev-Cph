@@ -6,7 +6,7 @@ using UnityEngine;
 
 #endregion
 
-namespace GameDev.Multiplayer
+namespace GameDev.Multiplayer.Start_Menu
 {
     public class PreparePool : MonoBehaviour
     {

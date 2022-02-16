@@ -47,18 +47,18 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Interact"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""d48a4ee5-afeb-4096-a1c6-8ef1485859f0"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MouseScroll"",
+                    ""name"": ""Scroll"",
                     ""type"": ""PassThrough"",
                     ""id"": ""85a9c2ff-b771-4ca4-8344-6410427f2c46"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -121,6 +121,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Throw"",
                     ""type"": ""PassThrough"",
                     ""id"": ""14714854-0167-452c-8d0e-a2e1d4c34598"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""Value"",
+                    ""id"": ""d37e70e5-ca39-4c3e-9952-c07509c86999"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""39b7018a-acd2-4783-9982-193c38e8bab3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -328,17 +346,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b73496f5-02c7-4949-9d2b-bdc0b98d6664"",
-                    ""path"": ""<Mouse>/scroll"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""MouseKeyboard"",
-                    ""action"": ""MouseScroll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8191967f-f4ff-4680-b6b7-fb81e707c865"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -424,6 +431,61 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""QE"",
+                    ""id"": ""47dc65de-c1ae-4fef-8317-29dc3a74de1f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Turn"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""de4e4b63-8dc2-4fd8-8891-01d6a49d2150"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""98771be0-9fb0-49f1-b030-6dc00bce81ff"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Turn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e38741c3-b2c5-4d5c-bee5-ee7fa38dcf14"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a57fbbc5-a651-4e44-8669-b5ffbb3606bf"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -463,7 +525,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_MoveVector = m_Player.FindAction("MoveVector", throwIfNotFound: true);
         m_Player_RotVector = m_Player.FindAction("RotVector", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_MouseScroll = m_Player.FindAction("MouseScroll", throwIfNotFound: true);
+        m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
@@ -471,6 +533,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Build = m_Player.FindAction("Build", throwIfNotFound: true);
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
+        m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
+        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -533,7 +597,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveVector;
     private readonly InputAction m_Player_RotVector;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_MouseScroll;
+    private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Reload;
@@ -541,6 +605,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Build;
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Throw;
+    private readonly InputAction m_Player_Turn;
+    private readonly InputAction m_Player_Crouch;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -548,7 +614,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @MoveVector => m_Wrapper.m_Player_MoveVector;
         public InputAction @RotVector => m_Wrapper.m_Player_RotVector;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @MouseScroll => m_Wrapper.m_Player_MouseScroll;
+        public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
@@ -556,6 +622,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Build => m_Wrapper.m_Player_Build;
         public InputAction @Drop => m_Wrapper.m_Player_Drop;
         public InputAction @Throw => m_Wrapper.m_Player_Throw;
+        public InputAction @Turn => m_Wrapper.m_Player_Turn;
+        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -574,9 +642,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @MouseScroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
-                @MouseScroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
-                @MouseScroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseScroll;
+                @Scroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
+                @Scroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
+                @Scroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
@@ -598,6 +666,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
                 @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
                 @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                @Turn.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurn;
+                @Turn.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurn;
+                @Turn.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTurn;
+                @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -611,9 +685,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @MouseScroll.started += instance.OnMouseScroll;
-                @MouseScroll.performed += instance.OnMouseScroll;
-                @MouseScroll.canceled += instance.OnMouseScroll;
+                @Scroll.started += instance.OnScroll;
+                @Scroll.performed += instance.OnScroll;
+                @Scroll.canceled += instance.OnScroll;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -635,6 +709,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Throw.started += instance.OnThrow;
                 @Throw.performed += instance.OnThrow;
                 @Throw.canceled += instance.OnThrow;
+                @Turn.started += instance.OnTurn;
+                @Turn.performed += instance.OnTurn;
+                @Turn.canceled += instance.OnTurn;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -662,7 +742,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMoveVector(InputAction.CallbackContext context);
         void OnRotVector(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnMouseScroll(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
@@ -670,5 +750,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnBuild(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
+        void OnTurn(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }
