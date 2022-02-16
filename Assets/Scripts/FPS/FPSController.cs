@@ -35,30 +35,25 @@ namespace GameDev.FPS
 
             rb = GetComponent<Rigidbody>();
 
-            if (photonView.IsMine)
+            if (pv.IsMine)
                 InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
             else
-            {
-                Destroy(rb);
-
-                GetComponentInChildren<Camera>().enabled = false;
-                GetComponentInChildren<AudioListener>().enabled = false;
-            }
+                rb.detectCollisions = false;
         }
 
         private void Update()
         {
-            if (photonView.IsMine)
+            if (pv.IsMine)
             {
                 Rotate();
-                GroundDetect();
             }
         }
 
         private void FixedUpdate()
         {
-            if (photonView.IsMine)
+            if (pv.IsMine)
             {
+                GroundDetect();
                 Move();
                 Jump();
             }
@@ -89,13 +84,14 @@ namespace GameDev.FPS
 
             isGrounded = false;
             jumpTimer = new Timer(0.05f);
+            jumpTimer.timerEvent.AddListener(() => jumpTimer = null);
         }
 
         protected virtual void GroundDetect()
         {
             if (isGrounded) return;
 
-            if (jumpTimer != null && !jumpTimer.GetDone()) return;
+            if (jumpTimer != null && jumpTimer == null) return;
 
             Ray ray = new Ray(objTransform.position, -objTransform.up);
             if (Physics.Raycast(ray, distance, layerMask))

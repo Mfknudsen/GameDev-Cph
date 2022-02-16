@@ -25,18 +25,18 @@
                 },
                 {
                     "name": "Interact",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "d48a4ee5-afeb-4096-a1c6-8ef1485859f0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MouseScroll",
+                    "name": "Scroll",
                     "type": "PassThrough",
                     "id": "85a9c2ff-b771-4ca4-8344-6410427f2c46",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -99,6 +99,24 @@
                     "name": "Throw",
                     "type": "PassThrough",
                     "id": "14714854-0167-452c-8d0e-a2e1d4c34598",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Turn",
+                    "type": "Value",
+                    "id": "d37e70e5-ca39-4c3e-9952-c07509c86999",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Crouch",
+                    "type": "PassThrough",
+                    "id": "39b7018a-acd2-4783-9982-193c38e8bab3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -306,17 +324,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b73496f5-02c7-4949-9d2b-bdc0b98d6664",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseKeyboard",
-                    "action": "MouseScroll",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "8191967f-f4ff-4680-b6b7-fb81e707c865",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -400,6 +407,61 @@
                     "processors": "",
                     "groups": "MouseKeyboard",
                     "action": "Throw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "QE",
+                    "id": "47dc65de-c1ae-4fef-8317-29dc3a74de1f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "de4e4b63-8dc2-4fd8-8891-01d6a49d2150",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "98771be0-9fb0-49f1-b030-6dc00bce81ff",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e38741c3-b2c5-4d5c-bee5-ee7fa38dcf14",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a57fbbc5-a651-4e44-8669-b5ffbb3606bf",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

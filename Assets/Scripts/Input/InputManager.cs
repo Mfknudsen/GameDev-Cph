@@ -23,9 +23,11 @@ namespace GameDev.Input
             meleeEvent = new UnityEvent(),
             buildEvent = new UnityEvent(),
             dropEvent = new UnityEvent(),
-            throwEvent = new UnityEvent();
+            throwEvent = new UnityEvent(),
+            crouchEvent = new UnityEvent();
 
-        [SerializeField] public UnityEvent<float> mouseScrollEvent = new UnityEvent<float>();
+        [SerializeField] public UnityEvent<float> mouseScrollEvent = new UnityEvent<float>(),
+            turnEvent = new UnityEvent<float>();
 
         #endregion
 
@@ -41,7 +43,7 @@ namespace GameDev.Input
 
             instance = this;
             DontDestroyOnLoad(gameObject);
-            
+
             PlayerInput playerInput = new PlayerInput();
             playerInput.Enable();
             PlayerInput.PlayerActions player = playerInput.Player;
@@ -59,10 +61,15 @@ namespace GameDev.Input
             player.RotVector.canceled += (context) =>
                 rotEvent.Invoke(context.ReadValue<Vector2>());
 
-            player.MouseScroll.performed += (context) =>
-                mouseScrollEvent.Invoke(context.ReadValue<float>());
-            player.MouseScroll.canceled += (context) =>
-                mouseScrollEvent.Invoke(context.ReadValue<float>());
+            player.Scroll.performed += (context) =>
+                mouseScrollEvent.Invoke(Mathf.Clamp(context.ReadValue<Vector2>().y, -1, 1));
+            player.Scroll.canceled += (context) =>
+                mouseScrollEvent.Invoke(Mathf.Clamp(context.ReadValue<Vector2>().y, -1, 1));
+
+            player.Turn.performed += (context) =>
+                turnEvent.Invoke(context.ReadValue<float>());
+            player.Turn.canceled += (context) =>
+                turnEvent.Invoke(context.ReadValue<float>());
 
             #endregion
 
@@ -84,6 +91,8 @@ namespace GameDev.Input
             player.Drop.performed += (context) => dropEvent.Invoke();
 
             player.Throw.performed += (context) => throwEvent.Invoke();
+
+            player.Crouch.performed += (context) => crouchEvent.Invoke();
 
             #endregion
         }

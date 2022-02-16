@@ -11,7 +11,7 @@ namespace GameDev.Input
     {
         #region Values
 
-        [SerializeField] protected PhotonView photonView;
+        [SerializeField] protected PhotonView pv;
         protected Transform objTransform;
         protected Vector2 moveDir, rotDir;
 
@@ -23,13 +23,27 @@ namespace GameDev.Input
         {
             objTransform = transform;
 
-            photonView ??= GetComponent<PhotonView>();
+            pv ??= GetComponent<PhotonView>();
 
-            if (photonView.IsMine)
+            if (pv.IsMine)
             {
                 InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
                 InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
             }
+            else
+            {
+                GetComponentInChildren<Camera>().enabled = false;
+                GetComponentInChildren<AudioListener>().enabled = false;
+            }
+        }
+
+        #endregion
+
+        #region In
+
+        public void SetGameObjectActivePun(bool set)
+        {
+            pv.RPC("GameObjectActive", RpcTarget.All, new object[]{set, pv.Owner.UserId});
         }
 
         #endregion
@@ -45,6 +59,19 @@ namespace GameDev.Input
         {
             rotDir = input;
         }
+
+        #region Pun RPC
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        protected void GameObjectActive(bool set, string id)
+        {
+            if(!pv.Owner.UserId.Equals(id)) return;
+                
+            gameObject.SetActive(set);
+        }
+
+        #endregion
 
         #endregion
     }

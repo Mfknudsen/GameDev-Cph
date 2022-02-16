@@ -39,11 +39,10 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - RPCApplyDamageAp
-  - RPCApplyDamageHp
   - RPCApplyHealAp
   - RPCApplyHealHp
   - RPCApplyDamage
+  - GameObjectActive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
