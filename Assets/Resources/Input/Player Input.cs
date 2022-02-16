@@ -94,7 +94,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Melee"",
                     ""type"": ""PassThrough"",
                     ""id"": ""b5d83f38-1f50-418d-aaa8-91f3242c6a64"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -103,7 +103,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Build"",
                     ""type"": ""PassThrough"",
                     ""id"": ""ef85e7aa-681e-4202-9a40-d60556bc4e0c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -112,7 +112,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Drop"",
                     ""type"": ""PassThrough"",
                     ""id"": ""082ac1b6-5b26-439f-91cd-e0869ec5fb37"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -121,7 +121,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Throw"",
                     ""type"": ""PassThrough"",
                     ""id"": ""14714854-0167-452c-8d0e-a2e1d4c34598"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -139,7 +139,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""name"": ""Crouch"",
                     ""type"": ""PassThrough"",
                     ""id"": ""39b7018a-acd2-4783-9982-193c38e8bab3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

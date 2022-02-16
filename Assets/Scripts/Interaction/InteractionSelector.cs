@@ -1,7 +1,6 @@
 #region Packages
 
 using System.Collections.Generic;
-using GameDev.Common;
 using GameDev.Input;
 using UnityEngine;
 
@@ -26,7 +25,11 @@ namespace GameDev.Interaction
         private void Awake()
         {
             InputManager.instance.interactEvent.AddListener(OnInteractUpdate);
-            new Timer(1f).timerEvent.AddListener(() => UpdateClosest());
+        }
+
+        private void Update()
+        {
+            UpdateClosest();
         }
 
         #endregion
@@ -92,8 +95,6 @@ namespace GameDev.Interaction
                 if (closestGameObject != null && closestTrigger != null)
                     currentUI = Instantiate(closestTrigger.GetUIPrefab(), GameObject.Find("Canvas").transform);
             }
-
-            new Timer(0.5f).timerEvent.AddListener(() => UpdateClosest());
         }
 
         private void OnInteractUpdate()

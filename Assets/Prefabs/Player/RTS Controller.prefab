@@ -145,7 +145,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -186,10 +186,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9159483eebab46b0500f052764f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+  uiPrefab: {fileID: 2200163305801101940, guid: 7d21addfd8adc1e4088e82aa2584171a, type: 3}
   selectMask:
     serializedVersion: 2
     m_Bits: 384
+  minBoxDistance: 40
   placingMask:
     serializedVersion: 2
     m_Bits: 8

@@ -15,18 +15,21 @@ namespace GameDev.RTS
     public class Selector : MonoBehaviour
     {
         #region Values
-
-        [SerializeField] private GameObject test;
-
+        
         //Selecting
+        [Header("Selecting")] [SerializeField] private GameObject uiPrefab;
         [SerializeField] private LayerMask selectMask;
+        [SerializeField] private float minBoxDistance;
         private bool selecting;
         private Camera cam;
         private Vector2 startPoint, endPoint;
         private List<IUnit> selectedUnits = new List<IUnit>();
+        private RectTransform uiRectTransform;
 
         //Placing Buildings
-        [SerializeField] private LayerMask placingMask;
+        [Space] [Header("Building")] [SerializeField]
+        private LayerMask placingMask;
+
         private bool placing;
         private Building placingObject;
 
@@ -38,18 +41,43 @@ namespace GameDev.RTS
         {
             InputManager.instance.shootEvent.AddListener(OnShootUpdate);
             cam ??= GetComponent<Camera>();
-
-            ToPlaceBuilding(Instantiate(test).GetComponent<Building>());
         }
 
         private void Update()
         {
-            if (!placing)
-                return;
+            if (selecting && uiRectTransform != null)
+            {
+                Vector2 size = startPoint - Mouse.current.position.ReadValue(),
+                    center = startPoint - size / 2;
 
-            RaycastHit? hit = RayHit(Mathf.Infinity, placingMask);
-            if (hit.HasValue)
-                placingObject.transform.position = hit.Value.point;
+                size.x = Mathf.Abs(size.x) / (Screen.width / 100f) / 100 * 1920;
+                size.y = Mathf.Abs(size.y) / (Screen.height / 100f) / 100 * 1080;
+
+                uiRectTransform.gameObject.SetActive(size.magnitude >= minBoxDistance);
+
+                uiRectTransform.position = center;
+                uiRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size.x);
+                uiRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size.y);
+            }
+            else if (placing)
+            {
+                RaycastHit? hit = RayHit(Mathf.Infinity, placingMask);
+                if (hit.HasValue)
+                    placingObject.transform.position = hit.Value.point;
+            }
+        }
+
+        private void OnEnable()
+        {
+            uiRectTransform = Instantiate(uiPrefab, GameObject.Find("Canvas").transform).transform as RectTransform;
+
+            if (uiRectTransform != null) uiRectTransform.gameObject.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            if (uiRectTransform != null)
+                Destroy(uiRectTransform.gameObject);
         }
 
         #endregion
@@ -96,14 +124,17 @@ namespace GameDev.RTS
                 selecting = !selecting;
 
                 if (selecting)
+                {
                     startPoint = Mouse.current.position.ReadValue();
+                    endPoint = Vector2.zero;
+                }
                 else
                 {
+                    uiRectTransform.gameObject.SetActive(false);
+                    endPoint = Mouse.current.position.ReadValue();
                     selectedUnits.Clear();
 
-                    endPoint = Mouse.current.position.ReadValue();
-
-                    if ((startPoint - endPoint).magnitude > 40)
+                    if ((startPoint - endPoint).magnitude >= minBoxDistance)
                         BoxSelect();
                     else
                         SingleSelect();

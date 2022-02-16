@@ -48,7 +48,6 @@ namespace GameDev.Buildings
             Hashtable hash = new Hashtable();
             if (currentCommander != null)
             {
-                Debug.Log("Eject");
                 fpsController.GetComponent<Controller>().SetGameObjectActivePun(true);
                 PhotonNetwork.Destroy(currentCommander);
                 currentCommander = null;
@@ -57,18 +56,25 @@ namespace GameDev.Buildings
             }
             else if (canBeTriggered)
             {
-                Transform t = transform;
                 fpsController = PlayerManager.ownedManager.GetCurrentPlayerCharacter();
                 fpsController.GetComponent<Controller>().SetGameObjectActivePun(false);
-                currentCommander =
-                    PlayerManager.ownedManager.CreateController(rtsController, t.position + spawnOffset,
-                        Quaternion.identity);
+                
+                Transform t = transform;
+                currentCommander = PlayerManager.ownedManager.CreateController(
+                    rtsController,
+                    t.position + spawnOffset,
+                    Quaternion.identity);
                 currentCommander.GetComponent<RtsController>().Setup(this);
 
                 hash.Add("occupied", true);
             }
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+        public bool CanTrigger()
+        {
+            return canBeTriggered;
         }
 
         #endregion

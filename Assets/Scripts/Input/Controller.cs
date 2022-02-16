@@ -43,7 +43,7 @@ namespace GameDev.Input
 
         public void SetGameObjectActivePun(bool set)
         {
-            pv.RPC("GameObjectActive", RpcTarget.All, new object[]{set, pv.Owner.UserId});
+            pv.RPC("GameObjectActive", RpcTarget.All, new object[]{set, pv.Owner.NickName});
         }
 
         #endregion
@@ -64,9 +64,9 @@ namespace GameDev.Input
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        protected void GameObjectActive(bool set, string id)
+        protected void GameObjectActive(bool set, string ownerName)
         {
-            if(!pv.Owner.UserId.Equals(id)) return;
+            if(!pv.Owner.NickName.Equals(ownerName)) return;
                 
             gameObject.SetActive(set);
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameDev.FPS
 {
-    public class FPSController : Controller
+    public class FpsController : Controller
     {
         #region Values
 
@@ -38,7 +38,7 @@ namespace GameDev.FPS
             if (pv.IsMine)
                 InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
             else
-                rb.detectCollisions = false;
+                rb.useGravity = false;
         }
 
         private void Update()

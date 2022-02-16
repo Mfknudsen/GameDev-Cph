@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace GameDev
 {
-    public class SkulkController : FPSController
+    public class SkulkController : FpsController
     {
         #region Internal
 
