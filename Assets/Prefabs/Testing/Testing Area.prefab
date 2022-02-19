@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2283131290150028755}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Testing Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3489348614855056598}
   - component: {fileID: 5131005366303656926}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 5850714113485091736}
   - component: {fileID: 1722189560116597302}
   - component: {fileID: 1767303963549098348}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5007853686133005818}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shooting Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 1457460992969374513}
   - component: {fileID: 2410616335569056513}
   - component: {fileID: 6391412705780700970}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 1452414433689471183}
   - component: {fileID: 8778078494495179357}
   - component: {fileID: 4468826343717925534}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 5856661657894441915}
   - component: {fileID: 1537837732175591304}
   - component: {fileID: 7926149893993709146}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,8 +469,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713913639582816227}
   m_LocalRotation: {x: -0, y: 0.7164556, z: -0, w: 0.6976328}
-  m_LocalPosition: {x: -10.61, y: 1.9918001, z: 17.47}
-  m_LocalScale: {x: 9.945242, y: 0.81597644, z: 0.51833916}
+  m_LocalPosition: {x: -10.61, y: 1.761, z: 17.47}
+  m_LocalScale: {x: 9.945242, y: 0.9144648, z: 0.51833916}
   m_Children: []
   m_Father: {fileID: 7018077777746114583}
   m_RootOrder: 3
@@ -546,7 +546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8200324189566323138}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Entities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 6664438288079695275}
   - component: {fileID: 6546441343148906726}
   - component: {fileID: 3147694857094616800}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 6536954053954421849}
   - component: {fileID: 7547118369422960200}
   - component: {fileID: 5367545040647388892}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -771,7 +771,7 @@ GameObject:
   - component: {fileID: 2285020322388499193}
   - component: {fileID: 1759992782361281004}
   - component: {fileID: 8670511155060776468}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328494027356578533}
   m_LocalRotation: {x: -0, y: 0.7164556, z: -0, w: 0.6976328}
-  m_LocalPosition: {x: -10.7, y: 0.799, z: 14.25}
+  m_LocalPosition: {x: -10.7, y: 0.52119994, z: 14.25}
   m_LocalScale: {x: 16.217596, y: 1.5982332, z: 0.51833916}
   m_Children: []
   m_Father: {fileID: 7018077777746114583}
@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 4363188230025642242}
   - component: {fileID: 524308313731208176}
   - component: {fileID: 9054469204288024931}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -958,7 +958,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6703959822266905790}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -997,7 +997,7 @@ GameObject:
   - component: {fileID: 3119548978472781756}
   - component: {fileID: 3191529630699336970}
   - component: {fileID: 6497265230704799955}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Alien
   m_TagString: Alien
   m_Icon: {fileID: 0}
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 4065290207909569297}
   - component: {fileID: 7803349423586857681}
   - component: {fileID: 2116461639132585076}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1188,7 @@ GameObject:
   - component: {fileID: 1033983028607249595}
   - component: {fileID: 3501772420654824064}
   - component: {fileID: 7237255430314152570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1283,7 +1283,7 @@ GameObject:
   - component: {fileID: 3087210814397794666}
   - component: {fileID: 2945069226688896415}
   - component: {fileID: 3617552101912549581}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,8 +1298,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3313897496230797047}
   m_LocalRotation: {x: -0, y: 0.7164556, z: -0, w: 0.6976328}
-  m_LocalPosition: {x: -1.73, y: 1.6002, z: 14.01}
-  m_LocalScale: {x: 16.217596, y: 2.062987, z: 0.51833916}
+  m_LocalPosition: {x: -1.73, y: 1.71, z: 14.01}
+  m_LocalScale: {x: 16.217596, y: 1.6503295, z: 0.51833916}
   m_Children: []
   m_Father: {fileID: 7018077777746114583}
   m_RootOrder: 4
@@ -1375,7 +1375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1188468034826326240}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   - component: {fileID: 2356524435501190353}
   - component: {fileID: 5144860460273774796}
   - component: {fileID: 8742927675030954138}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1505,7 +1505,7 @@ GameObject:
   - component: {fileID: 7063952615529065539}
   - component: {fileID: 1390046062717855007}
   - component: {fileID: 6812286186279312023}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1600,7 +1600,7 @@ GameObject:
   - component: {fileID: 7245170850972229979}
   - component: {fileID: 80132779129126613}
   - component: {fileID: 1042445920490330022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1695,7 +1695,7 @@ GameObject:
   - component: {fileID: 1235238672497781585}
   - component: {fileID: 5644077276598957331}
   - component: {fileID: 1586963401736516604}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1790,7 +1790,7 @@ GameObject:
   - component: {fileID: 4458243417856855825}
   - component: {fileID: 4788523141279900890}
   - component: {fileID: 7586916885364183754}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Human
   m_TagString: Human
   m_Icon: {fileID: 0}
@@ -1883,7 +1883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7018077777746114583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Interior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1923,7 +1923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1178586058951465850}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1960,7 +1960,7 @@ GameObject:
   - component: {fileID: 6526437741999181706}
   - component: {fileID: 879745295423989534}
   - component: {fileID: 3227265847745280828}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2053,7 +2053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2441456275681660309}
   - component: {fileID: 4387622622767242059}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2148,7 +2148,7 @@ GameObject:
   - component: {fileID: 2902979727733212813}
   - component: {fileID: 5229875724511649042}
   - component: {fileID: 5294949921574506986}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sandbag 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2243,7 +2243,7 @@ GameObject:
   - component: {fileID: 2093242481477907397}
   - component: {fileID: 1528058132109582213}
   - component: {fileID: 610935143655899607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,8 +2258,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6833398588246994737}
   m_LocalRotation: {x: -0, y: 0.7164556, z: -0, w: 0.6976328}
-  m_LocalPosition: {x: -10.863, y: 1.9877999, z: 8.054}
-  m_LocalScale: {x: 3.8505435, y: 0.78994846, z: 0.51833916}
+  m_LocalPosition: {x: -10.863, y: 1.7569999, z: 8.054}
+  m_LocalScale: {x: 3.8505435, y: 0.8852953, z: 0.51833916}
   m_Children: []
   m_Father: {fileID: 7018077777746114583}
   m_RootOrder: 2
@@ -2335,7 +2335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5237605916795663994}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2370,7 +2370,7 @@ GameObject:
   - component: {fileID: 1146117573759952079}
   - component: {fileID: 2879169196729237227}
   - component: {fileID: 8215335847953843198}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2465,7 +2465,7 @@ GameObject:
   - component: {fileID: 7340281369485463413}
   - component: {fileID: 8166093423546036559}
   - component: {fileID: 8904207575002710908}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2557,7 +2557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5926980703882466456}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Exterior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2594,7 +2594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8539946503711992193}
   - component: {fileID: 5278550581297277465}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2689,7 +2689,7 @@ GameObject:
   - component: {fileID: 283644278971255564}
   - component: {fileID: 3549409178810930987}
   - component: {fileID: 5746449737032183878}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Wall 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2784,7 +2784,7 @@ GameObject:
   - component: {fileID: 4276473478624353395}
   - component: {fileID: 2407654716947346699}
   - component: {fileID: 213243721221846817}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2879,7 +2879,7 @@ GameObject:
   - component: {fileID: 2411427776369780522}
   - component: {fileID: 3959286320230768813}
   - component: {fileID: 4675842647329238940}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Outer Wall 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

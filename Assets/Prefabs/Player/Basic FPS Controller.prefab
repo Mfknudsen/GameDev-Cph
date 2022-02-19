@@ -454,12 +454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8977863453321a42b1c39b843a7f953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  pv: {fileID: 4970067498224136342}
   moveSpeed: 5
   rotSpeed: 50
   distance: 1
   jumpForce: 5
-  layerMask:
+  groundedMask:
     serializedVersion: 2
     m_Bits: 328
 --- !u!114 &5698880210423070353

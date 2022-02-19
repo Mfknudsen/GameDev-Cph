@@ -8,22 +8,24 @@ using UnityEngine;
 
 namespace GameDev.FPS
 {
-    public class FPSController : Controller
+    public class FpsController : Controller
     {
         #region Values
 
-        [SerializeField] private float moveSpeed,
+        [SerializeField] protected float moveSpeed,
             rotSpeed,
             distance,
-            jumpForce;
+            jumpForce,
+            timeBetweenJump;
 
-        [SerializeField] private LayerMask layerMask;
+        [SerializeField] protected LayerMask groundedMask;
 
-        protected bool jumping, isGrounded;
+        protected bool isGrounded,
+            jumping;
 
-        private Timer jumpTimer;
+        protected Timer jumpTimer;
 
-        private Rigidbody rb;
+        protected Rigidbody rb;
 
         #endregion
 
@@ -33,6 +35,9 @@ namespace GameDev.FPS
         {
             base.Start();
 
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             rb = GetComponent<Rigidbody>();
 
             if (pv.IsMine)
@@ -41,21 +46,21 @@ namespace GameDev.FPS
                 rb.detectCollisions = false;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (pv.IsMine)
             {
                 Rotate();
+                Jump();
             }
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (pv.IsMine)
             {
                 GroundDetect();
                 Move();
-                Jump();
             }
         }
 
@@ -77,26 +82,23 @@ namespace GameDev.FPS
 
         protected virtual void Jump()
         {
-            if (!isGrounded) return;
+            if (!isGrounded || !jumping || jumpTimer != null) return;
 
-            if (!jumping) return;
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.velocity = Vector3.zero;
+            rb.AddForce(objTransform.up * jumpForce, ForceMode.Impulse);
 
             isGrounded = false;
-            jumpTimer = new Timer(0.05f);
+            jumpTimer = new Timer(timeBetweenJump);
             jumpTimer.timerEvent.AddListener(() => jumpTimer = null);
         }
 
         protected virtual void GroundDetect()
         {
-            if (isGrounded) return;
-
-            if (jumpTimer != null && jumpTimer == null) return;
+            if (isGrounded || jumpTimer != null) return;
 
             Ray ray = new Ray(objTransform.position, -objTransform.up);
-            if (Physics.Raycast(ray, distance, layerMask))
+            if (Physics.Raycast(ray, distance, groundedMask))
                 isGrounded = true;
-            Debug.DrawRay(ray.origin, ray.direction * distance);
         }
 
         #region Input
