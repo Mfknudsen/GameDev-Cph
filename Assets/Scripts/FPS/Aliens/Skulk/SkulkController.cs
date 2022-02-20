@@ -163,13 +163,12 @@ namespace GameDev.FPS.Aliens.Skulk
 
             onWall = currentUp != Vector3.up;
 
-            if (!moveTransform.up.Equals(currentUp))
-            {
-                moveTransform.rotation = camTransform.rotation;
-                // ReSharper disable once Unity.InefficientPropertyAccess
-                moveTransform.rotation =
-                    Quaternion.FromToRotation(moveTransform.up, currentUp) * moveTransform.rotation;
-            }
+            Quaternion oldRot = moveTransform.rotation;
+            moveTransform.rotation = camTransform.rotation;
+            moveTransform.LookAt(moveTransform.position + moveTransform.forward, currentUp);
+            // ReSharper disable once Unity.InefficientPropertyAccess
+            moveTransform.rotation = Quaternion.Lerp(oldRot,
+                Quaternion.FromToRotation(moveTransform.up, currentUp) * moveTransform.rotation, 0.9f);
         }
 
         protected override void GroundDetect()
@@ -179,8 +178,6 @@ namespace GameDev.FPS.Aliens.Skulk
             Ray ray = new Ray(objTransform.position, -currentUp);
             if (Physics.Raycast(ray, distance, groundedMask, QueryTriggerInteraction.Ignore))
                 isGrounded = true;
-
-            Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
         }
 
         private void AddGravity()
