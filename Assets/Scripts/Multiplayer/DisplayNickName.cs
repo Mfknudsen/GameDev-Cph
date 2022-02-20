@@ -27,9 +27,6 @@ namespace GameDev.Multiplayer
         private void Start()
         {
             objTransform = transform;
-
-            if (photonView.IsMine)
-                gameObject.SetActive(false);
         }
 
         private void Update()
@@ -40,9 +37,9 @@ namespace GameDev.Multiplayer
             objTransform.rotation =
                 Quaternion.LookRotation(objTransform.position - Camera.main.transform.position);
 
-            if (photonView.IsMine) return;
-            
-            textDisplay.text = photonView.Owner.NickName +
+            //if (photonView.IsMine) return;
+
+            textDisplay.text = (photonView.IsMine ? photonView.Owner.NickName : "") +
                                "\n HP: " + health.GetCurrentHp() +
                                " AP: " + health.GetCurrentAp();
         }

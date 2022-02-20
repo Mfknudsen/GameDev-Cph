@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfb1dd4415d21a40a4810ad9df899df, type: 3}
   m_Name: Skulk Health Preset
   m_EditorClassIdentifier: 
-  maxHp: 0
-  maxAp: 0
+  maxHp: 75
+  maxAp: 10

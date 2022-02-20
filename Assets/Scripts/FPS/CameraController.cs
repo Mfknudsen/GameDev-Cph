@@ -32,6 +32,13 @@ namespace GameDev.FPS
 
             if (pv.IsMine)
                 InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+            else
+            {
+                if (GetComponent<Camera>() is { } cam)
+                    cam.enabled = false;
+                if (GetComponent<AudioListener>() is { } listener)
+                    listener.enabled = false;
+            }
         }
 
         private void Update()
@@ -59,7 +66,7 @@ namespace GameDev.FPS
         }
 
         #endregion
-        
+
         #region Internal
 
         private void OnRotAxisUpdate(Vector2 input)

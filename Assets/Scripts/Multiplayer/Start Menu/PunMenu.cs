@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using GameDev.Common;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -48,11 +47,9 @@ namespace GameDev.Multiplayer.Start_Menu
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
 
-            PhotonNetwork.LoadLevel("TestWorld");
+            PhotonNetwork.LoadLevel("BasicDeathMatch");
 
-            Timer respawnTimer = new Timer(0.1f);
-            respawnTimer.timerEvent.AddListener(() =>
-                PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity));
+            PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
@@ -74,7 +71,7 @@ namespace GameDev.Multiplayer.Start_Menu
             foreach (RoomInfo roomInfo in roomList)
             {
                 if (roomInfo.RemovedFromList)
-                    activeServers.Remove(activeServers.First(s =>
+                    activeServers.Remove(activeServers?.First(s =>
                         s.Name.Equals(roomInfo.Name)));
                 else if (!activeServers.Any(s =>
                              s.Name.Equals(roomInfo.Name)))
