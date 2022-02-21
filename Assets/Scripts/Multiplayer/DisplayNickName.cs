@@ -31,6 +31,12 @@ namespace GameDev.Multiplayer
 
         private void Update()
         {
+            if (PlayerManager.ownedManager.GetCurrentPlayerCharacter() == transform.root.gameObject)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+            
             if (Camera.main == null)
                 return;
 
@@ -38,7 +44,6 @@ namespace GameDev.Multiplayer
                 Quaternion.LookRotation(objTransform.position - Camera.main.transform.position);
 
             //if (photonView.IsMine) return;
-
             textDisplay.text = (photonView.IsMine ? photonView.Owner.NickName : "") +
                                "\n HP: " + health.GetCurrentHp() +
                                " AP: " + health.GetCurrentAp();

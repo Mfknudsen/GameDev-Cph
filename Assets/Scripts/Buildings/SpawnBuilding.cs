@@ -55,7 +55,8 @@ namespace GameDev.Buildings
                 //Player Spawning Animation
             }
 
-            GameObject toSpawn = Random.Range(0, 2) == 1 ? humanCharacterPrefab : alienCharacterPrefab;
+            int i = Random.Range(0, 2);
+            GameObject toSpawn = i == 1  ? humanCharacterPrefab : alienCharacterPrefab;
 
             playerManager.CreateController(toSpawn, spawnTransform.position, spawnTransform.rotation);
 

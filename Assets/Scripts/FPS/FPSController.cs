@@ -43,7 +43,10 @@ namespace GameDev.FPS
             if (pv.IsMine)
                 InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
             else
-                rb.detectCollisions = false;
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
         }
 
         protected virtual void Update()

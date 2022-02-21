@@ -1,5 +1,6 @@
 #region Packages
 
+using System.Collections.Generic;
 using GameDev.Character;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace GameDev.Weapons.HitScan.Human
 {
     public class HitScanPistol : HitScanWeapon
     {
+        private List<Ray> debugRays = new List<Ray>();
+
         public override void Trigger()
         {
             if (trigger.GetCanFire()) shooting = UnityEngine.Input.GetKey(KeyCode.Mouse0);
@@ -17,9 +20,7 @@ namespace GameDev.Weapons.HitScan.Human
             if (UnityEngine.Input.GetKeyDown(KeyCode.R) && magCurSize < magMaxSize && !reloading) Reload();
 
             if (shooting && !reloading && magCurSize > 0)
-            {
                 Shoot();
-            }
         }
 
         public override void Reload()
@@ -39,20 +40,20 @@ namespace GameDev.Weapons.HitScan.Human
             float spreadX = Random.Range(-spread, spread);
             float spreadY = Random.Range(-spread, spread);
 
-            Vector3 direction = originPoint.transform.forward + new Vector3(spreadX, spreadY, 0);
-
-            if (Physics.Raycast(originPoint.transform.position, direction, out RaycastHit rayHit, Mathf.Infinity,
-                    hitMask))
+            Ray ray = new Ray(origin.position, origin.forward + new Vector3(spreadX, spreadY, 0));
+            debugRays.Add(ray);
+            if (Physics.Raycast(ray, out RaycastHit rayHit, 50, hitMask, QueryTriggerInteraction.Ignore))
             {
-                Health health = rayHit.transform.gameObject.GetComponent<Health>();
-                if (health)
+                if (rayHit.transform.root.gameObject.GetComponent<Health>() is { } health)
+                {
                     health.ApplyDamage(
                         ammo.GetDamage(),
                         ammo.GetDamageType(),
                         ammo.GetSpecialDamageType());
+                }
             }
 
-            magCurSize--;
+            //magCurSize--;
 
             trigger.Pull();
         }
@@ -63,9 +64,15 @@ namespace GameDev.Weapons.HitScan.Human
             magCurSize = 25;
         }
 
-        private void Update()
+        protected override void Update()
         {
-            Trigger();
+            if (pv.IsMine)
+                Trigger();
+
+            if (debugRays.Count > 10)
+                debugRays.RemoveAt(0);
+
+            debugRays.ForEach(r => Debug.DrawRay(r.origin, r.direction, Color.red));
         }
     }
 }

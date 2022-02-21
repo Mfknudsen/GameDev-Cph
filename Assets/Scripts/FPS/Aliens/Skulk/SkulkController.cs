@@ -33,7 +33,7 @@ namespace GameDev.FPS.Aliens.Skulk
             base.Start();
 
             if (pv.IsMine)
-                cameraController ??= camTransform.gameObject.GetComponent<CameraController>();
+                cameraController ??= camTransform.gameObject.GetComponentInChildren<CameraController>();
         }
 
         protected override void FixedUpdate()

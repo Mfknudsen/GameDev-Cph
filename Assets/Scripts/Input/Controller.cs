@@ -29,7 +29,7 @@ namespace GameDev.Input
             {
                 InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
                 InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
-            }
+            } 
         }
 
         #endregion

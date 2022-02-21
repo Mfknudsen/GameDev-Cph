@@ -38,8 +38,8 @@ namespace GameDev.Weapons.HitScan
                     Health health = hitObject.GetComponent<Health>();
                     if (health)
                         health.ApplyDamage(
-                            ammo.GetDamage(), 
-                            ammo.GetDamageType(), 
+                            ammo.GetDamage(),
+                            ammo.GetDamageType(),
                             ammo.GetSpecialDamageType());
                 }
             }
