@@ -406,7 +406,7 @@ MonoBehaviour:
   trigger: {fileID: 11400000, guid: f7df5c1087dbb1e47a399a0f6020dc5f, type: 2}
   origin: {fileID: 5086552740955448109}
   boxSize: {x: 0.65, y: 0.4, z: 0.6}
-  ammo: {fileID: 11400000, guid: d3f3a7cc581adb84a839ac0f81282499, type: 2}
+  ammo: {fileID: 11400000, guid: 0aafbbc2e7ea9e949a693291595dc72b, type: 2}
   hitMask:
     serializedVersion: 2
     m_Bits: 128

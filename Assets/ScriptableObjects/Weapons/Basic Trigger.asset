@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8601368c9e47e0a4c9b1e2bf1618e0bf, type: 3}
-  m_Name: New Trigger
+  m_Name: Basic Trigger
   m_EditorClassIdentifier: 
   timerDuration: 0.5

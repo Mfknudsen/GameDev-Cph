@@ -38,7 +38,7 @@ namespace GameDev.FPS
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            rb = GetComponent<Rigidbody>();
+            rb ??= GetComponent<Rigidbody>();
 
             if (pv.IsMine)
                 InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
