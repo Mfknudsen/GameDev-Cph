@@ -19,7 +19,8 @@ namespace GameDev.Weapons
 
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected Trigger trigger;
-
+        [SerializeField] protected Transform origin;
+        
         protected bool shooting, reloading;
 
         #endregion
@@ -42,7 +43,7 @@ namespace GameDev.Weapons
             }
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (reloading)
             {

@@ -48,7 +48,7 @@ namespace GameDev.Multiplayer
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            if (scene.name == "TestWorld")
+            if (scene.name != "Start")
                 PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
         }
 

@@ -26,7 +26,7 @@ namespace GameDev.Multiplayer
         #region Values
 
         public static PlayerManager ownedManager;
-        
+
         private PhotonView pv;
 
         private Team team = Team.Human;
@@ -46,10 +46,11 @@ namespace GameDev.Multiplayer
 
             ownedManager = this;
 
-            new Timer(0.05f).timerEvent.AddListener(() =>
-                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p))));
-
-            TrySpawn();
+            new Timer(0.1f).timerEvent.AddListener(() =>
+            {
+                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
+                TrySpawn();
+            });
         }
 
         #endregion
@@ -98,15 +99,18 @@ namespace GameDev.Multiplayer
 
         private void TrySpawn()
         {
-            try
+            if (spawnPoints.Count > 0)
             {
                 SpawnBuilding s = spawnPoints[Random.Range(0, spawnPoints.Count - 1)];
                 s.SpawnController(this);
             }
-            catch
+            else
             {
-                Timer t = new Timer(0.1f);
-                t.timerEvent.AddListener(() => TrySpawn());
+                new Timer(0.01f).timerEvent.AddListener(() =>
+                {
+                    spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
+                    TrySpawn();
+                });
             }
         }
 

@@ -175,7 +175,8 @@ MonoBehaviour:
   cost: 0
   restrictedToObjectName: 
   canPlace: 0
-  characterPrefab: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+  humanCharacterPrefab: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+  alienCharacterPrefab: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
   instantSpawn: 0
   destroyOnSpawn: 0
   spawnTransform: {fileID: 1345115786629861012}

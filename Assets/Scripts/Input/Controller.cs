@@ -29,12 +29,7 @@ namespace GameDev.Input
             {
                 InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
                 InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
-            }
-            else
-            {
-                GetComponentInChildren<Camera>().enabled = false;
-                GetComponentInChildren<AudioListener>().enabled = false;
-            }
+            } 
         }
 
         #endregion

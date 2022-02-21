@@ -26,7 +26,6 @@ namespace GameDev.Common
             current = 0;
 
             timerEvent = new UnityEvent();
-            timerEvent.AddListener(() => TimerUpdater.instance.timers.Remove(this));
 
             TimerUpdater.instance.timers.Add(this);
         }
@@ -56,6 +55,7 @@ namespace GameDev.Common
             done = true;
 
             timerEvent.Invoke();
+            TimerUpdater.instance.timers.Remove(this);
         }
 
         #endregion
