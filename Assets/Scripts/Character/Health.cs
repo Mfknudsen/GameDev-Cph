@@ -101,7 +101,7 @@ namespace GameDev.Character
 
         public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
         {
-            pv.RPC("RPCApplyDamage", RpcTarget.All, new object[] {damage, damageType, specialDamageType});
+            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType, specialDamageType);
         }
 
         public void ApplyHealHp(float heal)
@@ -128,17 +128,17 @@ namespace GameDev.Character
             float damageArmor = damage / BasicArmorAbsorb(damageType);
             float damageHealth = 0;
 
-            if (damageArmor > currentArmorPoints)
-            {
-                float diff = damageArmor - currentArmorPoints;
-                damageArmor -= diff;
-                damageHealth = diff * BasicArmorAbsorb(damageType);
-            }
+            if (!(damageArmor > currentArmorPoints))
+                return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
 
-            return new Vector2(damageHealth, damageArmor);
+            float diff = damageArmor - currentArmorPoints;
+            damageArmor -= diff;
+            damageHealth = diff * BasicArmorAbsorb(damageType);
+
+            return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
         }
 
-        private Vector2 DamageModifier(SpecialDamageType specialDamageType)
+        private static Vector2 DamageModifier(SpecialDamageType specialDamageType)
         {
             return Vector2.one;
         }
@@ -182,13 +182,11 @@ namespace GameDev.Character
 
             #region Sync
 
-            Hashtable hash = new Hashtable();
-            hash.Add(
-                receiveCurrentHealthString,
-                currentHealthPoints);
-            hash.Add(
-                receiveCurrentArmorString,
-                currentArmorPoints);
+            Hashtable hash = new Hashtable
+            {
+                { receiveCurrentHealthString, currentHealthPoints },
+                { receiveCurrentArmorString, currentArmorPoints }
+            };
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
             #endregion
@@ -208,8 +206,7 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable();
-            hash.Add(receiveCurrentHealthString, currentHealthPoints);
+            Hashtable hash = new Hashtable { { receiveCurrentHealthString, currentHealthPoints } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
 
@@ -224,8 +221,7 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable();
-            hash.Add(receiveCurrentArmorString, currentArmorPoints);
+            Hashtable hash = new Hashtable { { receiveCurrentArmorString, currentArmorPoints } };
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
 

@@ -25,7 +25,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private ServerDisplay selectedDisplay;
 
-        private List<RoomInfo> activeServers = new List<RoomInfo>();
+        private readonly List<RoomInfo> activeServers = new List<RoomInfo>();
 
         #endregion
 
@@ -33,6 +33,8 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private void Start()
         {
+            Application.targetFrameRate = 60;
+
             PhotonNetwork.ConnectUsingSettings();
         }
 
@@ -120,7 +122,7 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "You Must Have A Nickname";
                 return;
             }
-            
+
             if (serverNameInputField.text == "")
             {
                 messageDisplay.text = "New Server Must A Name";
@@ -167,7 +169,7 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "Server Is Full";
                 return;
             }
-            
+
             PhotonNetwork.JoinRoom(selectedDisplay.GetServerName());
         }
 

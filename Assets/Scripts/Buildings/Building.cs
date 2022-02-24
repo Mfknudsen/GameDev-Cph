@@ -1,6 +1,9 @@
 #region Packages
 
 using System;
+using GameDev.RTS;
+using GameDev.UI.RTS;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using UnityEngine;
 
@@ -9,12 +12,14 @@ using UnityEngine;
 namespace GameDev.Buildings
 {
     [Serializable]
-    public abstract class Building : MonoBehaviourPunCallbacks
+    public abstract class Building : MonoBehaviourPunCallbacks, ISelectable
     {
         #region Values
 
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected int cost;
+
+        private Selector currentSelector;
 
         #endregion
 
@@ -24,10 +29,17 @@ namespace GameDev.Buildings
         {
             pv ??= GetComponent<PhotonView>();
 
-            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool) pv.InstantiationData[0])
+            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool)pv.InstantiationData[0])
                 OnInstantiatedStart();
             else
                 OnLocalStart();
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            currentSelector.RemoveSelectedFromList(this);
         }
 
         #endregion
@@ -46,13 +58,23 @@ namespace GameDev.Buildings
         public void Place()
         {
             Transform trans = transform;
-            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] {true});
+            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] { true });
             Destroy(gameObject);
         }
 
         public void Destroy()
         {
             PhotonNetwork.Destroy(gameObject);
+        }
+
+        public void OnSelect(Selector selector)
+        {
+            selector.AddSelectedToList(this);
+        }
+
+        public void OnFocus(RtsUI ui)
+        {
+            AddToActionMenu(ui.GetActionMenu());
         }
 
         #endregion
@@ -75,6 +97,14 @@ namespace GameDev.Buildings
         protected virtual void OnLocalStart()
         {
         }
+
+        public void OnDeselect(Selector selector)
+        {
+            currentSelector = null;
+            selector.RemoveSelectedFromList(this);
+        }
+
+        protected abstract void AddToActionMenu(GridMenu actionMenu);
 
         #endregion
     }

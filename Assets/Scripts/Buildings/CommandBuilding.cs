@@ -5,6 +5,7 @@ using GameDev.Input;
 using GameDev.Interaction;
 using GameDev.Multiplayer;
 using GameDev.RTS;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -69,6 +70,15 @@ namespace GameDev.Buildings
             }
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+        #endregion
+
+        #region Internal
+
+        protected override void AddToActionMenu(GridMenu actionMenu)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

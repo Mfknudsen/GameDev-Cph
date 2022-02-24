@@ -43,7 +43,7 @@ namespace GameDev.Multiplayer.Start_Menu
             playerCount = count;
             punMenu = menu;
 
-            textField.text = sName + "\nPlayers: " + count;
+            textField.text = sName + "\nPlayers: " + (count - 1);
         }
 
         public void OnClick()
@@ -53,9 +53,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public void Highlight(bool set)
         {
-            GetComponent<Image>().color = set ? 
-                Color.green : 
-                Color.black;
+            GetComponent<Image>().color = set ? Color.green : Color.black;
         }
 
         #endregion

@@ -2,6 +2,7 @@
 
 using System.Collections;
 using GameDev.Multiplayer;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using UnityEngine;
 
@@ -61,6 +62,11 @@ namespace GameDev.Buildings
             playerManager.CreateController(toSpawn, spawnTransform.position, spawnTransform.rotation);
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
+        }
+
+        protected override void AddToActionMenu(GridMenu actionMenu)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

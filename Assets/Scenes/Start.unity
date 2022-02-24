@@ -2387,6 +2387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManagerPrefab: {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
+  hostManagerPrefab: {fileID: 6200507634974946583, guid: 9343fa02ae8124b4b801e9ab2b0f7bd7, type: 3}
 --- !u!4 &1215939078
 Transform:
   m_ObjectHideFlags: 0
@@ -3388,11 +3389,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
-  - {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
   - {fileID: 3123452752493415268, guid: e4f82837a61a95648bf7e995bc960b35, type: 3}
   - {fileID: 5436431361336746146, guid: d1198e9e90eeffd45ad53406cf0fac80, type: 3}
   - {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
   - {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+  - {fileID: 8522087467307508308, guid: 0bd3727556dfbcd409f9d2d080f3b9a4, type: 3}
+  - {fileID: 6200507634974946583, guid: 9343fa02ae8124b4b801e9ab2b0f7bd7, type: 3}
 --- !u!4 &2045141772
 Transform:
   m_ObjectHideFlags: 0

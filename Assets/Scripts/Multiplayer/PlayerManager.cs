@@ -40,6 +40,8 @@ namespace GameDev.Multiplayer
 
         private void Start()
         {
+            name = name.Replace("(Clone)", "");
+
             pv ??= GetComponent<PhotonView>();
 
             if (!pv.IsMine) return;
