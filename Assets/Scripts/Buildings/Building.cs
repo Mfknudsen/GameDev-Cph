@@ -29,7 +29,7 @@ namespace GameDev.Buildings
         {
             pv ??= GetComponent<PhotonView>();
 
-            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool)pv.InstantiationData[0])
+            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool) pv.InstantiationData[0])
                 OnInstantiatedStart();
             else
                 OnLocalStart();
@@ -39,7 +39,8 @@ namespace GameDev.Buildings
         {
             base.OnDisable();
 
-            currentSelector.RemoveSelectedFromList(this);
+            if (currentSelector != null)
+                currentSelector.RemoveSelectedFromList(this);
         }
 
         #endregion
@@ -58,7 +59,7 @@ namespace GameDev.Buildings
         public void Place()
         {
             Transform trans = transform;
-            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] { true });
+            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] {true});
             Destroy(gameObject);
         }
 

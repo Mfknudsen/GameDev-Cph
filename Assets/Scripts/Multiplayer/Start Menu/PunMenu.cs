@@ -27,6 +27,8 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private readonly List<RoomInfo> activeServers = new List<RoomInfo>();
 
+        private string sceneToLoadOnJoin;
+
         #endregion
 
         #region Build In States
@@ -49,7 +51,7 @@ namespace GameDev.Multiplayer.Start_Menu
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
 
-            PhotonNetwork.LoadLevel("BasicDeathMatch");
+            PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
 
             PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
         }
@@ -129,6 +131,8 @@ namespace GameDev.Multiplayer.Start_Menu
                 return;
             }
 
+            sceneToLoadOnJoin = "BasicDeathMatch";
+
             PhotonNetwork.CreateRoom(
                 serverNameInputField.text,
                 new RoomOptions()
@@ -171,6 +175,20 @@ namespace GameDev.Multiplayer.Start_Menu
             }
 
             PhotonNetwork.JoinRoom(selectedDisplay.GetServerName());
+        }
+
+        public void TestWorld()
+        {
+            sceneToLoadOnJoin = "TestWorld";
+
+            PhotonNetwork.CreateRoom(
+                serverNameInputField.text,
+                new RoomOptions()
+                {
+                    MaxPlayers = 25,
+                    BroadcastPropsChangeToAll = true,
+                    IsVisible = true
+                });
         }
 
         #endregion

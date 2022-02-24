@@ -54,8 +54,7 @@ namespace GameDev.Character
 
             if (!pv.IsMine) return;
 
-            playerManager = FindObjectsOfType<PlayerManager>()?
-                .Where(o => o.gameObject.GetComponent<PhotonView>().Owner.Equals(pv.Owner)).First();
+            playerManager = PlayerManager.ownedManager;
         }
 
         #region Pun Callbacks

@@ -13,7 +13,7 @@ namespace GameDev.Multiplayer
         #region Values
 
         public static RoomManager instance;
-        
+
         [SerializeField] private GameObject playerManagerPrefab, hostManagerPrefab;
 
         #endregion
@@ -50,11 +50,15 @@ namespace GameDev.Multiplayer
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             if (scene.name == "Start") return;
-            
+
+#if UNITY_EDITOR
+            PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
+#else
             PhotonNetwork.Instantiate(
                 PhotonNetwork.LocalPlayer.IsMasterClient ? hostManagerPrefab.name : playerManagerPrefab.name,
                 Vector3.zero,
                 Quaternion.identity);
+#endif
         }
 
         #endregion
