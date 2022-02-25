@@ -16,14 +16,15 @@ namespace GameDev.FPS
             rotSpeed,
             distance,
             jumpForce,
-            timeBetweenJump;
+            timeBetweenJump,
+            cayotyTime;
 
         [SerializeField] protected LayerMask groundedMask;
 
         protected bool isGrounded,
             jumping;
 
-        protected Timer jumpTimer;
+        protected Timer jumpTimer, cayotyTimer;
 
         protected Rigidbody rb;
 
@@ -78,15 +79,15 @@ namespace GameDev.FPS
             rb.MovePosition(objTransform.position += (forward + side).normalized * (moveSpeed * Time.deltaTime));
         }
 
-        protected virtual void Rotate()
+        private void Rotate()
         {
             transform.Rotate(transform.up, rotDir.x * rotSpeed * Time.deltaTime);
         }
 
         protected virtual void Jump()
         {
-            if (!isGrounded || !jumping || jumpTimer != null) return;
-
+            if ((!isGrounded && cayotyTimer == null) || !jumping || jumpTimer != null) return;
+            
             rb.velocity = Vector3.zero;
             rb.AddForce(objTransform.up * jumpForce, ForceMode.Impulse);
 
@@ -97,6 +98,12 @@ namespace GameDev.FPS
 
         protected virtual void GroundDetect()
         {
+            if (cayotyTimer == null)
+            {
+                cayotyTimer = new Timer(cayotyTime);
+                cayotyTimer.timerEvent.AddListener(() => cayotyTimer = null);
+            }
+
             if (isGrounded || jumpTimer != null) return;
 
             Ray ray = new Ray(objTransform.position, -objTransform.up);

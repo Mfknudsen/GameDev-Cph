@@ -16,6 +16,7 @@ namespace GameDev.Multiplayer
 
     public enum Team
     {
+        None,
         Human,
         Alien
     }
@@ -29,10 +30,10 @@ namespace GameDev.Multiplayer
         public static PlayerManager ownedManager;
 
         [SerializeField] private GameObject teamSelectUI;
-        
+
         private PhotonView pv;
 
-        private Team team = Team.Human;
+        private Team team = Team.None;
         private GameObject currentPlayerCharacter;
 
         public List<SpawnBuilding> spawnPoints = new List<SpawnBuilding>();
@@ -52,11 +53,11 @@ namespace GameDev.Multiplayer
 
             if (!pv.IsMine) return;
 
-            Instantiate(teamSelectUI);
+            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
 
             ownedManager = this;
 
-            TrySpawn();
+            //TrySpawn();
         }
 
         private void OnDestroy()
@@ -91,6 +92,9 @@ namespace GameDev.Multiplayer
 
         public GameObject CreateController(GameObject controllerPrefab, Vector3 spawnPosition, Quaternion spawnRotation)
         {
+            if (currentPlayerCharacter != null)
+                PhotonNetwork.Destroy(currentPlayerCharacter);
+
             currentPlayerCharacter =
                 PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
             return currentPlayerCharacter;
@@ -111,7 +115,15 @@ namespace GameDev.Multiplayer
 
             Timer respawnTimer = new Timer(1);
             respawnTimer.timerEvent.AddListener(() =>
-                spawnPoints[Random.Range(0, spawnPoints.Count - 1)].SpawnController(this));
+            {
+                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>()
+                    .Where(p => !spawnPoints.Contains(p) && p.GetTeam().Equals(team)));
+                spawnPoints = spawnPoints
+                    .Where(s => s.GetTeam().Equals(team))
+                    .ToList();
+
+                spawnPoints[Random.Range(0, spawnPoints.Count - 1)].SpawnController(this);
+            });
         }
 
         public void SetTeam(Team set)
@@ -125,9 +137,9 @@ namespace GameDev.Multiplayer
 
         private void TrySpawn()
         {
-            if (spawnPoints.Count > 0)
+            if (spawnPoints.Count > 0 && team != Team.None)
             {
-                spawnPoints = spawnPoints.Where(s => s.GetTeam() == team).ToList();
+                spawnPoints = spawnPoints.Where(s => s.GetTeam().Equals(team)).ToList();
                 SpawnBuilding s = spawnPoints[Random.Range(0, spawnPoints.Count - 1)];
                 s.SpawnController(this);
             }

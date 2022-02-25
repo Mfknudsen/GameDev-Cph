@@ -11,8 +11,9 @@ namespace GameDev.Common
     {
         #region Values
 
-        private float duration, current;
-        public UnityEvent timerEvent;
+        private readonly float duration;
+        private float current;
+        public readonly UnityEvent timerEvent;
         private bool done;
 
         #endregion

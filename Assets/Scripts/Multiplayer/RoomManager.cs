@@ -51,14 +51,10 @@ namespace GameDev.Multiplayer
         {
             if (scene.name == "Start") return;
 
-#if UNITY_EDITOR
-            PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
-#else
             PhotonNetwork.Instantiate(
-                PhotonNetwork.LocalPlayer.IsMasterClient ? hostManagerPrefab.name : playerManagerPrefab.name,
+                PhotonNetwork.IsMasterClient ? hostManagerPrefab.name : playerManagerPrefab.name,
                 Vector3.zero,
                 Quaternion.identity);
-#endif
         }
 
         #endregion

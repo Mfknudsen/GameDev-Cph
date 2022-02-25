@@ -15,8 +15,6 @@ namespace GameDev.Multiplayer.Start_Menu
     {
         #region Values
 
-        [SerializeField] private GameObject playerManagerPrefab;
-
         [SerializeField] private TextMeshProUGUI messageDisplay;
         [SerializeField] private TMP_InputField displayNameInputField, serverNameInputField;
 
@@ -35,6 +33,9 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private void Start()
         {
+            if (Camera.main != null)
+                DontDestroyOnLoad(Camera.main.gameObject);
+
             Application.targetFrameRate = 144;
 
             PhotonNetwork.ConnectUsingSettings();
@@ -44,7 +45,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public override void OnConnectedToMaster()
         {
-            PhotonNetwork.JoinLobby(TypedLobby.Default);
+            PhotonNetwork.JoinLobby();
         }
 
         public override void OnJoinedRoom()
@@ -52,8 +53,6 @@ namespace GameDev.Multiplayer.Start_Menu
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
 
             PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
-
-            PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)

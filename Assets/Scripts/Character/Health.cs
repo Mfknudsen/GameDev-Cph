@@ -154,6 +154,8 @@ namespace GameDev.Character
 
         #region Pun RPC
 
+        #region Owned
+
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
         private void RPCApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
@@ -178,16 +180,7 @@ namespace GameDev.Character
 
             #endregion
 
-            #region Sync
-
-            Hashtable hash = new Hashtable
-            {
-                { receiveCurrentHealthString, currentHealthPoints },
-                { receiveCurrentArmorString, currentArmorPoints }
-            };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-
-            #endregion
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
 
             if (currentHealthPoints == 0)
                 Die();
@@ -204,8 +197,7 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable { { receiveCurrentHealthString, currentHealthPoints } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
         }
 
         [PunRPC]
@@ -219,9 +211,22 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable { { receiveCurrentArmorString, currentArmorPoints } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
         }
+
+        #endregion
+
+        #region Sync
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCUpdateOthers(float curHP, float curAP)
+        {
+            currentArmorPoints = curAP;
+            currentHealthPoints = curHP;
+        }
+
+        #endregion
 
         #endregion
 

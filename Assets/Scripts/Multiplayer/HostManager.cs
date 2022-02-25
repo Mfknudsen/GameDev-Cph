@@ -15,6 +15,8 @@ namespace GameDev.Multiplayer
     {
         #region Values
 
+        [SerializeField] private GameObject playerManager;
+
         public static HostManager instance;
 
         private PhotonView pv;
@@ -23,7 +25,7 @@ namespace GameDev.Multiplayer
 
         //Teams
         private int playerPerTeam;
-        private int[] actualPlayerCount = new int[2];
+        private readonly int[] actualPlayerCount = new int[2];
 
         #endregion
 
@@ -41,6 +43,10 @@ namespace GameDev.Multiplayer
             pv ??= GetComponent<PhotonView>();
 
             playerPerTeam = (PhotonNetwork.CurrentRoom.MaxPlayers - 1) / 2;
+
+#if UNITY_EDITOR
+            PhotonNetwork.Instantiate(playerManager.name, Vector3.zero, Quaternion.identity);
+#endif
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
@@ -81,6 +87,8 @@ namespace GameDev.Multiplayer
 
         #region Pun RPC
 
+        #region Owned
+
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
         private void RPCSpawnComputerControlled(string gameObjectName, Vector3 position, Quaternion rotation)
@@ -92,15 +100,31 @@ namespace GameDev.Multiplayer
         // ReSharper disable once UnusedMember.Local
         private void RPCAssignTeamToPlayer(string userID, Team team)
         {
-            if (actualPlayerCount[(int) team] == playerPerTeam)
+            if (actualPlayerCount[(int)team - 1] == playerPerTeam)
                 return;
 
-            actualPlayerCount[(int) team]++;
-            
+            actualPlayerCount[(int)team - 1]++;
+
+            pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
+
             playerManagers
                 .First(pm => pm.GetPhotonView().Owner.UserId.Equals(userID))
                 .SetTeam(team);
         }
+
+        #endregion
+
+        #region Sync
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void SyncPlayerCounts(int human, int alien)
+        {
+            actualPlayerCount[0] = human;
+            actualPlayerCount[1] = alien;
+        }
+
+        #endregion
 
         #endregion
 

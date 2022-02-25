@@ -1,4 +1,8 @@
+#region Packages
+
 using UnityEngine;
+
+#endregion
 
 namespace GameDev.Multiplayer
 {
@@ -8,7 +12,9 @@ namespace GameDev.Multiplayer
 
         public void SelectTeam(int set)
         {
-            HostManager.instance.SetTeam(PlayerManager.ownedManager.GetPhotonView().Owner.UserId, (Team) set);
+            HostManager.instance.SetTeam(PlayerManager.ownedManager.GetPhotonView().Owner.UserId, (Team)set);
+
+            Destroy(gameObject);
         }
 
         #endregion
