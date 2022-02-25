@@ -1,7 +1,6 @@
 #region Packages
 
 using System;
-using System.Linq;
 using ExitGames.Client.Photon;
 using GameDev.Multiplayer;
 using GameDev.Weapons.Ammo;

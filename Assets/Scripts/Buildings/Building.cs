@@ -1,6 +1,7 @@
 #region Packages
 
 using System;
+using GameDev.Multiplayer;
 using GameDev.RTS;
 using GameDev.UI.RTS;
 using GameDev.UI.RTS.Grid;
@@ -18,6 +19,8 @@ namespace GameDev.Buildings
 
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected int cost;
+
+        [SerializeField] protected Team team;
 
         private Selector currentSelector;
 
@@ -50,6 +53,11 @@ namespace GameDev.Buildings
         public int GetCost()
         {
             return cost;
+        }
+
+        public Team GetTeam()
+        {
+            return team;
         }
 
         #endregion

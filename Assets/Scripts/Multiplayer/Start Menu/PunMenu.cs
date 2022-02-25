@@ -35,7 +35,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private void Start()
         {
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = 144;
 
             PhotonNetwork.ConnectUsingSettings();
         }

@@ -6,6 +6,7 @@ using GameDev.Buildings;
 using GameDev.Common;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 #endregion
 
@@ -27,6 +28,8 @@ namespace GameDev.Multiplayer
 
         public static PlayerManager ownedManager;
 
+        [SerializeField] private GameObject teamSelectUI;
+        
         private PhotonView pv;
 
         private Team team = Team.Human;
@@ -44,15 +47,23 @@ namespace GameDev.Multiplayer
 
             pv ??= GetComponent<PhotonView>();
 
+            if (PhotonNetwork.IsMasterClient)
+                HostManager.instance.AddPlayerManager(this);
+
             if (!pv.IsMine) return;
+
+            Instantiate(teamSelectUI);
 
             ownedManager = this;
 
-            new Timer(0.1f).timerEvent.AddListener(() =>
-            {
-                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
-                TrySpawn();
-            });
+            TrySpawn();
+        }
+
+        private void OnDestroy()
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            HostManager.instance.RemovePlayerManager(this);
         }
 
         #endregion
@@ -67,6 +78,11 @@ namespace GameDev.Multiplayer
         public GameObject GetCurrentPlayerCharacter()
         {
             return currentPlayerCharacter;
+        }
+
+        public PhotonView GetPhotonView()
+        {
+            return pv;
         }
 
         #endregion
@@ -87,12 +103,20 @@ namespace GameDev.Multiplayer
 
         public void Die()
         {
-            PhotonNetwork.Destroy(currentPlayerCharacter);
-            currentPlayerCharacter = null;
+            if (currentPlayerCharacter != null)
+            {
+                PhotonNetwork.Destroy(currentPlayerCharacter);
+                currentPlayerCharacter = null;
+            }
 
             Timer respawnTimer = new Timer(1);
             respawnTimer.timerEvent.AddListener(() =>
                 spawnPoints[Random.Range(0, spawnPoints.Count - 1)].SpawnController(this));
+        }
+
+        public void SetTeam(Team set)
+        {
+            pv.RPC("RPCSetTeam", RpcTarget.All, set);
         }
 
         #endregion
@@ -103,6 +127,7 @@ namespace GameDev.Multiplayer
         {
             if (spawnPoints.Count > 0)
             {
+                spawnPoints = spawnPoints.Where(s => s.GetTeam() == team).ToList();
                 SpawnBuilding s = spawnPoints[Random.Range(0, spawnPoints.Count - 1)];
                 s.SpawnController(this);
             }
@@ -115,6 +140,23 @@ namespace GameDev.Multiplayer
                 });
             }
         }
+
+        #region Pun RPC
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCSetTeam(Team set)
+        {
+            bool reset = team != set;
+
+            team = set;
+
+            if (!reset || !pv.IsMine) return;
+
+            Die();
+        }
+
+        #endregion
 
         #endregion
     }
