@@ -16,6 +16,9 @@ namespace GameDev.Buildings
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected int cost;
 
+        [SerializeField] private bool needPower;
+        protected bool hasPower;
+        
         #endregion
 
         #region Build In States
@@ -39,6 +42,20 @@ namespace GameDev.Buildings
             return cost;
         }
 
+        public bool GetNeedPower()
+        {
+            return needPower;
+        }
+
+        #endregion
+
+        #region Setters
+
+        public void SetPower(bool set)
+        {
+            hasPower = set;
+        }
+
         #endregion
 
         #region In
@@ -54,6 +71,8 @@ namespace GameDev.Buildings
         {
             PhotonNetwork.Destroy(gameObject);
         }
+
+        public abstract void Die();
 
         #endregion
 

@@ -9,11 +9,11 @@ using UnityEngine;
 
 namespace GameDev.Buildings
 {
-    public sealed class SpawnBuilding : RestrictedBuilding
+    public sealed class SpawnBuilding : Building
     {
         #region Values
 
-        [SerializeField] private GameObject humanCharacterPrefab, alienCharacterPrefab;
+        [SerializeField] private GameObject character;
 
         [SerializeField] private bool instantSpawn, destroyOnSpawn;
 
@@ -22,6 +22,10 @@ namespace GameDev.Buildings
         #endregion
 
         #region Build In States
+
+        public override void Die()
+        {
+        }
 
         protected override void OnInstantiatedStart()
         {
@@ -55,10 +59,7 @@ namespace GameDev.Buildings
                 //Player Spawning Animation
             }
 
-            int i = Random.Range(0, 2);
-            GameObject toSpawn = i == 1  ? humanCharacterPrefab : alienCharacterPrefab;
-
-            playerManager.CreateController(toSpawn, spawnTransform.position, spawnTransform.rotation);
+            playerManager.CreateController(character, spawnTransform.position, spawnTransform.rotation);
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
         }

@@ -31,9 +31,12 @@ namespace GameDev.Buildings
 
         #endregion
 
-        #region Internal
+        #region In
 
-        
+        public override void Die()
+        {
+            
+        }
 
         #endregion
     }
