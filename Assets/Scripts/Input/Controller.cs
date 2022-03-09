@@ -24,11 +24,23 @@ namespace GameDev.Input
             objTransform = transform;
 
             pv ??= GetComponent<PhotonView>();
+        }
 
+        public override void OnEnable()
+        {
             if (pv.IsMine)
             {
-                InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
-                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+                InputManager.Instance.moveEvent.AddListener(OnMoveAxisUpdate);
+                InputManager.Instance.rotEvent.AddListener(OnRotAxisUpdate);
+            } 
+        }
+
+        public override void OnDisable()
+        {
+            if (pv.IsMine)
+            {
+                InputManager.Instance.moveEvent.RemoveListener(OnMoveAxisUpdate);
+                InputManager.Instance.rotEvent.RemoveListener(OnRotAxisUpdate);
             } 
         }
 

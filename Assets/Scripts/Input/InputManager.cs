@@ -7,16 +7,26 @@ using UnityEngine.Events;
 
 namespace GameDev.Input
 {
-    public class InputManager : MonoBehaviour
+    public class InputManager
     {
         #region Values
 
-        public static InputManager instance;
+        public static InputManager Instance
+        {
+            get
+            {
+                instance ??= new InputManager();
 
-        [SerializeField] public UnityEvent<Vector2> moveEvent = new UnityEvent<Vector2>(),
+                return instance;
+            }
+        }
+
+        private static InputManager instance;
+
+        public UnityEvent<Vector2> moveEvent = new UnityEvent<Vector2>(),
             rotEvent = new UnityEvent<Vector2>();
 
-        [SerializeField] public UnityEvent interactEvent = new UnityEvent(),
+        public UnityEvent interactEvent = new UnityEvent(),
             jumpEvent = new UnityEvent(),
             shootEvent = new UnityEvent(),
             reloadEvent = new UnityEvent(),
@@ -24,26 +34,18 @@ namespace GameDev.Input
             buildEvent = new UnityEvent(),
             dropEvent = new UnityEvent(),
             throwEvent = new UnityEvent(),
-            crouchEvent = new UnityEvent();
+            crouchEvent = new UnityEvent(),
+            pauseEvent = new UnityEvent();
 
-        [SerializeField] public UnityEvent<float> mouseScrollEvent = new UnityEvent<float>(),
+        public UnityEvent<float> mouseScrollEvent = new UnityEvent<float>(),
             turnEvent = new UnityEvent<float>();
 
         #endregion
 
         #region Build In States
 
-        private void Awake()
+        private InputManager()
         {
-            if (instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-
             PlayerInput playerInput = new PlayerInput();
             playerInput.Enable();
             PlayerInput.PlayerActions player = playerInput.Player;
@@ -93,6 +95,8 @@ namespace GameDev.Input
             player.Throw.performed += (context) => throwEvent.Invoke();
 
             player.Crouch.performed += (context) => crouchEvent.Invoke();
+
+            player.Pause.performed += (context) => pauseEvent.Invoke();
 
             #endregion
         }

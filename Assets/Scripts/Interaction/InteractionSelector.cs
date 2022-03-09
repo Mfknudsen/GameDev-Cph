@@ -25,7 +25,7 @@ namespace GameDev.Interaction
 
         private void Awake()
         {
-            InputManager.instance.interactEvent.AddListener(OnInteractUpdate);
+            InputManager.Instance.interactEvent.AddListener(OnInteractUpdate);
             new Timer(1f).timerEvent.AddListener(() => UpdateClosest());
         }
 

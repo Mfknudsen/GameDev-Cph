@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameDev.Buildings;
 using GameDev.Common;
+using GameDev.Input;
 using Photon.Pun;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -53,11 +54,14 @@ namespace GameDev.Multiplayer
 
             if (!pv.IsMine) return;
 
-            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
+            if (ownedManager != null)
+                Destroy(gameObject);
 
             ownedManager = this;
 
-            //TrySpawn();
+            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
+
+            InputManager.Instance.pauseEvent.AddListener(OnPauseUpdate);
         }
 
         private void OnDestroy()
@@ -135,23 +139,24 @@ namespace GameDev.Multiplayer
 
         #region Internal
 
-        private void TrySpawn()
+        #region Input
+
+        private void OnPauseUpdate()
         {
-            if (spawnPoints.Count > 0 && team != Team.None)
-            {
-                spawnPoints = spawnPoints.Where(s => s.GetTeam().Equals(team)).ToList();
-                SpawnBuilding s = spawnPoints[Random.Range(0, spawnPoints.Count - 1)];
-                s.SpawnController(this);
-            }
-            else
-            {
-                new Timer(0.01f).timerEvent.AddListener(() =>
-                {
-                    spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
-                    TrySpawn();
-                });
-            }
+            if (team == Team.None) return;
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            HostManager.instance.SetTeam(pv.Owner.UserId, Team.None);
+
+            if (currentPlayerCharacter != null)
+                PhotonNetwork.Destroy(currentPlayerCharacter);
+
+            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
         }
+
+        #endregion
 
         #region Pun RPC
 

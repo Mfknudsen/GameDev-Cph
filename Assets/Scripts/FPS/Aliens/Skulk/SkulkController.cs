@@ -110,7 +110,6 @@ namespace GameDev.FPS.Aliens.Skulk
             }
         }
 
-
         private void DetectClimbableSurface()
         {
             // ReSharper disable once Unity.PreferNonAllocApi

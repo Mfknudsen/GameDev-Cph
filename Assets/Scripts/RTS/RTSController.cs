@@ -44,10 +44,6 @@ namespace GameDev.RTS
 
             if (!pv.IsMine) return;
 
-            InputManager.instance.turnEvent.AddListener(OnTurnUpdate);
-            InputManager.instance.crouchEvent.AddListener(OnCrouchUpdate);
-            InputManager.instance.rotEvent.AddListener(OnMouseUpdate);
-
             cameraController = GetComponentInChildren<CameraController>();
             new Timer(0.01f).timerEvent.AddListener(() => cameraController.enabled = false);
 
@@ -69,6 +65,26 @@ namespace GameDev.RTS
 
             Move();
             Rotate();
+        }
+
+        public override void OnEnable()
+        {
+            if (pv.IsMine)
+            {
+                InputManager.Instance.turnEvent.AddListener(OnTurnUpdate);
+                InputManager.Instance.crouchEvent.AddListener(OnCrouchUpdate);
+                InputManager.Instance.rotEvent.AddListener(OnMouseUpdate);
+            }
+        }
+
+        public override void OnDisable()
+        {
+            if (pv.IsMine)
+            {
+                InputManager.Instance.turnEvent.RemoveListener(OnTurnUpdate);
+                InputManager.Instance.crouchEvent.RemoveListener(OnCrouchUpdate);
+                InputManager.Instance.rotEvent.RemoveListener(OnMouseUpdate);
+            }
         }
 
         private void OnDestroy()

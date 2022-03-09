@@ -36,7 +36,7 @@ namespace GameDev.RTS
 
         private void Start()
         {
-            InputManager.instance.shootEvent.AddListener(OnShootUpdate);
+            InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
             cam ??= GetComponent<Camera>();
 
             ToPlaceBuilding(Instantiate(test).GetComponent<Building>());

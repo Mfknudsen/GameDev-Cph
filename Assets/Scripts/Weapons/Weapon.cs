@@ -38,8 +38,8 @@ namespace GameDev.Weapons
 
             if (pv.IsMine)
             {
-                InputManager.instance.shootEvent.AddListener(OnShootUpdate);
-                InputManager.instance.reloadEvent.AddListener(OnReloadUpdate);
+                InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
+                InputManager.Instance.reloadEvent.AddListener(OnReloadUpdate);
             }
         }
 

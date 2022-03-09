@@ -31,7 +31,7 @@ namespace GameDev.FPS
             pv ??= GetComponent<PhotonView>();
 
             if (pv.IsMine)
-                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+                InputManager.Instance.rotEvent.AddListener(OnRotAxisUpdate);
             else
             {
                 if (GetComponent<Camera>() is { } cam)

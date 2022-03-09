@@ -41,13 +41,28 @@ namespace GameDev.FPS
 
             rb ??= GetComponent<Rigidbody>();
 
-            if (pv.IsMine)
-                InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
-            else
+
+            if(!pv.IsMine)
             {
                 rb.isKinematic = true;
                 rb.useGravity = false;
             }
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            
+            if (pv.IsMine)
+                InputManager.Instance.jumpEvent.AddListener(OnJumpUpdate);
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            
+            if (pv.IsMine)
+                InputManager.Instance.jumpEvent.RemoveListener(OnJumpUpdate);
         }
 
         protected virtual void Update()
