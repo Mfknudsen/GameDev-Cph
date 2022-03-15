@@ -113,7 +113,6 @@ namespace GameDev.Weapons
 
         private void OnReloadUpdate()
         {
-            reloading = !reloading;
             Reload();
 
             Hashtable hash = new Hashtable();

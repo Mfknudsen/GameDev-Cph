@@ -31,6 +31,9 @@ namespace GameDev.Weapons.HitScan.Human
             magCurSize -= ammoPerShot;
 
             trigger.Pull();
+
+            if (magCurSize == 0)
+                Reload();
         }
 
         #endregion
