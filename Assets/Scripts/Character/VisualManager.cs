@@ -18,6 +18,8 @@ namespace GameDev.Character
 
         private Animator animator;
 
+        private Vector3 dir = Vector3.zero;
+
         private static readonly int moveY = Animator.StringToHash("MoveY"),
             moveX = Animator.StringToHash("MoveX");
 
@@ -27,25 +29,32 @@ namespace GameDev.Character
 
         private void OnEnable()
         {
-            InputManager.instance.moveEvent.AddListener(OnMoveUpdate);
+            if (pv.IsMine)
+                InputManager.instance.moveEvent.AddListener(OnMoveUpdate);
         }
 
         private void OnDisable()
         {
-            InputManager.instance.moveEvent.RemoveListener(OnMoveUpdate);
+            if (pv.IsMine)
+                InputManager.instance.moveEvent.RemoveListener(OnMoveUpdate);
         }
 
         private void Awake()
         {
             animator = nonPlayerVisual.transform.GetChild(0).GetComponent<Animator>();
 
-            foreach (Renderer r in CommonGameObject.GetAllComponentsByRoot<Renderer>(nonPlayerVisual))
-                Debug.Log(r == null);
-
-            if(pv.IsMine)
+            if (pv.IsMine)
                 SetAsPlayer();
-            else 
+            else
                 SetAsNonPlayer();
+        }
+
+        private void Update()
+        {
+            if (animator == null || !pv.IsMine) return;
+
+            animator.SetFloat(moveX, dir.x * 2, 0.1f, Time.deltaTime);
+            animator.SetFloat(moveY, dir.y * 2, 0.1f, Time.deltaTime);
         }
 
         #endregion
@@ -74,8 +83,7 @@ namespace GameDev.Character
 
         private void OnMoveUpdate(Vector2 input)
         {
-            animator.SetFloat(moveX, input.x);
-            animator.SetFloat(moveY, input.y);
+            dir = input;
         }
 
         #endregion
