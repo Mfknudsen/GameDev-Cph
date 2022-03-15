@@ -5,6 +5,7 @@ using GameDev.Input;
 using GameDev.Interaction;
 using GameDev.Multiplayer;
 using GameDev.RTS;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -52,7 +53,7 @@ namespace GameDev.Buildings
                 fpsController.GetComponent<Controller>().SetGameObjectActivePun(true);
                 PhotonNetwork.Destroy(currentCommander);
                 currentCommander = null;
-                PlayerManager.ownedManager.SwitchCurrentController(fpsController);
+                PlayerManager.ownedManager.SwitchController(fpsController);
                 hash.Add("occupied", false);
             }
             else if (canBeTriggered)
@@ -61,14 +62,26 @@ namespace GameDev.Buildings
                 fpsController = PlayerManager.ownedManager.GetCurrentPlayerCharacter();
                 fpsController.GetComponent<Controller>().SetGameObjectActivePun(false);
                 currentCommander =
-                    PlayerManager.ownedManager.CreateController(rtsController, t.position + spawnOffset,
-                        Quaternion.identity);
+                    PlayerManager.CreateController(
+                        rtsController,
+                        t.position + spawnOffset,
+                        t.rotation);
+                PlayerManager.ownedManager.SwitchController(currentCommander);
                 currentCommander.GetComponent<RtsController>().Setup(this);
 
                 hash.Add("occupied", true);
             }
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+        #endregion
+
+        #region Internal
+
+        protected override void AddToActionMenu(GridMenu actionMenu)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

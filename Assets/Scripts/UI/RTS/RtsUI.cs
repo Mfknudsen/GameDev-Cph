@@ -18,10 +18,19 @@ namespace GameDev.UI.RTS
 
         private RtsController rtsController;
         
-        private List<IUnit> highlightUnit = new List<IUnit>();
+        private readonly List<ISelectable> highlightUnit = new List<ISelectable>();
 
         #endregion
 
+        #region Getters
+
+        public GridMenu GetActionMenu()
+        {
+            return actionMenu;
+        }
+
+        #endregion
+        
         #region In
 
         public void Setup(RtsController controller)
@@ -29,16 +38,16 @@ namespace GameDev.UI.RTS
             rtsController = controller;
         }
         
-        public void UpdateSelected(IUnit[] units)
+        public void UpdateSelected(ISelectable[] units)
         {
             GridItem[] items = selectedMenu.GetItemsAsArray();
 
             for (int i = 0; i < units.Length && i < items.Length; i++)
             {
                 GridItem item = items[i];
-                IUnit unit = units[i];
+                ISelectable unit = units[i];
                 
-                if(!highlightUnit.Any(u => u.GetType() == unit.GetType()))
+                if(highlightUnit.All(u => u.GetType() != unit.GetType()))
                     highlightUnit.Add(unit);
             }
         }

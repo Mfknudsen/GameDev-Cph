@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameDev.Buildings
 {
-    public class RestrictedBuilding : Building
+    public abstract class RestrictedBuilding : Building
     {
         #region Values
 

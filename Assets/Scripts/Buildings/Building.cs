@@ -1,6 +1,10 @@
 #region Packages
 
 using System;
+using GameDev.Multiplayer;
+using GameDev.RTS;
+using GameDev.UI.RTS;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using UnityEngine;
 
@@ -9,12 +13,16 @@ using UnityEngine;
 namespace GameDev.Buildings
 {
     [Serializable]
-    public abstract class Building : MonoBehaviourPunCallbacks
+    public abstract class Building : MonoBehaviourPunCallbacks, ISelectable
     {
         #region Values
 
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected int cost;
+
+        [SerializeField] protected Team team;
+
+        private Selector currentSelector;
 
         #endregion
 
@@ -30,6 +38,14 @@ namespace GameDev.Buildings
                 OnLocalStart();
         }
 
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (currentSelector != null)
+                currentSelector.RemoveSelectedFromList(this);
+        }
+
         #endregion
 
         #region Getters
@@ -37,6 +53,11 @@ namespace GameDev.Buildings
         public int GetCost()
         {
             return cost;
+        }
+
+        public Team GetTeam()
+        {
+            return team;
         }
 
         #endregion
@@ -53,6 +74,16 @@ namespace GameDev.Buildings
         public void Destroy()
         {
             PhotonNetwork.Destroy(gameObject);
+        }
+
+        public void OnSelect(Selector selector)
+        {
+            selector.AddSelectedToList(this);
+        }
+
+        public void OnFocus(RtsUI ui)
+        {
+            AddToActionMenu(ui.GetActionMenu());
         }
 
         #endregion
@@ -75,6 +106,14 @@ namespace GameDev.Buildings
         protected virtual void OnLocalStart()
         {
         }
+
+        public void OnDeselect(Selector selector)
+        {
+            currentSelector = null;
+            selector.RemoveSelectedFromList(this);
+        }
+
+        protected abstract void AddToActionMenu(GridMenu actionMenu);
 
         #endregion
     }

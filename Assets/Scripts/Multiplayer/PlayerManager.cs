@@ -1,11 +1,15 @@
 #region Packages
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameDev.Buildings;
+using GameDev.Character;
 using GameDev.Common;
+using GameDev.Input;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 #endregion
 
@@ -15,6 +19,7 @@ namespace GameDev.Multiplayer
 
     public enum Team
     {
+        None,
         Human,
         Alien
     }
@@ -27,9 +32,11 @@ namespace GameDev.Multiplayer
 
         public static PlayerManager ownedManager;
 
+        [SerializeField] private GameObject teamSelectUI;
+
         private PhotonView pv;
 
-        private Team team = Team.Human;
+        private Team team = Team.None;
         private GameObject currentPlayerCharacter;
 
         public List<SpawnBuilding> spawnPoints = new List<SpawnBuilding>();
@@ -38,19 +45,40 @@ namespace GameDev.Multiplayer
 
         #region Build In States
 
+        private void OnEnable()
+        {
+            InputManager.instance.pauseEvent.AddListener(OnPauseUpdate);
+        }
+
+        private void OnDisable()
+        {
+            InputManager.instance.pauseEvent.RemoveListener(OnPauseUpdate);
+        }
+
         private void Start()
         {
+            name = name.Replace("(Clone)", "");
+
             pv ??= GetComponent<PhotonView>();
+
+            if (PhotonNetwork.IsMasterClient)
+                HostManager.instance.AddPlayerManager(this);
 
             if (!pv.IsMine) return;
 
+            if (ownedManager != null)
+                Destroy(gameObject);
+
             ownedManager = this;
 
-            new Timer(0.1f).timerEvent.AddListener(() =>
-            {
-                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
-                TrySpawn();
-            });
+            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
+        }
+
+        private void OnDestroy()
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            HostManager.instance.RemovePlayerManager(this);
         }
 
         #endregion
@@ -67,52 +95,97 @@ namespace GameDev.Multiplayer
             return currentPlayerCharacter;
         }
 
+        public PhotonView GetPhotonView()
+        {
+            return pv;
+        }
+
         #endregion
 
         #region In
 
-        public GameObject CreateController(GameObject controllerPrefab, Vector3 spawnPosition, Quaternion spawnRotation)
+        public static GameObject CreateController(GameObject controllerPrefab, Vector3 spawnPosition,
+            Quaternion spawnRotation)
         {
-            currentPlayerCharacter =
-                PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
-            return currentPlayerCharacter;
+            return PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
         }
 
-        public void SwitchCurrentController(GameObject newController)
+        public void SwitchController(GameObject newController)
         {
+            // ReSharper disable once Unity.NoNullPropagation
+            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsNonPlayer();
+
             currentPlayerCharacter = newController;
+
+            // ReSharper disable once Unity.NoNullPropagation
+            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsPlayer();
         }
 
         public void Die()
         {
-            PhotonNetwork.Destroy(currentPlayerCharacter);
-            currentPlayerCharacter = null;
+            if (currentPlayerCharacter != null)
+            {
+                PhotonNetwork.Destroy(currentPlayerCharacter);
+                currentPlayerCharacter = null;
+            }
 
             Timer respawnTimer = new Timer(1);
             respawnTimer.timerEvent.AddListener(() =>
-                spawnPoints[Random.Range(0, spawnPoints.Count - 1)].SpawnController(this));
+            {
+                spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>()
+                    .Where(p => !spawnPoints.Contains(p) && p.GetTeam().Equals(team)));
+                spawnPoints = spawnPoints
+                    .Where(s => s.GetTeam().Equals(team))
+                    .ToList();
+
+                spawnPoints[Random.Range(0, spawnPoints.Count - 1)].SpawnController(this);
+            });
+        }
+
+        public void SetTeam(Team set)
+        {
+            pv.RPC("RPCSetTeam", RpcTarget.All, set);
         }
 
         #endregion
 
         #region Internal
 
-        private void TrySpawn()
+        #region Input
+
+        private void OnPauseUpdate()
         {
-            if (spawnPoints.Count > 0)
-            {
-                SpawnBuilding s = spawnPoints[Random.Range(0, spawnPoints.Count - 1)];
-                s.SpawnController(this);
-            }
-            else
-            {
-                new Timer(0.01f).timerEvent.AddListener(() =>
-                {
-                    spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>().Where(p => !spawnPoints.Contains(p)));
-                    TrySpawn();
-                });
-            }
+            if (team == Team.None) return;
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            HostManager.instance.SetTeam(pv.Owner.UserId, Team.None);
+
+            if (currentPlayerCharacter != null)
+                PhotonNetwork.Destroy(currentPlayerCharacter);
+
+            Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
         }
+
+        #endregion
+
+        #region Pun RPC
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCSetTeam(Team set)
+        {
+            bool reset = team != set;
+
+            team = set;
+
+            if (!reset || !pv.IsMine) return;
+
+            Die();
+        }
+
+        #endregion
 
         #endregion
     }

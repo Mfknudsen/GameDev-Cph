@@ -1,7 +1,6 @@
 #region Packages
 
 using System;
-using System.Linq;
 using ExitGames.Client.Photon;
 using GameDev.Multiplayer;
 using GameDev.Weapons.Ammo;
@@ -54,8 +53,7 @@ namespace GameDev.Character
 
             if (!pv.IsMine) return;
 
-            playerManager = FindObjectsOfType<PlayerManager>()?
-                .Where(o => o.gameObject.GetComponent<PhotonView>().Owner.Equals(pv.Owner)).First();
+            playerManager = PlayerManager.ownedManager;
         }
 
         #region Pun Callbacks
@@ -101,7 +99,7 @@ namespace GameDev.Character
 
         public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
         {
-            pv.RPC("RPCApplyDamage", RpcTarget.All, new object[] {damage, damageType, specialDamageType});
+            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType, specialDamageType);
         }
 
         public void ApplyHealHp(float heal)
@@ -128,17 +126,17 @@ namespace GameDev.Character
             float damageArmor = damage / BasicArmorAbsorb(damageType);
             float damageHealth = 0;
 
-            if (damageArmor > currentArmorPoints)
-            {
-                float diff = damageArmor - currentArmorPoints;
-                damageArmor -= diff;
-                damageHealth = diff * BasicArmorAbsorb(damageType);
-            }
+            if (!(damageArmor > currentArmorPoints))
+                return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
 
-            return new Vector2(damageHealth, damageArmor);
+            float diff = damageArmor - currentArmorPoints;
+            damageArmor -= diff;
+            damageHealth = diff * BasicArmorAbsorb(damageType);
+
+            return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
         }
 
-        private Vector2 DamageModifier(SpecialDamageType specialDamageType)
+        private static Vector2 DamageModifier(SpecialDamageType specialDamageType)
         {
             return Vector2.one;
         }
@@ -155,6 +153,8 @@ namespace GameDev.Character
         }
 
         #region Pun RPC
+
+        #region Owned
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
@@ -180,18 +180,7 @@ namespace GameDev.Character
 
             #endregion
 
-            #region Sync
-
-            Hashtable hash = new Hashtable();
-            hash.Add(
-                receiveCurrentHealthString,
-                currentHealthPoints);
-            hash.Add(
-                receiveCurrentArmorString,
-                currentArmorPoints);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-
-            #endregion
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
 
             if (currentHealthPoints == 0)
                 Die();
@@ -208,9 +197,7 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable();
-            hash.Add(receiveCurrentHealthString, currentHealthPoints);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
         }
 
         [PunRPC]
@@ -224,10 +211,22 @@ namespace GameDev.Character
                 0,
                 healthPreset.GetMaxHp());
 
-            Hashtable hash = new Hashtable();
-            hash.Add(receiveCurrentArmorString, currentArmorPoints);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            pv.RPC("RPCUpdateOthers", RpcTarget.Others, currentHealthPoints, currentArmorPoints);
         }
+
+        #endregion
+
+        #region Sync
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCUpdateOthers(float curHP, float curAP)
+        {
+            currentArmorPoints = curAP;
+            currentHealthPoints = curHP;
+        }
+
+        #endregion
 
         #endregion
 

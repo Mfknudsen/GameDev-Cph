@@ -1,7 +1,10 @@
 #region Packages
 
+using GameDev.Character;
 using GameDev.Common;
 using GameDev.Input;
+using GameDev.UI.FPS;
+using GameDev.Weapons;
 using UnityEngine;
 
 #endregion
@@ -12,18 +15,21 @@ namespace GameDev.FPS
     {
         #region Values
 
+        [SerializeField] private Weapon weapon;
+        
         [SerializeField] protected float moveSpeed,
             rotSpeed,
             distance,
             jumpForce,
-            timeBetweenJump;
+            timeBetweenJump,
+            cayotyTime;
 
         [SerializeField] protected LayerMask groundedMask;
 
         protected bool isGrounded,
             jumping;
 
-        protected Timer jumpTimer;
+        protected Timer jumpTimer, cayotyTimer;
 
         protected Rigidbody rb;
 
@@ -35,18 +41,36 @@ namespace GameDev.FPS
         {
             base.Start();
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
 
             rb ??= GetComponent<Rigidbody>();
 
-            if (pv.IsMine)
-                InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
-            else
+
+            if (!pv.IsMine)
             {
                 rb.isKinematic = true;
                 rb.useGravity = false;
             }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (pv.IsMine)
+                InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (pv.IsMine)
+                InputManager.instance.jumpEvent.RemoveListener(OnJumpUpdate);
         }
 
         protected virtual void Update()
@@ -69,6 +93,25 @@ namespace GameDev.FPS
 
         #endregion
 
+        #region Getters
+
+        public bool GetIsGrounded()
+        {
+            return isGrounded;
+        }
+
+        #endregion
+        
+        #region In
+
+        public virtual void SetupUI(FpsUI ui)
+        {
+            ui.SetWeaponToDisplay(weapon);
+            ui.SetHealthToDisplay(GetComponent<Health>());
+        }
+
+        #endregion
+
         #region Internal
 
         protected virtual void Move()
@@ -78,14 +121,14 @@ namespace GameDev.FPS
             rb.MovePosition(objTransform.position += (forward + side).normalized * (moveSpeed * Time.deltaTime));
         }
 
-        protected virtual void Rotate()
+        private void Rotate()
         {
             transform.Rotate(transform.up, rotDir.x * rotSpeed * Time.deltaTime);
         }
 
         protected virtual void Jump()
         {
-            if (!isGrounded || !jumping || jumpTimer != null) return;
+            if ((!isGrounded && cayotyTimer == null) || !jumping || jumpTimer != null) return;
 
             rb.velocity = Vector3.zero;
             rb.AddForce(objTransform.up * jumpForce, ForceMode.Impulse);
@@ -97,6 +140,12 @@ namespace GameDev.FPS
 
         protected virtual void GroundDetect()
         {
+            if (cayotyTimer == null)
+            {
+                cayotyTimer = new Timer(cayotyTime);
+                cayotyTimer.timerEvent.AddListener(() => cayotyTimer = null);
+            }
+
             if (isGrounded || jumpTimer != null) return;
 
             Ray ray = new Ray(objTransform.position, -objTransform.up);

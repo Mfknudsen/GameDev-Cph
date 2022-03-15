@@ -2,7 +2,6 @@
 
 using System;
 using GameDev.Character;
-using GameDev.Weapons.Ammo.HitScan;
 using UnityEngine;
 
 #endregion
@@ -11,11 +10,8 @@ namespace GameDev.Weapons.HitScan
 {
     [Serializable]
     public abstract class HitScanWeapon : Gun
-
     {
         #region Values
-
-        [SerializeField] protected HitScanAmmo ammo;
 
         [Space] [Header("Shooting Ray")] [SerializeField]
         protected Transform originPoint;
@@ -38,9 +34,9 @@ namespace GameDev.Weapons.HitScan
                     Health health = hitObject.GetComponent<Health>();
                     if (health)
                         health.ApplyDamage(
-                            ammo.GetDamage(),
-                            ammo.GetDamageType(),
-                            ammo.GetSpecialDamageType());
+                            ammunition.GetDamage(),
+                            ammunition.GetDamageType(),
+                            ammunition.GetSpecialDamageType());
                 }
             }
         }

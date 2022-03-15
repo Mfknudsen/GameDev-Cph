@@ -2,6 +2,7 @@
 
 using System.Collections;
 using GameDev.Multiplayer;
+using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace GameDev.Buildings
     {
         #region Values
 
-        [SerializeField] private GameObject humanCharacterPrefab, alienCharacterPrefab;
+        [SerializeField] private GameObject characterPrefab;
 
         [SerializeField] private bool instantSpawn, destroyOnSpawn;
 
@@ -54,13 +55,19 @@ namespace GameDev.Buildings
             {
                 //Player Spawning Animation
             }
-
-            int i = Random.Range(0, 2);
-            GameObject toSpawn = i == 1  ? humanCharacterPrefab : alienCharacterPrefab;
-
-            playerManager.CreateController(toSpawn, spawnTransform.position, spawnTransform.rotation);
+            
+            playerManager.SwitchController(
+                PlayerManager.CreateController(
+                    characterPrefab, 
+                    spawnTransform.position, 
+                    spawnTransform.rotation));
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
+        }
+
+        protected override void AddToActionMenu(GridMenu actionMenu)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using GameDev.Input;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -15,8 +16,6 @@ namespace GameDev.Multiplayer.Start_Menu
     {
         #region Values
 
-        [SerializeField] private GameObject playerManagerPrefab;
-
         [SerializeField] private TextMeshProUGUI messageDisplay;
         [SerializeField] private TMP_InputField displayNameInputField, serverNameInputField;
 
@@ -25,7 +24,9 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private ServerDisplay selectedDisplay;
 
-        private List<RoomInfo> activeServers = new List<RoomInfo>();
+        private readonly List<RoomInfo> activeServers = new List<RoomInfo>();
+
+        private string sceneToLoadOnJoin;
 
         #endregion
 
@@ -33,6 +34,13 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private void Start()
         {
+            if (Camera.main != null)
+                DontDestroyOnLoad(Camera.main.gameObject);
+
+            InputManager.instance = new InputManager();
+            
+            Application.targetFrameRate = 144;
+
             PhotonNetwork.ConnectUsingSettings();
         }
 
@@ -40,16 +48,14 @@ namespace GameDev.Multiplayer.Start_Menu
 
         public override void OnConnectedToMaster()
         {
-            PhotonNetwork.JoinLobby(TypedLobby.Default);
+            PhotonNetwork.JoinLobby();
         }
 
         public override void OnJoinedRoom()
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
-
-            PhotonNetwork.LoadLevel("BasicDeathMatch");
-
-            PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            sceneToLoadOnJoin = "BasicDeathMatch";
+            PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
@@ -120,13 +126,13 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "You Must Have A Nickname";
                 return;
             }
-            
+
             if (serverNameInputField.text == "")
             {
                 messageDisplay.text = "New Server Must A Name";
                 return;
             }
-
+            
             PhotonNetwork.CreateRoom(
                 serverNameInputField.text,
                 new RoomOptions()
@@ -167,8 +173,22 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "Server Is Full";
                 return;
             }
-            
+
             PhotonNetwork.JoinRoom(selectedDisplay.GetServerName());
+        }
+
+        public void TestWorld()
+        {
+            sceneToLoadOnJoin = "TestWorld";
+
+            PhotonNetwork.CreateRoom(
+                serverNameInputField.text,
+                new RoomOptions()
+                {
+                    MaxPlayers = 25,
+                    BroadcastPropsChangeToAll = true,
+                    IsVisible = true
+                });
         }
 
         #endregion

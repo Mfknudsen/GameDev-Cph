@@ -1,5 +1,6 @@
 #region Packages
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
@@ -23,7 +24,7 @@ namespace GameDev.RTS
         private bool selecting;
         private Camera cam;
         private Vector2 startPoint, endPoint;
-        private List<IUnit> selectedUnits = new List<IUnit>();
+        private readonly List<ISelectable> selected = new List<ISelectable>();
 
         //Placing Buildings
         [SerializeField] private LayerMask placingMask;
@@ -34,9 +35,18 @@ namespace GameDev.RTS
 
         #region Build In States
 
-        private void Start()
+        private void OnEnable()
         {
             InputManager.instance.shootEvent.AddListener(OnShootUpdate);
+        }
+
+        private void OnDisable()
+        {
+            InputManager.instance.shootEvent.RemoveListener(OnShootUpdate);
+        }
+
+        private void Start()
+        {
             cam ??= GetComponent<Camera>();
 
             ToPlaceBuilding(Instantiate(test).GetComponent<Building>());
@@ -56,9 +66,9 @@ namespace GameDev.RTS
 
         #region Getters
 
-        public IUnit[] GetSelectedUnits()
+        public ISelectable[] GetSelectedUnits()
         {
-            return selectedUnits.ToArray();
+            return selected.ToArray();
         }
 
         #endregion
@@ -75,6 +85,17 @@ namespace GameDev.RTS
 
             placing = buildingObject != null;
             placingObject = buildingObject;
+        }
+
+        public void AddSelectedToList(ISelectable selectable)
+        {
+            if (!selected.Contains(selectable))
+                selected.Add(selectable);
+        }
+
+        public void RemoveSelectedFromList(ISelectable selectable)
+        {
+            selected.Remove(selectable);
         }
 
         #endregion
@@ -99,7 +120,7 @@ namespace GameDev.RTS
                     startPoint = Mouse.current.position.ReadValue();
                 else
                 {
-                    selectedUnits.Clear();
+                    selected.Clear();
 
                     endPoint = Mouse.current.position.ReadValue();
 
@@ -140,20 +161,20 @@ namespace GameDev.RTS
 
             Bounds bounds = new Bounds(selectionBox.min + selectionBox.max / 2, selectionBox.max);
 
-            foreach (MonoBehaviour behaviour in FindObjectsOfType<MonoBehaviour>().Where(m => m.IsType<IUnit>()))
+            foreach (MonoBehaviour behaviour in FindObjectsOfType<MonoBehaviour>().Where(m => m.IsType<ISelectable>()))
             {
                 if (!bounds.Contains(cam.WorldToScreenPoint(behaviour.transform.position))) return;
 
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                IUnit unit = behaviour as IUnit;
-                unit?.Select(this);
-                selectedUnits.Add(unit);
+                ISelectable unit = behaviour as ISelectable;
+                unit?.OnSelect(this);
+                selected.Add(unit);
             }
         }
 
         private void SingleSelect()
         {
-            RayHit(2000, selectMask)?.transform.GetComponent<IUnit>()?.Select(this);
+            RayHit(2000, selectMask)?.transform.GetComponent<ISelectable>()?.OnSelect(this);
         }
 
         private RaycastHit? RayHit(float distance, LayerMask mask)
