@@ -37,12 +37,12 @@ namespace GameDev.RTS
 
         private void OnEnable()
         {
-            InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
+            InputManager.instance.shootEvent.AddListener(OnShootUpdate);
         }
 
         private void OnDisable()
         {
-            InputManager.Instance.shootEvent.RemoveListener(OnShootUpdate);
+            InputManager.instance.shootEvent.RemoveListener(OnShootUpdate);
         }
 
         private void Start()

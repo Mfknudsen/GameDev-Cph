@@ -1,7 +1,9 @@
 #region Packages
 
+using GameDev.Character;
 using GameDev.FPS;
 using GameDev.Weapons;
+using Photon.Pun;
 using UnityEngine;
 
 #endregion
@@ -13,6 +15,7 @@ namespace GameDev.UI.FPS
         #region Values
 
         [SerializeField] private WeaponUI weaponUI;
+        [SerializeField] private HealthUI healthUI;
 
         #endregion
 
@@ -20,7 +23,12 @@ namespace GameDev.UI.FPS
 
         private void Awake()
         {
-            transform.parent.gameObject.GetComponent<FpsController>().SetupUI(this);
+            GameObject parent = transform.root.gameObject;
+
+            if (parent.GetComponent<PhotonView>().IsMine)
+                parent.GetComponent<FpsController>().SetupUI(this);
+            else
+                gameObject.SetActive(false);
         }
 
         #endregion
@@ -30,6 +38,11 @@ namespace GameDev.UI.FPS
         public void SetWeaponToDisplay(Weapon set)
         {
             weaponUI.SetWeaponToDisplay(set);
+        }
+
+        public void SetHealthToDisplay(Health set)
+        {
+            healthUI.SetHealthToDisplay(set);
         }
 
         #endregion

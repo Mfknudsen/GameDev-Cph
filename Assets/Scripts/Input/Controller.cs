@@ -30,8 +30,8 @@ namespace GameDev.Input
         {
             if (pv.IsMine)
             {
-                InputManager.Instance.moveEvent.AddListener(OnMoveAxisUpdate);
-                InputManager.Instance.rotEvent.AddListener(OnRotAxisUpdate);
+                InputManager.instance.moveEvent.AddListener(OnMoveAxisUpdate);
+                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
             } 
         }
 
@@ -39,8 +39,8 @@ namespace GameDev.Input
         {
             if (pv.IsMine)
             {
-                InputManager.Instance.moveEvent.RemoveListener(OnMoveAxisUpdate);
-                InputManager.Instance.rotEvent.RemoveListener(OnRotAxisUpdate);
+                InputManager.instance.moveEvent.RemoveListener(OnMoveAxisUpdate);
+                InputManager.instance.rotEvent.RemoveListener(OnRotAxisUpdate);
             } 
         }
 

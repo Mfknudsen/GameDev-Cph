@@ -1,5 +1,6 @@
 #region Packages
 
+using Cinemachine;
 using GameDev.Input;
 using Photon.Pun;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace GameDev.FPS
         #region Values
 
         [SerializeField] private PhotonView pv;
+        [SerializeField] private CinemachineVirtualCamera virtualCamera;
         [SerializeField] private float rotSpeed;
         [SerializeField] private float minAngle, maxAngle;
         private float dir, current;
@@ -31,13 +33,9 @@ namespace GameDev.FPS
             pv ??= GetComponent<PhotonView>();
 
             if (pv.IsMine)
-                InputManager.Instance.rotEvent.AddListener(OnRotAxisUpdate);
-            else
             {
-                if (GetComponent<Camera>() is { } cam)
-                    cam.enabled = false;
-                if (GetComponent<AudioListener>() is { } listener)
-                    listener.enabled = false;
+                InputManager.instance.rotEvent.AddListener(OnRotAxisUpdate);
+                virtualCamera.enabled = true;
             }
         }
 

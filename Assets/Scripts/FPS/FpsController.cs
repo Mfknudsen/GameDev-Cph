@@ -1,5 +1,6 @@
 #region Packages
 
+using GameDev.Character;
 using GameDev.Common;
 using GameDev.Input;
 using GameDev.UI.FPS;
@@ -38,8 +39,6 @@ namespace GameDev.FPS
         {
             base.Start();
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
 
             rb ??= GetComponent<Rigidbody>();
 
@@ -49,6 +48,11 @@ namespace GameDev.FPS
                 rb.isKinematic = true;
                 rb.useGravity = false;
             }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
 
         public override void OnEnable()
@@ -56,7 +60,7 @@ namespace GameDev.FPS
             base.OnEnable();
 
             if (pv.IsMine)
-                InputManager.Instance.jumpEvent.AddListener(OnJumpUpdate);
+                InputManager.instance.jumpEvent.AddListener(OnJumpUpdate);
         }
 
         public override void OnDisable()
@@ -64,7 +68,7 @@ namespace GameDev.FPS
             base.OnDisable();
 
             if (pv.IsMine)
-                InputManager.Instance.jumpEvent.RemoveListener(OnJumpUpdate);
+                InputManager.instance.jumpEvent.RemoveListener(OnJumpUpdate);
         }
 
         protected virtual void Update()
@@ -92,6 +96,7 @@ namespace GameDev.FPS
         public virtual void SetupUI(FpsUI ui)
         {
             ui.SetWeaponToDisplay(transform.GetChild(0).GetComponentInChildren<Weapon>());
+            ui.SetHealthToDisplay(GetComponent<Health>());
         }
 
         #endregion

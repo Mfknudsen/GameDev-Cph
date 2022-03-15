@@ -37,9 +37,8 @@ namespace GameDev.Multiplayer.Start_Menu
             if (Camera.main != null)
                 DontDestroyOnLoad(Camera.main.gameObject);
 
-            //Must call to build
-            Debug.LogWarning(InputManager.Instance);
-
+            InputManager.instance = new InputManager();
+            
             Application.targetFrameRate = 144;
 
             PhotonNetwork.ConnectUsingSettings();
@@ -55,7 +54,7 @@ namespace GameDev.Multiplayer.Start_Menu
         public override void OnJoinedRoom()
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
-
+            sceneToLoadOnJoin = "BasicDeathMatch";
             PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
         }
 
@@ -133,9 +132,7 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "New Server Must A Name";
                 return;
             }
-
-            sceneToLoadOnJoin = "BasicDeathMatch";
-
+            
             PhotonNetwork.CreateRoom(
                 serverNameInputField.text,
                 new RoomOptions()

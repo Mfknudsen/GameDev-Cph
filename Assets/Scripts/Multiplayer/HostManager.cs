@@ -98,9 +98,8 @@ namespace GameDev.Multiplayer
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCAssignTeamToPlayer(string userID, Team team)
+        private void RPCAssignTeamToPlayer(string userNickName, Team team)
         {
-            Debug.Log(team.ToString());
             if (team != Team.None)
             {
                 if (actualPlayerCount[(int) team - 1] == playerPerTeam)
@@ -111,7 +110,7 @@ namespace GameDev.Multiplayer
                 pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
 
                 playerManagers
-                    .First(pm => pm.GetPhotonView().Owner.UserId.Equals(userID))
+                    .First(pm => pm.GetPhotonView().Owner.NickName.Equals(userNickName))
                     .SetTeam(team);
             }
         }

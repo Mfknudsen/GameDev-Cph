@@ -36,8 +36,8 @@ namespace GameDev.Weapons
 
             if (pv.IsMine)
             {
-                InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
-                InputManager.Instance.reloadEvent.AddListener(OnReloadUpdate);
+                InputManager.instance.shootEvent.AddListener(OnShootUpdate);
+                InputManager.instance.reloadEvent.AddListener(OnReloadUpdate);
             }
         }
 
@@ -47,8 +47,8 @@ namespace GameDev.Weapons
 
             if (pv.IsMine)
             {
-                InputManager.Instance.shootEvent.RemoveListener(OnShootUpdate);
-                InputManager.Instance.reloadEvent.RemoveListener(OnReloadUpdate);
+                InputManager.instance.shootEvent.RemoveListener(OnShootUpdate);
+                InputManager.instance.reloadEvent.RemoveListener(OnReloadUpdate);
             }
         }
 

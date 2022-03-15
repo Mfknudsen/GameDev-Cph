@@ -47,12 +47,12 @@ namespace GameDev.Multiplayer
 
         private void OnEnable()
         {
-            InputManager.Instance.pauseEvent.AddListener(OnPauseUpdate);
+            InputManager.instance.pauseEvent.AddListener(OnPauseUpdate);
         }
 
         private void OnDisable()
         {
-            InputManager.Instance.pauseEvent.RemoveListener(OnPauseUpdate);
+            InputManager.instance.pauseEvent.RemoveListener(OnPauseUpdate);
         }
 
         private void Start()

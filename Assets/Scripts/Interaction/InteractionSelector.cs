@@ -30,12 +30,12 @@ namespace GameDev.Interaction
 
         private void OnEnable()
         {
-            InputManager.Instance.interactEvent.AddListener(OnInteractUpdate);
+            InputManager.instance.interactEvent.AddListener(OnInteractUpdate);
         }
 
         private void OnDisable()
         {
-            InputManager.Instance.interactEvent.RemoveListener(OnInteractUpdate);
+            InputManager.instance.interactEvent.RemoveListener(OnInteractUpdate);
         }
 
         #endregion

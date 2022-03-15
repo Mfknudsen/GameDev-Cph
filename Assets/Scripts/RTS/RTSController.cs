@@ -71,9 +71,9 @@ namespace GameDev.RTS
         {
             if (pv.IsMine)
             {
-                InputManager.Instance.turnEvent.AddListener(OnTurnUpdate);
-                InputManager.Instance.crouchEvent.AddListener(OnCrouchUpdate);
-                InputManager.Instance.rotEvent.AddListener(OnMouseUpdate);
+                InputManager.instance.turnEvent.AddListener(OnTurnUpdate);
+                InputManager.instance.crouchEvent.AddListener(OnCrouchUpdate);
+                InputManager.instance.rotEvent.AddListener(OnMouseUpdate);
             }
         }
 
@@ -81,9 +81,9 @@ namespace GameDev.RTS
         {
             if (pv.IsMine)
             {
-                InputManager.Instance.turnEvent.RemoveListener(OnTurnUpdate);
-                InputManager.Instance.crouchEvent.RemoveListener(OnCrouchUpdate);
-                InputManager.Instance.rotEvent.RemoveListener(OnMouseUpdate);
+                InputManager.instance.turnEvent.RemoveListener(OnTurnUpdate);
+                InputManager.instance.crouchEvent.RemoveListener(OnCrouchUpdate);
+                InputManager.instance.rotEvent.RemoveListener(OnMouseUpdate);
             }
         }
 

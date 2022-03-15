@@ -11,19 +11,9 @@ namespace GameDev.Input
     {
         #region Values
 
-        public static InputManager Instance
-        {
-            get
-            {
-                instance ??= new InputManager();
-
-                return instance;
-            }
-        }
-
-        private static InputManager instance;
-
-        public UnityEvent 
+        public static InputManager instance;
+        
+        public UnityEvent
             interactEvent = new UnityEvent(),
             jumpEvent = new UnityEvent(),
             shootEvent = new UnityEvent(),
@@ -34,12 +24,12 @@ namespace GameDev.Input
             throwEvent = new UnityEvent(),
             crouchEvent = new UnityEvent(),
             pauseEvent = new UnityEvent();
-        
-        public UnityEvent<Vector2> 
+
+        public UnityEvent<Vector2>
             moveEvent = new UnityEvent<Vector2>(),
             rotEvent = new UnityEvent<Vector2>();
 
-        public UnityEvent<float> 
+        public UnityEvent<float>
             mouseScrollEvent = new UnityEvent<float>(),
             turnEvent = new UnityEvent<float>();
 
@@ -47,9 +37,9 @@ namespace GameDev.Input
 
         #region Build In States
 
-        private InputManager()
+        public InputManager()
         {
-            Debug.Log("Setting up input");
+            Debug.Log("Setup");
             PlayerInput playerInput = new PlayerInput();
             playerInput.Enable();
             PlayerInput.PlayerActions player = playerInput.Player;
