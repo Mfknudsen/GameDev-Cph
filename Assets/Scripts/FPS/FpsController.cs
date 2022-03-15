@@ -93,6 +93,15 @@ namespace GameDev.FPS
 
         #endregion
 
+        #region Getters
+
+        public bool GetIsGrounded()
+        {
+            return isGrounded;
+        }
+
+        #endregion
+        
         #region In
 
         public virtual void SetupUI(FpsUI ui)

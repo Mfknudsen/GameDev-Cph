@@ -35,7 +35,7 @@ namespace GameDev.UI.FPS
         {
             toDisplay = set;
 
-            if (weaponNameText != null)
+            if (weaponNameText != null && set != null)
                 weaponNameText.text = set.name;
         }
 
