@@ -1,6 +1,5 @@
 #region Packages
 
-using System;
 using UnityEngine;
 
 #endregion
@@ -31,8 +30,7 @@ namespace GameDev.Weapons.Ammo
 
     #endregion
 
-    [Serializable]
-    public abstract class Ammo : ScriptableObject
+    public abstract class Ammunition : ScriptableObject
     {
         #region Values
 

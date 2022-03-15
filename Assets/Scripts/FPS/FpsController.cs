@@ -2,6 +2,8 @@
 
 using GameDev.Common;
 using GameDev.Input;
+using GameDev.UI.FPS;
+using GameDev.Weapons;
 using UnityEngine;
 
 #endregion
@@ -42,7 +44,7 @@ namespace GameDev.FPS
             rb ??= GetComponent<Rigidbody>();
 
 
-            if(!pv.IsMine)
+            if (!pv.IsMine)
             {
                 rb.isKinematic = true;
                 rb.useGravity = false;
@@ -52,7 +54,7 @@ namespace GameDev.FPS
         public override void OnEnable()
         {
             base.OnEnable();
-            
+
             if (pv.IsMine)
                 InputManager.Instance.jumpEvent.AddListener(OnJumpUpdate);
         }
@@ -60,7 +62,7 @@ namespace GameDev.FPS
         public override void OnDisable()
         {
             base.OnDisable();
-            
+
             if (pv.IsMine)
                 InputManager.Instance.jumpEvent.RemoveListener(OnJumpUpdate);
         }
@@ -85,6 +87,15 @@ namespace GameDev.FPS
 
         #endregion
 
+        #region In
+
+        public virtual void SetupUI(FpsUI ui)
+        {
+            ui.SetWeaponToDisplay(transform.GetChild(0).GetComponentInChildren<Weapon>());
+        }
+
+        #endregion
+
         #region Internal
 
         protected virtual void Move()
@@ -102,7 +113,7 @@ namespace GameDev.FPS
         protected virtual void Jump()
         {
             if ((!isGrounded && cayotyTimer == null) || !jumping || jumpTimer != null) return;
-            
+
             rb.velocity = Vector3.zero;
             rb.AddForce(objTransform.up * jumpForce, ForceMode.Impulse);
 

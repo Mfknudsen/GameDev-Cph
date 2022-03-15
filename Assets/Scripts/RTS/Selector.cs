@@ -1,5 +1,6 @@
 #region Packages
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
@@ -34,9 +35,18 @@ namespace GameDev.RTS
 
         #region Build In States
 
-        private void Start()
+        private void OnEnable()
         {
             InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
+        }
+
+        private void OnDisable()
+        {
+            InputManager.Instance.shootEvent.RemoveListener(OnShootUpdate);
+        }
+
+        private void Start()
+        {
             cam ??= GetComponent<Camera>();
 
             ToPlaceBuilding(Instantiate(test).GetComponent<Building>());

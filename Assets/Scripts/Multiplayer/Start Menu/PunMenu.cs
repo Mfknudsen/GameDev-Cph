@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using GameDev.Input;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -35,6 +36,9 @@ namespace GameDev.Multiplayer.Start_Menu
         {
             if (Camera.main != null)
                 DontDestroyOnLoad(Camera.main.gameObject);
+
+            //Must call to build
+            Debug.LogWarning(InputManager.Instance);
 
             Application.targetFrameRate = 144;
 

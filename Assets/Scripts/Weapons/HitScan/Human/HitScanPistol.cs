@@ -9,31 +9,9 @@ namespace GameDev.Weapons.HitScan.Human
 {
     public class HitScanPistol : HitScanWeapon
     {
-        public override void Trigger()
-        {
-            if (trigger.GetCanFire()) shooting = UnityEngine.Input.GetKey(KeyCode.Mouse0);
-            
-            else shooting = UnityEngine.Input.GetKeyDown(KeyCode.Mouse0);
+        #region Internal
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.R) && magCurSize < magMaxSize && !reloading) Reload();
-
-            if (shooting && !reloading && magCurSize > 0)
-                Shoot();
-        }
-
-        public override void Reload()
-        {
-            reloading = true;
-            Invoke("ReloadFinished", reloadTime);
-        }
-
-        private void ReloadFinished()
-        {
-            magCurSize = magMaxSize;
-            reloading = false;
-        }
-
-        private void Shoot()
+        protected override void Trigger()
         {
             float spreadX = Random.Range(-spread, spread);
             float spreadY = Random.Range(-spread, spread);
@@ -44,27 +22,17 @@ namespace GameDev.Weapons.HitScan.Human
                 if (rayHit.transform.root.gameObject.GetComponent<Health>() is { } health)
                 {
                     health.ApplyDamage(
-                        ammo.GetDamage(),
-                        ammo.GetDamageType(),
-                        ammo.GetSpecialDamageType());
+                        ammunition.GetDamage(),
+                        ammunition.GetDamageType(),
+                        ammunition.GetSpecialDamageType());
                 }
             }
 
-            //magCurSize--;
+            magCurSize -= ammoPerShot;
 
             trigger.Pull();
         }
 
-        private void Start()
-        {
-            magMaxSize = 25;
-            magCurSize = 25;
-        }
-
-        protected override void Update()
-        {
-            if (pv.IsMine)
-                Trigger();
-        }
+        #endregion
     }
 }

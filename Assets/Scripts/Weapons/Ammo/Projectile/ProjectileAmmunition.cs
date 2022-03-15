@@ -1,6 +1,6 @@
 namespace GameDev.Weapons.Ammo.Projectile
 {
-    public abstract class ProjectileAmmo : Ammo
+    public abstract class ProjectileAmmunition : Ammunition
     {
         
     }

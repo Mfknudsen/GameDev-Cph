@@ -19,7 +19,8 @@ namespace GameDev.Multiplayer
         public void Spawn(PlayerManager manager)
         {
             Transform trans = transform;
-            manager.CreateController(playerPrefab, trans.position, trans.rotation);
+            manager.SwitchController(
+                PlayerManager.CreateController(playerPrefab, trans.position, trans.rotation));
         }
 
         #endregion

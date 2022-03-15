@@ -3,6 +3,7 @@
 using System;
 using ExitGames.Client.Photon;
 using GameDev.Input;
+using GameDev.Weapons.Ammo;
 using GameDev.Weapons.Triggers;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,19 +14,43 @@ using UnityEngine;
 namespace GameDev.Weapons
 {
     [Serializable]
-    public abstract class Weapon : MonoBehaviourPunCallbacks, IWeapon
+    public abstract class Weapon : MonoBehaviourPunCallbacks
     {
         #region Values
 
         [SerializeField] protected PhotonView pv;
         [SerializeField] protected Trigger trigger;
         [SerializeField] protected Transform origin;
-        
+        [SerializeField] protected Ammunition ammunition;
+        [SerializeField] protected int magMaxSize, magCurSize, ammoPerShot;
+
         protected bool shooting, reloading;
 
         #endregion
 
         #region Build In States
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (pv.IsMine)
+            {
+                InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
+                InputManager.Instance.reloadEvent.AddListener(OnReloadUpdate);
+            }
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (pv.IsMine)
+            {
+                InputManager.Instance.shootEvent.RemoveListener(OnShootUpdate);
+                InputManager.Instance.reloadEvent.RemoveListener(OnReloadUpdate);
+            }
+        }
 
         private void Start()
         {
@@ -35,27 +60,6 @@ namespace GameDev.Weapons
         protected virtual void Awake()
         {
             pv ??= GetComponent<PhotonView>();
-
-            if (pv.IsMine)
-            {
-                InputManager.Instance.shootEvent.AddListener(OnShootUpdate);
-                InputManager.Instance.reloadEvent.AddListener(OnReloadUpdate);
-            }
-        }
-
-        protected virtual void Update()
-        {
-            if (reloading)
-            {
-                Reload();
-                return;
-            }
-            
-            if (shooting && trigger.GetCanFire())
-            {
-                trigger.Pull();
-                Trigger();
-            }
         }
 
         #region Pun Callbacks
@@ -75,15 +79,32 @@ namespace GameDev.Weapons
 
         #endregion
 
+        #region Getters
+
+        public int GetCurrentMagCount()
+        {
+            return magCurSize;
+        }
+
+        public int GetMaxMagCount()
+        {
+            return magMaxSize;
+        }
+
+        #endregion
+
         #region Internal
 
-        public abstract void Trigger();
+        protected abstract void Trigger();
 
-        public abstract void Reload();
+        protected abstract void Reload();
 
         private void OnShootUpdate()
         {
             shooting = !shooting;
+            
+            if (shooting && !reloading && magCurSize > 0)
+                Trigger();
 
             Hashtable hash = new Hashtable();
             hash.Add("Shooting", shooting);
@@ -93,6 +114,7 @@ namespace GameDev.Weapons
         private void OnReloadUpdate()
         {
             reloading = !reloading;
+            Reload();
 
             Hashtable hash = new Hashtable();
             hash.Add("Reloading", reloading);

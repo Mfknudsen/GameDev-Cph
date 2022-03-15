@@ -25,8 +25,17 @@ namespace GameDev.Interaction
 
         private void Awake()
         {
-            InputManager.Instance.interactEvent.AddListener(OnInteractUpdate);
             new Timer(1f).timerEvent.AddListener(() => UpdateClosest());
+        }
+
+        private void OnEnable()
+        {
+            InputManager.Instance.interactEvent.AddListener(OnInteractUpdate);
+        }
+
+        private void OnDisable()
+        {
+            InputManager.Instance.interactEvent.RemoveListener(OnInteractUpdate);
         }
 
         #endregion

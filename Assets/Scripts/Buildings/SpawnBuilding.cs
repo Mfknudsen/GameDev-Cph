@@ -56,7 +56,11 @@ namespace GameDev.Buildings
                 //Player Spawning Animation
             }
             
-            playerManager.CreateController(characterPrefab, spawnTransform.position, spawnTransform.rotation);
+            playerManager.SwitchController(
+                PlayerManager.CreateController(
+                    characterPrefab, 
+                    spawnTransform.position, 
+                    spawnTransform.rotation));
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
         }

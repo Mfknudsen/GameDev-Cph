@@ -1,8 +1,10 @@
 #region Packages
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameDev.Buildings;
+using GameDev.Character;
 using GameDev.Common;
 using GameDev.Input;
 using Photon.Pun;
@@ -43,6 +45,16 @@ namespace GameDev.Multiplayer
 
         #region Build In States
 
+        private void OnEnable()
+        {
+            InputManager.Instance.pauseEvent.AddListener(OnPauseUpdate);
+        }
+
+        private void OnDisable()
+        {
+            InputManager.Instance.pauseEvent.RemoveListener(OnPauseUpdate);
+        }
+
         private void Start()
         {
             name = name.Replace("(Clone)", "");
@@ -60,8 +72,6 @@ namespace GameDev.Multiplayer
             ownedManager = this;
 
             Instantiate(teamSelectUI, GameObject.Find("Canvas").transform);
-
-            InputManager.Instance.pauseEvent.AddListener(OnPauseUpdate);
         }
 
         private void OnDestroy()
@@ -94,19 +104,21 @@ namespace GameDev.Multiplayer
 
         #region In
 
-        public GameObject CreateController(GameObject controllerPrefab, Vector3 spawnPosition, Quaternion spawnRotation)
+        public static GameObject CreateController(GameObject controllerPrefab, Vector3 spawnPosition,
+            Quaternion spawnRotation)
         {
-            if (currentPlayerCharacter != null)
-                PhotonNetwork.Destroy(currentPlayerCharacter);
-
-            currentPlayerCharacter =
-                PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
-            return currentPlayerCharacter;
+            return PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
         }
 
-        public void SwitchCurrentController(GameObject newController)
+        public void SwitchController(GameObject newController)
         {
+            // ReSharper disable once Unity.NoNullPropagation
+            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsNonPlayer();
+
             currentPlayerCharacter = newController;
+
+            // ReSharper disable once Unity.NoNullPropagation
+            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsPlayer();
         }
 
         public void Die()

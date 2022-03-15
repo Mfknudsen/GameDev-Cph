@@ -23,10 +23,8 @@ namespace GameDev.Input
 
         private static InputManager instance;
 
-        public UnityEvent<Vector2> moveEvent = new UnityEvent<Vector2>(),
-            rotEvent = new UnityEvent<Vector2>();
-
-        public UnityEvent interactEvent = new UnityEvent(),
+        public UnityEvent 
+            interactEvent = new UnityEvent(),
             jumpEvent = new UnityEvent(),
             shootEvent = new UnityEvent(),
             reloadEvent = new UnityEvent(),
@@ -36,8 +34,13 @@ namespace GameDev.Input
             throwEvent = new UnityEvent(),
             crouchEvent = new UnityEvent(),
             pauseEvent = new UnityEvent();
+        
+        public UnityEvent<Vector2> 
+            moveEvent = new UnityEvent<Vector2>(),
+            rotEvent = new UnityEvent<Vector2>();
 
-        public UnityEvent<float> mouseScrollEvent = new UnityEvent<float>(),
+        public UnityEvent<float> 
+            mouseScrollEvent = new UnityEvent<float>(),
             turnEvent = new UnityEvent<float>();
 
         #endregion
@@ -46,6 +49,7 @@ namespace GameDev.Input
 
         private InputManager()
         {
+            Debug.Log("Setting up input");
             PlayerInput playerInput = new PlayerInput();
             playerInput.Enable();
             PlayerInput.PlayerActions player = playerInput.Player;

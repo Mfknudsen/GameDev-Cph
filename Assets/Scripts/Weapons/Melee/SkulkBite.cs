@@ -15,10 +15,11 @@ namespace GameDev.Weapons.Melee
         [Space] [Header("Bite")] [SerializeField]
         private Vector3 boxSize;
 
-        [SerializeField] private Ammo.Ammo ammo;
         [SerializeField] private LayerMask hitMask;
 
         #endregion
+
+        #region Build In States
 
         private void OnDrawGizmos()
         {
@@ -26,17 +27,21 @@ namespace GameDev.Weapons.Melee
             Gizmos.DrawWireCube(Vector3.zero, boxSize);
         }
 
-        public override void Trigger()
+        #endregion
+
+        #region Internal
+
+        protected override void Reload()
+        {
+        }
+
+        protected override void Trigger()
         {
             TryGetToRoot(BiteHit())?
                 .ApplyDamage(
-                    ammo.GetDamage(),
-                    ammo.GetDamageType(),
-                    ammo.GetSpecialDamageType());
-        }
-
-        public override void Reload()
-        {
+                    ammunition.GetDamage(),
+                    ammunition.GetDamageType(),
+                    ammunition.GetSpecialDamageType());
         }
 
         private GameObject BiteHit()
@@ -69,7 +74,7 @@ namespace GameDev.Weapons.Melee
         private Health TryGetToRoot(GameObject obj)
         {
             if (obj == null) return null;
-            
+
             Health result = obj.GetComponent<Health>();
 
             if (result != null)
@@ -82,5 +87,7 @@ namespace GameDev.Weapons.Melee
             else
                 return TryGetToRoot(p.gameObject);
         }
+
+        #endregion
     }
 }
