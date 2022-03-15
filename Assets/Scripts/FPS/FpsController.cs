@@ -15,6 +15,8 @@ namespace GameDev.FPS
     {
         #region Values
 
+        [SerializeField] private Weapon weapon;
+        
         [SerializeField] protected float moveSpeed,
             rotSpeed,
             distance,
@@ -95,7 +97,7 @@ namespace GameDev.FPS
 
         public virtual void SetupUI(FpsUI ui)
         {
-            ui.SetWeaponToDisplay(transform.GetChild(0).GetComponentInChildren<Weapon>());
+            ui.SetWeaponToDisplay(weapon);
             ui.SetHealthToDisplay(GetComponent<Health>());
         }
 

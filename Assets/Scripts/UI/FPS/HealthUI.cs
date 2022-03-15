@@ -25,8 +25,10 @@ namespace GameDev.UI.FPS
             if (toDisplay == null)
                 return;
 
-            hpText.text = "HP / " + toDisplay.GetCurrentHp();
-            apText.text = "AP / " + toDisplay.GetCurrentAp();
+            if (hpText != null)
+                hpText.text = "HP / " + toDisplay.GetCurrentHp();
+            if (apText != null)
+                apText.text = "AP / " + toDisplay.GetCurrentAp();
         }
 
         #endregion

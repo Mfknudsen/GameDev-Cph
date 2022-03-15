@@ -24,7 +24,6 @@ namespace GameDev.UI.FPS
         private void Awake()
         {
             GameObject parent = transform.root.gameObject;
-
             if (parent.GetComponent<PhotonView>().IsMine)
                 parent.GetComponent<FpsController>().SetupUI(this);
             else
@@ -37,12 +36,14 @@ namespace GameDev.UI.FPS
 
         public void SetWeaponToDisplay(Weapon set)
         {
-            weaponUI.SetWeaponToDisplay(set);
+            if (weaponUI != null)
+                weaponUI.SetWeaponToDisplay(set);
         }
 
         public void SetHealthToDisplay(Health set)
         {
-            healthUI.SetHealthToDisplay(set);
+            if (healthUI != null)
+                healthUI.SetHealthToDisplay(set);
         }
 
         #endregion

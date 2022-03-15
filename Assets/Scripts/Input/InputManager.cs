@@ -39,7 +39,6 @@ namespace GameDev.Input
 
         public InputManager()
         {
-            Debug.Log("Setup");
             PlayerInput playerInput = new PlayerInput();
             playerInput.Enable();
             PlayerInput.PlayerActions player = playerInput.Player;
