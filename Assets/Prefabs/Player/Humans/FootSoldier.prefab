@@ -702,7 +702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 4970067498224136342}
-  weapon: {fileID: 0}
+  weapon: {fileID: 6541941034489273338}
   moveSpeed: 5
   rotSpeed: 50
   distance: 1
