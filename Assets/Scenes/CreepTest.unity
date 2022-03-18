@@ -606,6 +606,40 @@ MonoBehaviour:
   spreadPercentagePerSecond: 0.1
   randomSpread: {x: 0.8, y: 3}
   creepMaterial: {fileID: 2100000, guid: 18b70c67386293b4abc6cbd6cdc8aa2b, type: 2}
+  distanceOfSurface: 0.2
+  riseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.52953875
+      value: 0.18166332
+      inSlope: 0.8828723
+      outSlope: 0.8828723
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.41458026
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.9002699
+      outSlope: 1.9002699
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.058333337
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1265511325
 Transform:
   m_ObjectHideFlags: 0
@@ -614,7 +648,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265511323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.82, y: 0, z: -7.9}
+  m_LocalPosition: {x: -7.82, y: -0.2, z: -7.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1076424126}

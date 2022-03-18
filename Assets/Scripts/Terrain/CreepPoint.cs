@@ -14,7 +14,7 @@ namespace GameDev.Terrain
     {
         #region Values
 
-        public Vector3 worldPosition;
+        public Vector3 worldPosition, normal;
 
         public Vector3Int index;
 
@@ -25,6 +25,8 @@ namespace GameDev.Terrain
         public List<int> spreadStrength;
 
         public float spread;
+
+        public int vertIndex = -1;
 
         public CreepPoint(Vector3Int index, Vector3 worldPosition)
         {
