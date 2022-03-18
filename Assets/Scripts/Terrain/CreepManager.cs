@@ -72,7 +72,7 @@ namespace GameDev.Terrain
 
             foreach (CreepPoint creepPoint in creepPoints)
             {
-                if (!creepPoint.active || creepPoint.GetNeighbors().Length < 3)
+                if (creepPoint.spread > 0)
                     continue;
 
                 if (!CanDraw(creepPoint.GetNeighbors(), creepPoint.vertIndex))
@@ -80,270 +80,7 @@ namespace GameDev.Terrain
 
                 CreepPoint[] neighbors = creepPoint.GetNeighbors();
 
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[2].vertIndex, neighbors[1].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[0].vertIndex, neighbors[2].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[3].vertIndex, neighbors[4].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[5].vertIndex, neighbors[4].vertIndex }) &&
-                    neighbors[3].vertIndex.Equals(-1))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[6].vertIndex, neighbors[4].vertIndex }) &&
-                    (neighbors[3].vertIndex < 0 && neighbors[5].vertIndex < 0))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[0].vertIndex, neighbors[4].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[0].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[3].vertIndex, neighbors[5].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[1].vertIndex, neighbors[5].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[3].vertIndex, neighbors[4].vertIndex, neighbors[5].vertIndex }))
-                {
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[4].vertIndex, neighbors[6].vertIndex, neighbors[5].vertIndex }))
-                {
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[4].vertIndex, neighbors[6].vertIndex, neighbors[2].vertIndex }))
-                {
-                    tris.Add(neighbors[2].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[4].vertIndex, neighbors[2].vertIndex, neighbors[0].vertIndex }))
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[5].vertIndex, neighbors[6].vertIndex }))
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[2].vertIndex, neighbors[6].vertIndex }))
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[2].vertIndex, neighbors[4].vertIndex }) &&
-                    neighbors[0].vertIndex < 0)
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[0].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[2].vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[4].vertIndex, neighbors[6].vertIndex }))
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[0].vertIndex, neighbors[1].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[1].vertIndex, neighbors[3].vertIndex }))
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[3].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[5].vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[3].vertIndex, neighbors[4].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[5].vertIndex < 0)
-                {
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[3].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[1].vertIndex < 0)
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { creepPoint.vertIndex, neighbors[0].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[1].vertIndex < 0)
-                {
-                    tris.Add(creepPoint.vertIndex);
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[0].vertIndex, neighbors[4].vertIndex }) &&
-                    neighbors[3].vertIndex < 0 && creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[5].vertIndex, neighbors[1].vertIndex, neighbors[4].vertIndex }) &&
-                    neighbors[3].vertIndex < 0 && creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[1].vertIndex, neighbors[2].vertIndex }) &&
-                    creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[2].vertIndex, neighbors[4].vertIndex }) &&
-                    neighbors[0].vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[1].vertIndex, neighbors[3].vertIndex }) &&
-                    creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[5].vertIndex, neighbors[1].vertIndex, neighbors[3].vertIndex }) &&
-                    creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[4].vertIndex, neighbors[3].vertIndex }) &&
-                    creepPoint.vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[4].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[3].vertIndex, neighbors[5].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[4].vertIndex < 0)
-                {
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[5].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[2].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[4].vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[0].vertIndex, neighbors[3].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[4].vertIndex < 0)
-                {
-                    tris.Add(neighbors[0].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[2].vertIndex, neighbors[3].vertIndex, neighbors[6].vertIndex }) &&
-                    neighbors[4].vertIndex < 0 && neighbors[0].vertIndex < 0)
-                {
-                    tris.Add(neighbors[2].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[6].vertIndex);
-                }
-
-                if (ValidTriangle(new[] { neighbors[1].vertIndex, neighbors[2].vertIndex, neighbors[3].vertIndex }) &&
-                    creepPoint.vertIndex < 0 && neighbors[0].vertIndex < 0)
-                {
-                    tris.Add(neighbors[1].vertIndex);
-                    tris.Add(neighbors[3].vertIndex);
-                    tris.Add(neighbors[2].vertIndex);
-                }
+                tris.AddRange(TriangleGenerator.GenerateFromCube(creepPoint, neighbors));
             }
 
             Mesh mesh = new Mesh();
@@ -358,7 +95,7 @@ namespace GameDev.Terrain
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(transform.position + (Vector3)fieldSize / 2, fieldSize);
+            Gizmos.DrawWireCube(transform.position + (Vector3) fieldSize / 2, fieldSize);
 
             if (creepPoints == null)
                 return;
@@ -531,17 +268,6 @@ namespace GameDev.Terrain
 
             toUpdateSource.AddRange(toAdd);
             toRemove.ForEach(e => toUpdateSource.Remove(e));
-        }
-
-        private bool ValidTriangle(int[] vertValues)
-        {
-            foreach (int vertValue in vertValues)
-            {
-                if (vertValue < 0)
-                    return false;
-            }
-
-            return true;
         }
 
         private bool CanDraw(CreepPoint[] points, int origin)

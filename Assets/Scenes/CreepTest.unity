@@ -603,7 +603,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   checkFromPoint: {fileID: 1076424126}
-  spreadPercentagePerSecond: 0.1
+  spreadPercentagePerSecond: 0.5
   randomSpread: {x: 0.8, y: 3}
   creepMaterial: {fileID: 2100000, guid: 18b70c67386293b4abc6cbd6cdc8aa2b, type: 2}
   distanceOfSurface: 0.2
