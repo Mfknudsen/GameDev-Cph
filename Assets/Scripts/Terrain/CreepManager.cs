@@ -26,13 +26,12 @@ namespace GameDev.Terrain
 
         private CreepPoint[,,] creepPoints;
 
-        private List<CreepPoint> toUpdateSource = new List<CreepPoint>();
+        private List<CreepPoint> toUpdateSource = new List<CreepPoint>(),
+            activeVertices = new List<CreepPoint>();
 
-        #region Marching Cubes
+        private List<Cube> cubes = new List<Cube>();
 
         private MeshFilter meshFilter;
-
-        #endregion
 
         #endregion
 
@@ -41,6 +40,13 @@ namespace GameDev.Terrain
         private void Start()
         {
             GeneratePoints();
+
+            foreach (CreepPoint creepPoint in creepPoints)
+            {
+                CreepPoint[] points = new[] { creepPoint };
+                Cube cube = new Cube(points.Concat(creepPoint.GetNeighbors()).ToArray());
+                cubes.Add(cube);
+            }
         }
 
         private void Update()
@@ -95,7 +101,7 @@ namespace GameDev.Terrain
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(transform.position + (Vector3) fieldSize / 2, fieldSize);
+            Gizmos.DrawWireCube(transform.position + (Vector3)fieldSize / 2, fieldSize);
 
             if (creepPoints == null)
                 return;
@@ -111,10 +117,6 @@ namespace GameDev.Terrain
 
                 // ReSharper disable once PossibleLossOfFraction
                 Gizmos.DrawWireSphere(creepPoint.worldPosition, 0.5f / pointsPerAxis);
-
-                continue;
-                for (int i = 0; i < creepPoint.GetNeighbors().Length; i++)
-                    drawString(i.ToString(), creepPoint.GetNeighbors()[i].worldPosition);
             }
         }
 
