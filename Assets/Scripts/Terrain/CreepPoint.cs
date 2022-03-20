@@ -18,22 +18,32 @@ namespace GameDev.Terrain
 
         public Vector3Int index;
 
-        private List<CreepPoint> neighbors;
+        private List<CreepPoint> neighbors = new List<CreepPoint>(),
+            connectedNeighbors = new List<CreepPoint>();
 
         public bool active;
 
         public List<int> spreadStrength;
 
-        public float spread;
-
         public int vertIndex = -1;
 
-        public CreepPoint(Vector3Int index, Vector3 worldPosition)
+        public List<Cube> cubesAffected = new List<Cube>();
+
+        private CreepManager manager;
+
+        private bool shouldUpdate;
+
+        private float spread;
+
+        #endregion
+
+        #region Build In States
+
+        public CreepPoint(Vector3Int index, Vector3 worldPosition, CreepManager manager)
         {
             this.index = index;
             this.worldPosition = worldPosition;
-
-            neighbors = new List<CreepPoint>();
+            this.manager = manager;
         }
 
         #endregion
@@ -50,6 +60,21 @@ namespace GameDev.Terrain
             return spreadStrength.OrderBy(s => s).First();
         }
 
+        public bool ShouldUpdate()
+        {
+            return shouldUpdate;
+        }
+
+        public float GetSpread()
+        {
+            return spread;
+        }
+
+        public CreepPoint[] GetConnectedNeighbors()
+        {
+            return connectedNeighbors.ToArray();
+        }
+
         #endregion
 
         #region Setters
@@ -57,6 +82,28 @@ namespace GameDev.Terrain
         public void SetNeighbors(CreepPoint[] points)
         {
             neighbors.AddRange(points);
+        }
+
+        public void SetSpread(float set)
+        {
+            if (spread == 0 && set > 0)
+            {
+                shouldUpdate = true;
+                manager.AddAndUpdatePoint(this);
+            }
+            else if (spread == 0 && set < 0)
+            {
+                shouldUpdate = false;
+                manager.RemovePointAndUpdateList(this);
+            }
+
+            spread = set;
+        }
+
+        public void AddConnected(CreepPoint cp)
+        {
+            if (!connectedNeighbors.Contains(cp))
+                connectedNeighbors.Add(cp);
         }
 
         #endregion

@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 127205662}
   - component: {fileID: 127205661}
   - component: {fileID: 127205664}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,7 +562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076424125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.41, y: 0.393, z: 5}
+  m_LocalPosition: {x: 7.41, y: 0.1, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1265511325}
@@ -597,37 +597,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7c4009fd2278f4a86ebedc3d2ee656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG: 1
+  toDeactivate: 
   fieldSize: {x: 15, y: 5, z: 15}
   pointsPerAxis: 4
   mask:
     serializedVersion: 2
     m_Bits: 72
   checkFromPoint: {fileID: 1076424126}
-  spreadPercentagePerSecond: 0.5
+  spreadPercentagePerSecond: 1
   randomSpread: {x: 0.8, y: 3}
   creepMaterial: {fileID: 2100000, guid: 18b70c67386293b4abc6cbd6cdc8aa2b, type: 2}
-  distanceOfSurface: 0.2
+  distanceOfSurface: 0.1
   riseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: -0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.52953875
-      value: 0.18166332
-      inSlope: 0.8828723
-      outSlope: 0.8828723
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.41458026
     - serializedVersion: 3
       time: 1
       value: 1
@@ -861,7 +854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2099518218
 Transform:
   m_ObjectHideFlags: 0
