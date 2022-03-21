@@ -597,7 +597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7c4009fd2278f4a86ebedc3d2ee656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG: 1
+  DEBUG: 0
   toDeactivate: 
   fieldSize: {x: 15, y: 5, z: 15}
   pointsPerAxis: 4
@@ -608,13 +608,13 @@ MonoBehaviour:
   spreadPercentagePerSecond: 1
   randomSpread: {x: 0.8, y: 3}
   creepMaterial: {fileID: 2100000, guid: 18b70c67386293b4abc6cbd6cdc8aa2b, type: 2}
-  distanceOfSurface: 0.1
+  distanceOfSurface: 0.2
   riseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: -0.5
+      value: -1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -622,13 +622,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1.9002699
-      outSlope: 1.9002699
+      time: 0.66535395
+      value: 0.07604047
+      inSlope: 5.254762
+      outSlope: 5.254762
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.058333337
+      inWeight: 0.33333334
+      outWeight: 0.12685286
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.022641566
+      outSlope: 0.022641566
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20833331
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -641,7 +650,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265511323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.82, y: -0.2, z: -7.9}
+  m_LocalPosition: {x: -7.82, y: -0.4, z: -7.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1076424126}
@@ -854,7 +863,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2099518218
 Transform:
   m_ObjectHideFlags: 0
