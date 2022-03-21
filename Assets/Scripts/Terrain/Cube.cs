@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 #endregion
 
@@ -14,6 +15,8 @@ namespace GameDev.Terrain
         private CreepPoint[] corners = new CreepPoint[8];
 
         private List<CreepPoint> toUpdate = new List<CreepPoint>();
+
+        public List<Vector3> triangleIndexesOwned = new List<Vector3>();
 
         #endregion
 

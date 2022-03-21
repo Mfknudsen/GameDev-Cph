@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 #endregion
 
@@ -89,7 +90,7 @@ namespace GameDev.Terrain
             if (spread == 0 && set > 0)
             {
                 shouldUpdate = true;
-                manager.AddAndUpdatePoint(this);
+                manager.AddPointAndUpdateTriangles(this);
             }
             else if (spread == 0 && set < 0)
             {
