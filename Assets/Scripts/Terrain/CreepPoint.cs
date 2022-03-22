@@ -34,17 +34,20 @@ namespace GameDev.Terrain
 
         private bool shouldUpdate;
 
-        private float spread;
+        private float spread, perlinNoise;
 
         #endregion
 
         #region Build In States
 
-        public CreepPoint(Vector3Int index, Vector3 worldPosition, CreepManager manager)
+        public CreepPoint(Vector3Int index, Vector3 worldPosition, CreepManager manager, float perlinNoise)
         {
             this.index = index;
             this.worldPosition = worldPosition;
             this.manager = manager;
+            this.perlinNoise = perlinNoise;
+            
+            connectedNeighbors.Add(this);
         }
 
         #endregion
@@ -69,6 +72,11 @@ namespace GameDev.Terrain
         public float GetSpread()
         {
             return spread;
+        }
+
+        public float GetNoise()
+        {
+            return perlinNoise;
         }
 
         public CreepPoint[] GetConnectedNeighbors()

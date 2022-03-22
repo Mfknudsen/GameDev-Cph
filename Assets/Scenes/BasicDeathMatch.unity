@@ -225,6 +225,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361693947}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -241,9 +245,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -510,8 +522,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!64 &219768985
-MeshCollider:
+--- !u!65 &219768985
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -520,10 +532,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.1, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &219768986
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -599,6 +610,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 406566085}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -615,9 +630,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -869,7 +892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 277150860}
   - component: {fileID: 277150861}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,6 +1077,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1537226590}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1070,9 +1097,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -1134,7 +1169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 322681660}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cornor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1463,7 +1498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 406566085}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cornor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +1640,7 @@ GameObject:
   - component: {fileID: 459995318}
   - component: {fileID: 459995317}
   - component: {fileID: 459995316}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1695,6 +1730,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 322681660}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1711,9 +1750,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -1776,7 +1823,7 @@ GameObject:
   m_Component:
   - component: {fileID: 487004587}
   - component: {fileID: 487004586}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1794,7 +1841,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 0.1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &487004587
 Transform:
@@ -1804,7 +1851,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487004585}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.5, z: 0}
+  m_LocalPosition: {x: 0, y: 7.02, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 219768988}
@@ -1822,7 +1869,7 @@ GameObject:
   - component: {fileID: 521646961}
   - component: {fileID: 521646960}
   - component: {fileID: 521646959}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1912,6 +1959,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 406566085}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1928,9 +1979,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -2078,6 +2137,100 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 546999399}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &551160388
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396536, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396537, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: pointsPerAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396537, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: checkFromPoint
+      value: 
+      objectReference: {fileID: 551160389}
+    - target: {fileID: 26147682287396537, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: createOnMask.m_Bits
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396537, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: blockConnectionMask.m_Bits
+      value: 585
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396539, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: sceneViewId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 26147682287396542, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_Name
+      value: Creep Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7861320670819246326, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 22.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7861320670819246326, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7861320670819246326, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.62
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+--- !u!4 &551160389 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7861320670819246326, guid: a1e02740cf1c0e64aa59ca8b3921111a, type: 3}
+  m_PrefabInstance: {fileID: 551160388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &563512014
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,7 +2241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 563512015}
   - component: {fileID: 563512016}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2181,7 +2334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 565245593}
   - component: {fileID: 565245594}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2366,6 +2519,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 322681660}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2382,9 +2539,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -2447,7 +2612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 726027586}
   - component: {fileID: 726027587}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2540,7 +2705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 732592887}
   - component: {fileID: 732592888}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2725,6 +2890,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361693947}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2741,9 +2910,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -3155,7 +3332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1047924985}
   - component: {fileID: 1047924986}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3250,7 +3427,7 @@ GameObject:
   - component: {fileID: 1112835990}
   - component: {fileID: 1112835989}
   - component: {fileID: 1112835988}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3340,6 +3517,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1537226590}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3356,9 +3537,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -3608,6 +3797,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1537226590}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3624,9 +3817,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -3781,6 +3982,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 406566085}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3797,9 +4002,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -3856,7 +4069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1361693947}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cornor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3898,6 +4111,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 322681660}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -3914,9 +4131,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 3032176331367780367, guid: 60fd16cc7412c574b80e5e4fe7680414, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder
@@ -4074,7 +4299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1437803162}
   - component: {fileID: 1437803163}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4167,7 +4392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1499926819}
   - component: {fileID: 1499926820}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4259,7 +4484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1537226590}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cornor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4304,7 +4529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1538053781}
   - component: {fileID: 1538053782}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5062,7 +5287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1813142683}
   - component: {fileID: 1813142684}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5352,7 +5577,7 @@ GameObject:
   - component: {fileID: 1924420096}
   - component: {fileID: 1924420095}
   - component: {fileID: 1924420094}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5540,7 +5765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1975075326}
   - component: {fileID: 1975075327}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5633,7 +5858,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1994243099}
   - component: {fileID: 1994243100}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6008,6 +6233,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1361693947}
     m_Modifications:
+    - target: {fileID: 926210675, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 926210678, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -6024,9 +6253,17 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 601999369445897558, guid: e1b05957668881f42b33641f0f1ba449, type: 3}
+    - target: {fileID: 4150210340194636963, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_Name
       value: HumanSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806117086354023461, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8588064646210796056, guid: 8ab508f7f40942947bc3e6baa933331d, type: 3}
       propertyPath: m_RootOrder

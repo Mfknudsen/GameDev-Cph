@@ -17,117 +17,132 @@ namespace GameDev.Terrain
 
             //Total vert indexes offset by -1
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 2, 1 }, null));
+                new[] {-1, 2, 1}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 0, 2 }, null));
+                new[] {-1, 0, 2}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 3, 4 }, null));
+                new[] {-1, 3, 4}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 5, 4 }, new[] { 3 }));
+                new[] {-1, 5, 4}, new[] {3}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 6, 4 }, new[] { 3, 5 }));
+                new[] {-1, 6, 4}, new[] {3, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 4, 0 }, null));
+                new[] {-1, 4, 0}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 5, 3 }, null));
+                new[] {-1, 5, 3}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 1, 5 }, null));
+                new[] {-1, 1, 5}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 5, 4, 3 }, null));
+                new[] {5, 4, 3}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 4, 5, 6 }, null));
+                new[] {4, 5, 6}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 4, 6 }, null));
+                new[] {2, 4, 6}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 4, 2 }, null));
+                new[] {0, 4, 2}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 6, 5 }, null));
+                new[] {1, 6, 5}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 2, 6 }, null));
+                new[] {1, 2, 6}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 4, 2 }, new[] { 0 }));
+                new[] {-1, 4, 2}, new[] {0}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 0, 6 }, new[] { 2 }));
+                new[] {1, 0, 6}, new[] {2}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 4, 6 }, new[] { 2, 0 }));
+                new[] {1, 4, 6}, new[] {2, 0}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 0, 1 }, null));
+                new[] {-1, 0, 1}, null));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 1, 3 }, new[] { 5 }));
+                new[] {-1, 1, 3}, new[] {5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 6, 3 }, new[] { 5 }));
+                new[] {1, 6, 3}, new[] {5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 3, 6, 4 }, new[] { 5 }));
+                new[] {3, 6, 4}, new[] {5}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 6, 3 }, new[] { 1, 5 }));
+                new[] {-1, 6, 3}, new[] {1, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 0, 6 }, new[] { 1, 2 }));
+                new[] {-1, 0, 6}, new[] {1, 2}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 1, 4 }, new[] { 3, -1 }));
+                new[] {-1, 1, 4}, new[] {3, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 5, 4 }, new[] { 3, -1 }));
+                new[] {1, 5, 4}, new[] {3, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 2, 1 }, new[] { -1 }));
+                new[] {0, 2, 1}, new[] {-1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 4, 2 }, new[] { 0 }));
+                new[] {3, 4, 2}, new[] {0, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 1, 3 }, new[] { -1 }));
+                new[] {0, 1, 3}, new[] {-1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 5, 3 }, new[] { -1 }));
+                new[] {1, 5, 3}, new[] {-1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 3, 4 }, new[] { -1 }));
+                new[] {0, 3, 4}, new[] {-1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 3, 5, 6 }, new[] { 4 }));
+                new[] {3, 5, 6}, new[] {4}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 6, 2 }, new[] { 4 }));
+                new[] {0, 6, 2}, new[] {4}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 3, 6 }, new[] { 4 }));
+                new[] {0, 3, 6}, new[] {4}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 3, 6 }, new[] { 4, 0 }));
+                new[] {2, 3, 6}, new[] {4, 0}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 3, 2 }, new[] { -1, 0 }));
+                new[] {1, 3, 2}, new[] {-1, 0}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 1, 6 }, new[] { 3, 5 }));
+                new[] {-1, 1, 6}, new[] {3, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 2, 5 }, new[] { 6 }));
+                new[] {1, 2, 5}, new[] {6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 4, 5 }, new[] { 6 }));
+                new[] {2, 4, 5}, new[] {6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 3, 5 }, new[] { 4, 6 }));
+                new[] {2, 3, 5}, new[] {4, 6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 0, 3 }, new[] { 4, 6 }));
+                new[] {2, 0, 3}, new[] {4, 6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 4, 6 }, new[] { 2 }));
+                new[] {0, 4, 6}, new[] {2}));
             result.AddRange(CreateTriangle(total,
-                new[] { 5, -1, 6 }, new[] { 1, 2 }));
+                new[] {5, -1, 6}, new[] {1, 2}));
             result.AddRange(CreateTriangle(total,
-                new[] { 1, 2, 3 }, new[] { 5, 6 }));
+                new[] {1, 2, 3}, new[] {5, 6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 4, 3 }, new[] { 5, 6 }));
+                new[] {2, 4, 3}, new[] {5, 6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 5, 2, 6 }, new[] { 1, -1 }));
+                new[] {5, 2, 6}, new[] {1, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 2, 5 }, new[] { 1, -1 }));
+                new[] {0, 2, 5}, new[] {1, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 3, 0, 5 }, new[] { 1, -1 }));
+                new[] {3, 0, 5}, new[] {1, -1}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 2, 5 }, new[] { 1 }));
+                new[] {-1, 2, 5}, new[] {1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 6, 5 }, new[] { 1 }));
+                new[] {2, 6, 5}, new[] {1}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, -1, 6 }, new[] { 3, 4, 5 }));
+                new[] {0, -1, 6}, new[] {3, 4, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { -1, 2, 6 }, new[] { 1, 4, 5 }));
+                new[] {-1, 2, 6}, new[] {1, 4, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, -1, 3 }, new[] { 1, 4, 5 }));
+                new[] {0, -1, 3}, new[] {1, 4, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 0, 2, 3 }, new[] { 1, 1, 4, 5 }));
+                new[] {0, 2, 3}, new[] {1, 1, 4, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, 6, 3 }, new[] { 1, 1, 4, 5 }));
+                new[] {2, 6, 3}, new[] {1, 1, 4, 5}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, -1, 5 }, new[] { 0, 3, 4, 6 }));
+                new[] {2, -1, 5}, new[] {0, 3, 4, 6}));
             result.AddRange(CreateTriangle(total,
-                new[] { 2, -1,3  }, new[] { 0, 4, 5, 6 }));
+                new[] {2, -1, 3}, new[] {0, 4, 5, 6}));
+            result.AddRange(CreateTriangle(total,
+                new[] {0, 4, 5}, new[] {2, 6}));
+            result.AddRange(CreateTriangle(total,
+                new[] {1, 0, 5}, new[] {2, 6}));
+            result.AddRange(CreateTriangle(total,
+                new[] {2, -1, 3}, new[] {0, 4}));
+            result.AddRange(CreateTriangle(total,
+                new[] {0, 1, 4}, new[] {-1, 3}));
+            result.AddRange(CreateTriangle(total,
+                new[] {0, -1, 5}, new[] {3, 4}));
+            result.AddRange(CreateTriangle(total,
+                new[] {0, 5, 6}, new[] {3, 4}));
+
+            result.AddRange(CreateTriangle(total,
+                new[] {1, -1, 4}, new[] {0, 2}));
 
             return result.ToArray();
         }
@@ -190,8 +205,8 @@ namespace GameDev.Terrain
             if (!AllPointsCanConnect(cp1, cp2, cp3))
                 return new int[0];
 
-            if (ValidNormal(new[] { cp1, cp2, cp3 }) &&
-                ValidTriangle(new[] { cp1.vertIndex, cp2.vertIndex, cp3.vertIndex }))
+            if (ValidNormal(new[] {cp1, cp2, cp3}) &&
+                ValidTriangle(new[] {cp1.vertIndex, cp2.vertIndex, cp3.vertIndex}))
             {
                 result.Add(cp1.vertIndex);
                 result.Add(cp2.vertIndex);

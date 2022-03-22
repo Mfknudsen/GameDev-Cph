@@ -1,7 +1,6 @@
 #region Packages
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 #endregion
@@ -16,7 +15,7 @@ namespace GameDev.Terrain
 
         private List<CreepPoint> toUpdate = new List<CreepPoint>();
 
-        public List<Vector3> triangleIndexesOwned = new List<Vector3>();
+        public List<Vector3Int> triangleIndexesOwned = new List<Vector3Int>();
 
         #endregion
 
@@ -37,7 +36,7 @@ namespace GameDev.Terrain
             {
                 if (corners[i] == oldPoint)
                 {
-                    corners[i] = corners.Contains(newPoint) ? null : newPoint;
+                    corners[i] = newPoint;
                     break;
                 }
             }
