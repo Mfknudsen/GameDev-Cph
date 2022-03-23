@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
@@ -35,6 +36,7 @@ namespace GameDev.Multiplayer
         {
             name = name.Replace("(Clone)", "");
 
+
             if (instance != null)
                 PhotonNetwork.Destroy(gameObject);
 
@@ -43,6 +45,10 @@ namespace GameDev.Multiplayer
             pv ??= GetComponent<PhotonView>();
 
             playerPerTeam = (PhotonNetwork.CurrentRoom.MaxPlayers - 1) / 2;
+
+            if (!pv.IsMine)
+                return;
+            pv.GetComponentInChildren<CinemachineVirtualCamera>().enabled = true;
 
 #if UNITY_EDITOR
             PhotonNetwork.Instantiate(playerManager.name, Vector3.zero, Quaternion.identity);
@@ -102,10 +108,10 @@ namespace GameDev.Multiplayer
         {
             if (team != Team.None)
             {
-                if (actualPlayerCount[(int) team - 1] == playerPerTeam)
+                if (actualPlayerCount[(int)team - 1] == playerPerTeam)
                     return;
 
-                actualPlayerCount[(int) team - 1]++;
+                actualPlayerCount[(int)team - 1]++;
 
                 pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
 

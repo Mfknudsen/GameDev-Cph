@@ -1,6 +1,8 @@
 #region Packages
 
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 #endregion
@@ -11,6 +13,7 @@ namespace GameDev.Common
     {
         public static void DrawString(string text, Vector3 worldPos, int? fontsize)
         {
+#if UNITY_EDITOR
             GUIStyle style = new GUIStyle();
             style.fontSize = fontsize.HasValue ? fontsize.Value : 30;
 
@@ -30,6 +33,7 @@ namespace GameDev.Common
             }
 
             Handles.EndGUI();
+#endif
         }
     }
 }

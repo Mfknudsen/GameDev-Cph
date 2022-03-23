@@ -10,6 +10,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 #endregion
 
@@ -34,8 +35,9 @@ namespace GameDev.Terrain
         [SerializeField] private int[] toDeactivate;
         [SerializeField] private Transform checkFromPoint;
 
+        [SerializeField] public List<CreepPoint> serializedList;
 
-        private CreepPoint[,,] creepPoints;
+       [SerializeReference] public CreepPoint[,,] creepPoints;
 
         private List<CreepPoint> toUpdateSource = new List<CreepPoint>(),
             activeVertices = new List<CreepPoint>();
@@ -47,6 +49,12 @@ namespace GameDev.Terrain
 
         private List<Vector3> verts = new List<Vector3>();
         private List<int> tris = new List<int>();
+
+        private List<Vector3Int> vertsAdd = new List<Vector3Int>(),
+            vertsRemove = new List<Vector3Int>();
+
+        private List<int> triRemove = new List<int>(),
+            triAdd = new List<int>();
 
         #endregion
 
@@ -87,8 +95,9 @@ namespace GameDev.Terrain
                 }
 
                 int i = 0;
-                foreach (CreepPoint creepPoint in creepPoints)
+                foreach (CreepPoint cp in creepPoints)
                 {
+                    CreepPoint creepPoint = cp;
                     cube.AddPoint(creepPoint);
                     creepPoint.active = true;
 
@@ -123,14 +132,22 @@ namespace GameDev.Terrain
                         }
                     }
 
-                    creepPoint.SetNeighbors(toAdd.ToArray());
+                    creepPoint.SetNeighbors(toAdd.Select(c => c.index).ToArray());
 
                     creepPoint.normal = (creepPoint.worldPosition - new Vector3(0.5f, 0.5f, 0.5f)).normalized;
+
+                    Vector3Int pointIndex = creepPoint.index;
+                    creepPoints[pointIndex.x, pointIndex.y, pointIndex.z] = creepPoint;
                 }
 
                 List<CreepPoint> tempDeactivate = CommonVariable.MultiDimensionalToList(creepPoints);
                 foreach (int index in toDeactivate)
-                    tempDeactivate[index + 1].vertIndex = -1;
+                {
+                    CreepPoint creepPoint = tempDeactivate[index + 1];
+                    creepPoint.vertIndex = -1;
+                    Vector3Int pointIndex = creepPoint.index;
+                    creepPoints[pointIndex.x, pointIndex.y, pointIndex.z] = creepPoint;
+                }
 
                 foreach (CreepPoint creepPoint in creepPoints)
                 {
@@ -147,12 +164,15 @@ namespace GameDev.Terrain
 
                 return;
             }
-
-            StartCoroutine(GeneratePoints());
+            
+            //StartCoroutine(GeneratePoints());
         }
 
         private void Update()
         {
+            if (creepPoints == null || creepPoints.Length == 0)
+                return;
+
             if (debugSquare)
                 return;
 
@@ -173,18 +193,31 @@ namespace GameDev.Terrain
             mesh.triangles = tris.ToArray();
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
+
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            pv.RPC("RPCReceiveTriangleUpdate", RpcTarget.Others,
+                vertsAdd.ToArray(),
+                vertsRemove.ToArray(),
+                triAdd.ToArray(),
+                triRemove.ToArray());
+
+            vertsAdd.Clear();
+            vertsRemove.Clear();
+            triAdd.Clear();
+            triRemove.Clear();
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(transform.position + (Vector3) fieldSize / 2, fieldSize);
+            Gizmos.DrawWireCube(transform.position + (Vector3)fieldSize / 2, fieldSize);
 
             if (creepPoints == null)
                 return;
 
             foreach (CreepPoint creepPoint in creepPoints)
             {
-                if (creepPoint == null || !creepPoint.active || creepPoint.GetConnectedNeighbors().Length == 0)
+                if (!creepPoint.active || creepPoint.GetConnectedNeighbors().Length == 0)
                     continue;
 
                 Color c = Color.red;
@@ -211,13 +244,43 @@ namespace GameDev.Terrain
 
         #endregion
 
+        #region Getters
+
+        public Vector3Int GetSize()
+        {
+            return fieldSize;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return transform.position;
+        }
+
+        public int GetPointsPer()
+        {
+            return pointsPerAxis;
+        }
+
+        public LayerMask GetBuildMask()
+        {
+            return createOnMask;
+        }
+
+        #endregion
+
+        #region Setters
+
+        public void SetPoints(CreepPoint[,,] set)
+        {
+            creepPoints = set;
+        }
+
+        #endregion
+
         #region In
 
         public void AddPointAndUpdateTriangles(CreepPoint point)
         {
-            List<int> updateRemove = new List<int>(),
-                updateAdd = new List<int>();
-
             if (activeVertices.Contains(point)) return;
 
             point.vertIndex = activeVertices.Count;
@@ -225,6 +288,7 @@ namespace GameDev.Terrain
             activeVertices.Add(point);
 
             verts.Add(point.worldPosition);
+            vertsAdd.Add(point.index);
 
             foreach (Cube cube in point.cubesAffected)
             {
@@ -240,9 +304,9 @@ namespace GameDev.Terrain
                             tris.RemoveAt(i + 1);
                             tris.RemoveAt(i);
 
-                            updateRemove.Add(i + 2);
-                            updateRemove.Add(i + 1);
-                            updateRemove.Add(i);
+                            triRemove.Add(i + 2);
+                            triRemove.Add(i + 1);
+                            triRemove.Add(i);
 
                             break;
                         }
@@ -255,10 +319,8 @@ namespace GameDev.Terrain
                     cube.triangleIndexesOwned.Add(new Vector3Int(toAdd[i], toAdd[i + 1], toAdd[i + 2]));
 
                 tris.AddRange(toAdd);
-                updateAdd.AddRange(toAdd);
+                triAdd.AddRange(toAdd);
             }
-
-            pv.RPC("RPCReceiveTriangleUpdate", RpcTarget.Others, updateRemove.ToArray(), updateAdd.ToArray());
         }
 
         public void RemovePointAndUpdateList(CreepPoint point)
@@ -306,8 +368,13 @@ namespace GameDev.Terrain
 
             foreach (CreepPoint activeVertex in activeVertices)
             {
+                CreepPoint creepPoint = activeVertex;
+
                 if (activeVertex.vertIndex > point.vertIndex)
-                    activeVertex.vertIndex--;
+                    creepPoint.vertIndex--;
+
+                Vector3Int pointIndex = creepPoint.index;
+                creepPoints[pointIndex.x, pointIndex.y, pointIndex.z] = creepPoint;
             }
         }
 
@@ -336,7 +403,7 @@ namespace GameDev.Terrain
                 deltaTime = Time.deltaTime,
                 spreadPercentagePerSecond = spreadPercentagePerSecond,
                 randomSpread = new float2(randomSpread.x, randomSpread.y),
-                random = new Unity.Mathematics.Random(1)
+                random = new Random(1)
             };
 
             JobHandle jobHandler = job.Schedule(pointDataArray.Length, 50);
@@ -350,8 +417,14 @@ namespace GameDev.Terrain
                 if (point.GetSpread().Equals(1f))
                     toRemove.Add(point);
                 else if (point.GetSpread() > 0.5f)
-                    toAdd.AddRange(point.GetConnectedNeighbors()
-                        .Where(cp => cp.GetSpread() == 0 && !toUpdateSource.Contains(cp)));
+                {
+                    foreach (Vector3Int connectedIndex in point.GetConnectedNeighbors())
+                    {
+                        CreepPoint creepPoint = creepPoints[connectedIndex.x, connectedIndex.y, connectedIndex.z];
+                        if (creepPoint.GetSpread() == 0 && !toUpdateSource.Contains(creepPoint))
+                            toAdd.Add(creepPoint);
+                    }
+                }
             }
 
             pointDataArray.Dispose();
@@ -364,6 +437,8 @@ namespace GameDev.Terrain
 
         private IEnumerator GeneratePoints()
         {
+            Debug.Log("Start");
+
             Transform origin = transform;
             creepPoints = new CreepPoint[fieldSize.x * pointsPerAxis, fieldSize.y * pointsPerAxis,
                 fieldSize.z * pointsPerAxis];
@@ -389,6 +464,8 @@ namespace GameDev.Terrain
                 }
             }
 
+            Debug.Log("Setup");
+
             #endregion
 
             #region Set neighbors
@@ -403,7 +480,7 @@ namespace GameDev.Terrain
                     index.z == creepPoints.GetLength(2) - 1)
                     continue;
 
-                List<CreepPoint> toSet = new List<CreepPoint>();
+                List<Vector3Int> toSet = new List<Vector3Int>();
 
                 for (int x = -1; x < 2; x++)
                 {
@@ -419,7 +496,7 @@ namespace GameDev.Terrain
                             if (new Vector3(x, y, z) == Vector3.zero)
                                 continue;
 
-                            toSet.Add(creepPoints[toLook.x, toLook.y, toLook.z]);
+                            toSet.Add(toLook);
                         }
                     }
                 }
@@ -428,14 +505,17 @@ namespace GameDev.Terrain
 
                 i++;
 
-                if (i % 500 == 0)
+                if (i % 1000 == 0)
                     yield return null;
             }
 
             #endregion
 
+            Debug.Log("Neighbors");
+
             #region Point is surface
 
+            i = 0;
             foreach (CreepPoint creepPoint in creepPoints)
             {
                 Collider col = CommonPhysic.GetNearestSurfaceBySphere(
@@ -453,17 +533,20 @@ namespace GameDev.Terrain
                     creepPoint.normal = (creepPoint.worldPosition - closestPoint).normalized;
                     creepPoint.worldPosition = closestPoint + creepPoint.normal * 0.03f;
                 }
+
+                i++;
+                if (i % 1000 == 0)
+                    yield return null;
             }
 
             #endregion
+
+            Debug.Log("Surface");
 
             #region Setup Cubes
 
             foreach (CreepPoint creepPoint in creepPoints)
             {
-                if (creepPoint == null)
-                    continue;
-
                 Cube cube = new Cube();
                 cube.AddPoint(creepPoint);
 
@@ -490,7 +573,10 @@ namespace GameDev.Terrain
 
             #endregion
 
-            StartCoroutine(UsablePoints());
+            Debug.Log("Cube");
+
+            serializedList = CommonVariable.MultiDimensionalToList(creepPoints);
+            Debug.Log(serializedList.Count);
         }
 
         private IEnumerator UsablePoints()
@@ -512,11 +598,13 @@ namespace GameDev.Terrain
                 if (point == null || !point.active)
                     continue;
 
-                foreach (CreepPoint neighbor in point.GetNeighbors()
-                             .Where(cp =>
-                                 cp != null && cp.active && !checkedPoints.Contains(cp.index) &&
-                                 !point.GetConnectedNeighbors().Contains(cp)))
+                foreach (Vector3Int neighborIndex in point.GetNeighbors()
+                             .Where(i =>
+                                 !checkedPoints.Contains(i) &&
+                                 !point.GetConnectedNeighbors().Contains(i)))
                 {
+                    CreepPoint neighbor = creepPoints[neighborIndex.x, neighborIndex.y, neighborIndex.z];
+
                     Vector3 pPos = point.worldPosition + point.normal * 0.05f,
                         nPos = neighbor.worldPosition + neighbor.normal * 0.05f;
                     Vector3 dir = nPos - pPos;
@@ -550,10 +638,10 @@ namespace GameDev.Terrain
 
                 Vector3 total = Vector3.zero;
                 int count = 0;
-                foreach (CreepPoint neighbor in creepPoint.GetConnectedNeighbors()
-                             .Where(cp => cp != null && creepPoint.active && cp != creepPoint))
+                foreach (Vector3Int neighborIndex in creepPoint.GetConnectedNeighbors()
+                             .Where(i => i != creepPoint.index))
                 {
-                    total += neighbor.normal;
+                    total += creepPoints[neighborIndex.x, neighborIndex.y, neighborIndex.z].normal;
                     count++;
                 }
 
@@ -571,10 +659,10 @@ namespace GameDev.Terrain
 
                 Vector3 total = creepPoint.worldPosition;
                 int count = 1;
-                foreach (CreepPoint neighbor in creepPoint.GetConnectedNeighbors()
-                             .Where(cp => cp != null && cp.active && cp != creepPoint))
+                foreach (Vector3Int neighborIndex in creepPoint.GetConnectedNeighbors()
+                             .Where(i => i != creepPoint.index))
                 {
-                    total += neighbor.worldPosition;
+                    total += creepPoints[neighborIndex.x, neighborIndex.y, neighborIndex.z].worldPosition;
                     count++;
                 }
 
@@ -599,12 +687,31 @@ namespace GameDev.Terrain
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCReceiveTriangleUpdate(int[] toRemove, int[] toAdd)
+        private void RPCReceiveTriangleUpdate(Vector3Int[] vertAdd, Vector3Int[] vertRemove, int[] triesAdd,
+            int[] triesRemove)
         {
-            foreach (int i in toRemove.OrderBy(i => i).Reverse())
+            foreach (CreepPoint creepPoint in CommonVariable.MultiDimensionalToList(creepPoints)
+                         .Where(cp => vertRemove.Contains(cp.index)).OrderBy(cp => cp.vertIndex).Reverse())
+            {
+                activeVertices.Remove(creepPoint);
+            }
+
+            foreach (Vector3Int index in vertAdd)
+                verts.Add(creepPoints[index.x, index.y, index.z].worldPosition);
+
+            foreach (int i in triesRemove.OrderBy(i => i).Reverse())
                 tris.RemoveAt(i);
 
-            tris.AddRange(toAdd);
+            tris.AddRange(triesAdd);
+        }
+
+        #endregion
+
+        #region In Editor
+
+        public void BuildPointGrid()
+        {
+            StartCoroutine(GeneratePoints());
         }
 
         #endregion
@@ -617,11 +724,17 @@ namespace GameDev.Terrain
     [BurstCompile]
     public struct UpdatePointJob : IJobParallelFor
     {
+        #region Values
+
         public NativeArray<float> pointDataArray;
         public float deltaTime, spreadPercentagePerSecond;
         public float2 randomSpread;
 
-        public Unity.Mathematics.Random random;
+        public Random random;
+
+        #endregion
+
+        #region In
 
         public void Execute(int index)
         {
@@ -637,6 +750,8 @@ namespace GameDev.Terrain
 
             pointDataArray[index] = currentSpread;
         }
+
+        #endregion
     }
 
     [BurstCompile]

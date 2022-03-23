@@ -176,9 +176,9 @@ namespace GameDev.Terrain
 
         private static bool AllPointsCanConnect(CreepPoint cp1, CreepPoint cp2, CreepPoint cp3)
         {
-            return cp1.GetConnectedNeighbors().Contains(cp2) &&
-                   cp1.GetConnectedNeighbors().Contains(cp3) &&
-                   cp2.GetConnectedNeighbors().Contains(cp3);
+            return cp1.GetConnectedNeighbors().Contains(cp2.index) &&
+                   cp1.GetConnectedNeighbors().Contains(cp3.index) &&
+                   cp2.GetConnectedNeighbors().Contains(cp3.index);
         }
 
         private static int[] CreateTriangle(CreepPoint[] points, int[] triIndex, int[] dependIndex)

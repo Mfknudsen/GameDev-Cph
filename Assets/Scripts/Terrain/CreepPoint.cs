@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 #endregion
 
@@ -15,26 +14,25 @@ namespace GameDev.Terrain
     {
         #region Values
 
-        public Vector3 worldPosition, normal;
+        [SerializeField, HideInInspector] public Vector3 worldPosition, normal;
+        [SerializeField, HideInInspector] public Vector3Int index;
 
-        public Vector3Int index;
+        [SerializeField, HideInInspector] private List<Vector3Int> neighbors,
+            connectedNeighbors;
 
-        private List<CreepPoint> neighbors = new List<CreepPoint>(),
-            connectedNeighbors = new List<CreepPoint>();
+        [SerializeField, HideInInspector] public bool active;
 
-        public bool active;
+        [SerializeField, HideInInspector] public List<int> spreadStrength;
 
-        public List<int> spreadStrength;
+        [SerializeField, HideInInspector] public int vertIndex;
 
-        public int vertIndex = -1;
+        [SerializeField, HideInInspector] public List<Cube> cubesAffected;
 
-        public List<Cube> cubesAffected = new List<Cube>();
+        [SerializeField, HideInInspector] private CreepManager manager;
 
-        private CreepManager manager;
+        [SerializeField, HideInInspector] private bool shouldUpdate;
 
-        private bool shouldUpdate;
-
-        private float spread, perlinNoise;
+        [SerializeField, HideInInspector] private float spread, perlinNoise;
 
         #endregion
 
@@ -46,15 +44,26 @@ namespace GameDev.Terrain
             this.worldPosition = worldPosition;
             this.manager = manager;
             this.perlinNoise = perlinNoise;
-            
-            connectedNeighbors.Add(this);
+
+            neighbors = new List<Vector3Int>();
+            connectedNeighbors = new List<Vector3Int>();
+            cubesAffected = new List<Cube>();
+            spreadStrength = new List<int>();
+
+            vertIndex = -1;
+            normal = Vector3.zero;
+            active = false;
+            shouldUpdate = false;
+            spread = 0;
+
+            connectedNeighbors.Add(this.index);
         }
 
         #endregion
 
         #region Getters
 
-        public CreepPoint[] GetNeighbors()
+        public Vector3Int[] GetNeighbors()
         {
             return neighbors.ToArray();
         }
@@ -79,7 +88,7 @@ namespace GameDev.Terrain
             return perlinNoise;
         }
 
-        public CreepPoint[] GetConnectedNeighbors()
+        public Vector3Int[] GetConnectedNeighbors()
         {
             return connectedNeighbors.ToArray();
         }
@@ -88,7 +97,7 @@ namespace GameDev.Terrain
 
         #region Setters
 
-        public void SetNeighbors(CreepPoint[] points)
+        public void SetNeighbors(Vector3Int[] points)
         {
             neighbors.AddRange(points);
         }
@@ -111,8 +120,8 @@ namespace GameDev.Terrain
 
         public void AddConnected(CreepPoint cp)
         {
-            if (!connectedNeighbors.Contains(cp))
-                connectedNeighbors.Add(cp);
+            if (!connectedNeighbors.Contains(cp.index))
+                connectedNeighbors.Add(cp.index);
         }
 
         #endregion
