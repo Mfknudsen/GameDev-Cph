@@ -2,11 +2,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameDev.Common;
 using GameDev.Editor.Utilities;
 using GameDev.Terrain;
-using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,25 +14,39 @@ using UnityEngine;
 namespace GameDev.Editor.Terrain
 {
     [CustomEditor(typeof(CreepManager))]
-    public class CreepManagerEditor : OdinEditor
+    public class CreepManagerEditor : UnityEditor.Editor
     {
+        #region Values
+
+        private bool generating;
+
+        private int percent;
+
+        #endregion
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            if (EditorGUILayout.Toggle(false))
+            if (!generating)
             {
-                CreepManager manager = (CreepManager)target;
-                EditorCoroutines.Execute(GeneratePoints(manager, manager.GetPosition(), manager.GetSize(),
-                    manager.GetPointsPer()));
+                if (EditorGUILayout.Toggle(false))
+                {
+                    generating = true;
+                    CreepManager manager = (CreepManager) target;
+                    EditorCoroutines.Execute(GeneratePoints(manager, manager.GetPosition(), manager.GetSize(),
+                        manager.GetPointsPer()));
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField(percent + "");
             }
         }
 
-        private static IEnumerator GeneratePoints(CreepManager manager, Vector3 origin, Vector3Int fieldSize,
+        private IEnumerator GeneratePoints(CreepManager manager, Vector3 origin, Vector3Int fieldSize,
             int pointsPerAxis)
         {
-            Debug.Log("Start");
-
             CreepPoint[,,] creepPoints = new CreepPoint[fieldSize.x * pointsPerAxis, fieldSize.y * pointsPerAxis,
                 fieldSize.z * pointsPerAxis];
 
@@ -58,58 +71,11 @@ namespace GameDev.Editor.Terrain
                 }
             }
 
-            Debug.Log("Setup");
-
             #endregion
-
-            #region Set neighbors
-
-            int i = 0;
-            foreach (CreepPoint creepPoint in creepPoints)
-            {
-                Vector3Int index = creepPoint.index;
-
-                if (index.x == creepPoints.GetLength(0) - 1 ||
-                    index.y == creepPoints.GetLength(1) - 1 ||
-                    index.z == creepPoints.GetLength(2) - 1)
-                    continue;
-
-                List<Vector3Int> toSet = new List<Vector3Int>();
-
-                for (int x = -1; x < 2; x++)
-                {
-                    for (int y = -1; y < 2; y++)
-                    {
-                        for (int z = -1; z < 2; z++)
-                        {
-                            Vector3Int toLook = index + new Vector3Int(x, y, z);
-
-                            if (toLook.x < 0 || toLook.y < 0 || toLook.z < 0)
-                                continue;
-
-                            if (new Vector3(x, y, z) == Vector3.zero)
-                                continue;
-
-                            toSet.Add(toLook);
-                        }
-                    }
-                }
-
-                creepPoint.SetNeighbors(toSet.ToArray());
-
-                i++;
-
-                if (i % 1000 == 0)
-                    yield return null;
-            }
-
-            #endregion
-
-            Debug.Log("Neighbors");
 
             #region Point is surface
 
-            i = 0;
+            int i = 0;
             foreach (CreepPoint creepPoint in creepPoints)
             {
                 Collider col = CommonPhysic.GetNearestSurfaceBySphere(
@@ -135,56 +101,97 @@ namespace GameDev.Editor.Terrain
 
             #endregion
 
-            Debug.Log("Surface");
+            #region Usable
 
-            #region Setup Cubes
+            List<Vector3Int> checkedPoints = new List<Vector3Int>(),
+                toCheck = new List<Vector3Int>();
 
-            foreach (CreepPoint creepPoint in creepPoints)
+            toCheck.Add(CommonVariable.MultiDimensionalToList(creepPoints)
+                .Where(cp => cp != null && cp.active)
+                .OrderBy(cp => Vector3.Distance(cp.worldPosition, manager.GetClosestPointPosition())).First().index);
+
+            int totalCount = CommonVariable.MultiDimensionalToList(creepPoints)
+                .Where(cp => cp != null && cp.active)
+                .OrderBy(cp => Vector3.Distance(cp.worldPosition, manager.GetClosestPointPosition()))
+                .Count();
+            int j = 0;
+            while (toCheck.Count > 0)
             {
-                Cube cube = new Cube();
-                cube.AddPoint(creepPoint);
+                CreepPoint point = creepPoints[toCheck[0].x, toCheck[0].y, toCheck[0].z];
 
-                for (int x = 0; x < 2; x++)
+                checkedPoints.Add(toCheck[0]);
+                toCheck.RemoveAt(0);
+
+                if (point == null || !point.active)
+                    continue;
+
+                foreach (Vector3Int neighborIndex in point.GetConnectedNeighbors())
                 {
-                    for (int y = 0; y < 2; y++)
+                    CreepPoint neighbor = creepPoints[neighborIndex.x, neighborIndex.y, neighborIndex.z];
+
+                    if (neighbor == null || !neighbor.active)
+                        continue;
+
+                    Vector3 pPos = point.worldPosition + point.normal * 0.05f,
+                        nPos = neighbor.worldPosition + neighbor.normal * 0.05f;
+                    Vector3 dir = nPos - pPos;
+
+                    if (!Physics.Raycast(neighbor.worldPosition, -dir.normalized, dir.magnitude, manager.GetBlockMask(),
+                            QueryTriggerInteraction.Ignore) &&
+                        !Physics.Raycast(point.worldPosition, dir.normalized, dir.magnitude, manager.GetBlockMask(),
+                            QueryTriggerInteraction.Ignore))
                     {
-                        for (int z = 0; z < 2; z++)
-                        {
-                            if (new Vector3(x, y, z) == Vector3.zero) continue;
+                        if (!checkedPoints.Contains(neighbor.index) && !toCheck.Contains(neighbor.index))
+                            toCheck.Add(neighbor.index);
 
-                            Vector3Int total = new Vector3Int(x, y, z) + creepPoint.index;
-
-                            if (total.x >= creepPoints.GetLength(0) ||
-                                total.y >= creepPoints.GetLength(1) ||
-                                total.z >= creepPoints.GetLength(2))
-                                continue;
-
-                            cube.AddPoint(creepPoints[total.x, total.y, total.z]);
-                        }
+                        point.AddConnected(neighbor.index);
+                        neighbor.AddConnected(point.index);
                     }
                 }
+
+                j++;
+                percent = (int) (j / (float) totalCount * 100);
+
+                yield return null;
             }
+
+            foreach (CreepPoint creepPoint in CommonVariable.MultiDimensionalToList(creepPoints)
+                         .Where(cp => cp != null && cp.active))
+                creepPoint.active = creepPoint.GetConnectedNeighbors().Length > 0;
 
             #endregion
 
-            Debug.Log("Cube");
+            int count = 0;
 
-            i = 0;
-            manager.serializedList = new List<CreepPoint>();
-            foreach (CreepPoint creepPoint in creepPoints)
+            totalCount = CommonVariable.MultiDimensionalToList(creepPoints).Where(cp => cp != null && cp.active)
+                .Count();
+
+            CreepManagerSaveData managerSaveData = manager.GetSaveDataHolder();
+            managerSaveData.pointSaveData = new List<CreepPointSaveData>();
+            foreach (CreepPoint creepPoint in CommonVariable.MultiDimensionalToList(creepPoints)
+                         .Where(cp => cp != null && cp.active))
             {
-                Undo.RecordObject(manager, "Generating Points");
+                CreepPointSaveData pointSaveData = new CreepPointSaveData()
+                {
+                    index = creepPoint.index,
+                    connected = creepPoint.GetConnectedNeighbors().ToList()
+                };
+                managerSaveData.pointSaveData.Add(pointSaveData);
 
-                manager.serializedList.Add(creepPoint);
+                count++;
 
-                EditorUtility.SetDirty(manager);
-                
-                i++;
-                if (i % 50 == 0)
-                    yield return null;
+                if (count % 50 == 0)
+                {
+                    EditorUtility.SetDirty(manager);
+                    yield return 5;
+                }
+
+                percent = (int) (count / (float) totalCount * 100);
             }
 
-            Debug.Log("Done");
+            EditorUtility.SetDirty(manager);
+
+            generating = false;
         }
     }
 }

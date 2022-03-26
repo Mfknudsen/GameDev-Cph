@@ -14,25 +14,24 @@ namespace GameDev.Terrain
     {
         #region Values
 
-        [SerializeField, HideInInspector] public Vector3 worldPosition, normal;
-        [SerializeField, HideInInspector] public Vector3Int index;
+         public Vector3 worldPosition, normal;
+      public Vector3Int index;
 
-        [SerializeField, HideInInspector] private List<Vector3Int> neighbors,
-            connectedNeighbors;
+   private List<Vector3Int> connectedNeighbors;
 
-        [SerializeField, HideInInspector] public bool active;
+         public bool active;
 
-        [SerializeField, HideInInspector] public List<int> spreadStrength;
+        public List<int> spreadStrength;
 
-        [SerializeField, HideInInspector] public int vertIndex;
+        public int vertIndex;
 
-        [SerializeField, HideInInspector] public List<Cube> cubesAffected;
+       public List<Cube> cubesAffected;
 
-        [SerializeField, HideInInspector] private CreepManager manager;
+        private CreepManager manager;
 
-        [SerializeField, HideInInspector] private bool shouldUpdate;
+        private bool shouldUpdate;
 
-        [SerializeField, HideInInspector] private float spread, perlinNoise;
+         private float spread, perlinNoise;
 
         #endregion
 
@@ -45,7 +44,6 @@ namespace GameDev.Terrain
             this.manager = manager;
             this.perlinNoise = perlinNoise;
 
-            neighbors = new List<Vector3Int>();
             connectedNeighbors = new List<Vector3Int>();
             cubesAffected = new List<Cube>();
             spreadStrength = new List<int>();
@@ -54,7 +52,7 @@ namespace GameDev.Terrain
             normal = Vector3.zero;
             active = false;
             shouldUpdate = false;
-            spread = 0;
+            spread = 0f;
 
             connectedNeighbors.Add(this.index);
         }
@@ -62,12 +60,7 @@ namespace GameDev.Terrain
         #endregion
 
         #region Getters
-
-        public Vector3Int[] GetNeighbors()
-        {
-            return neighbors.ToArray();
-        }
-
+        
         public int GetHighestSpreadStrength()
         {
             return spreadStrength.OrderBy(s => s).First();
@@ -97,11 +90,6 @@ namespace GameDev.Terrain
 
         #region Setters
 
-        public void SetNeighbors(Vector3Int[] points)
-        {
-            neighbors.AddRange(points);
-        }
-
         public void SetSpread(float set)
         {
             if (spread == 0 && set > 0)
@@ -118,10 +106,10 @@ namespace GameDev.Terrain
             spread = set;
         }
 
-        public void AddConnected(CreepPoint cp)
+        public void AddConnected(Vector3Int cpIndex)
         {
-            if (!connectedNeighbors.Contains(cp.index))
-                connectedNeighbors.Add(cp.index);
+            if (!connectedNeighbors.Contains(cpIndex))
+                connectedNeighbors.Add(cpIndex);
         }
 
         #endregion
