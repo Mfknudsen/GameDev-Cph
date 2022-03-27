@@ -22,6 +22,8 @@ namespace GameDev.Editor.Terrain
 
         private int percent;
 
+        private string currentPart = "";
+
         #endregion
 
         public override void OnInspectorGUI()
@@ -40,17 +42,25 @@ namespace GameDev.Editor.Terrain
             }
             else
             {
-                EditorGUILayout.LabelField(percent + "");
+                Rect r = EditorGUILayout.BeginVertical();
+                EditorGUI.ProgressBar(r, (float) percent / 100, currentPart);
+                GUILayout.Space(18);
+                EditorGUILayout.EndVertical();
             }
         }
 
         private IEnumerator GeneratePoints(CreepManager manager, Vector3 origin, Vector3Int fieldSize,
             int pointsPerAxis)
         {
+            #region Setup Points
+
             CreepPoint[,,] creepPoints = new CreepPoint[fieldSize.x * pointsPerAxis, fieldSize.y * pointsPerAxis,
                 fieldSize.z * pointsPerAxis];
+            Dictionary<Vector3Int, Vector3Int[]> neighbors = new Dictionary<Vector3Int, Vector3Int[]>();
+            int i = 0, totalCount;
 
-            #region Setup Points
+            currentPart = "Setup";
+            totalCount = creepPoints.Length;
 
             for (int x = 0; x < fieldSize.x * pointsPerAxis; x++)
             {
@@ -62,10 +72,11 @@ namespace GameDev.Editor.Terrain
                             new Vector3Int(x, y, z),
                             origin + new Vector3(x, y, z) / pointsPerAxis,
                             manager,
-                            Mathf.PerlinNoise((x + y) * 0.9f, (z + y) * 0.9f)
+                            0
                         );
 
-                        if ((x + y + z) % 500 == 0)
+                        i++;
+                        if (i % 500 == 0)
                             yield return null;
                     }
                 }
@@ -75,7 +86,8 @@ namespace GameDev.Editor.Terrain
 
             #region Point is surface
 
-            int i = 0;
+            currentPart = "Surface";
+            i = 0;
             foreach (CreepPoint creepPoint in creepPoints)
             {
                 Collider col = CommonPhysic.GetNearestSurfaceBySphere(
@@ -91,11 +103,53 @@ namespace GameDev.Editor.Terrain
                     Vector3 closestPoint = col.ClosestPoint(creepPoint.worldPosition);
 
                     creepPoint.normal = (creepPoint.worldPosition - closestPoint).normalized;
-                    creepPoint.worldPosition = closestPoint + creepPoint.normal * 0.03f;
+                    creepPoint.worldPosition = closestPoint + creepPoint.normal * 0.5f;
                 }
 
                 i++;
-                if (i % 1000 == 0)
+                percent = (int) (i / (float) totalCount * 100);
+
+                if (i % 500 == 0)
+                    yield return null;
+            }
+
+            #endregion
+
+            #region Neighbors
+
+            currentPart = "Neighbors";
+
+            foreach (CreepPoint creepPoint in creepPoints)
+            {
+                if (creepPoint == null || !creepPoint.active)
+                    continue;
+
+                List<Vector3Int> toAdd = new List<Vector3Int>();
+                for (int xAdd = -1; xAdd < 2; xAdd++)
+                {
+                    for (int yAdd = -1; yAdd < 2; yAdd++)
+                    {
+                        for (int zAdd = -1; zAdd < 2; zAdd++)
+                        {
+                            Vector3Int index = creepPoint.index + new Vector3Int(xAdd, yAdd, zAdd);
+
+                            if (index == creepPoint.index ||
+                                index.x < 0 || index.x >= creepPoints.GetLength(0) ||
+                                index.y < 0 || index.y >= creepPoints.GetLength(1) ||
+                                index.z < 0 || index.z >= creepPoints.GetLength(2))
+                                continue;
+
+                            toAdd.Add(index);
+                        }
+                    }
+                }
+
+                neighbors.Add(creepPoint.index, toAdd.ToArray());
+
+                i++;
+                percent = (int) (i / (float) totalCount * 100);
+
+                if (i % 500 == 0)
                     yield return null;
             }
 
@@ -103,6 +157,9 @@ namespace GameDev.Editor.Terrain
 
             #region Usable
 
+            currentPart = "Usable";
+
+            i = 0;
             List<Vector3Int> checkedPoints = new List<Vector3Int>(),
                 toCheck = new List<Vector3Int>();
 
@@ -110,11 +167,11 @@ namespace GameDev.Editor.Terrain
                 .Where(cp => cp != null && cp.active)
                 .OrderBy(cp => Vector3.Distance(cp.worldPosition, manager.GetClosestPointPosition())).First().index);
 
-            int totalCount = CommonVariable.MultiDimensionalToList(creepPoints)
+            totalCount = CommonVariable.MultiDimensionalToList(creepPoints)
                 .Where(cp => cp != null && cp.active)
                 .OrderBy(cp => Vector3.Distance(cp.worldPosition, manager.GetClosestPointPosition()))
                 .Count();
-            int j = 0;
+
             while (toCheck.Count > 0)
             {
                 CreepPoint point = creepPoints[toCheck[0].x, toCheck[0].y, toCheck[0].z];
@@ -125,43 +182,43 @@ namespace GameDev.Editor.Terrain
                 if (point == null || !point.active)
                     continue;
 
-                foreach (Vector3Int neighborIndex in point.GetConnectedNeighbors())
+                foreach (Vector3Int neighborIndex in neighbors[point.index].Where(p => !checkedPoints.Contains(p)))
                 {
                     CreepPoint neighbor = creepPoints[neighborIndex.x, neighborIndex.y, neighborIndex.z];
 
-                    if (neighbor == null || !neighbor.active)
+                    if (neighbor == null || !neighbor.active || neighbor.GetConnectedNeighbors().Contains(point.index))
                         continue;
 
                     Vector3 pPos = point.worldPosition + point.normal * 0.05f,
                         nPos = neighbor.worldPosition + neighbor.normal * 0.05f;
                     Vector3 dir = nPos - pPos;
 
-                    if (!Physics.Raycast(neighbor.worldPosition, -dir.normalized, dir.magnitude, manager.GetBlockMask(),
+                    if (!Physics.Raycast(nPos, -dir.normalized, dir.magnitude, manager.GetBlockMask(),
                             QueryTriggerInteraction.Ignore) &&
-                        !Physics.Raycast(point.worldPosition, dir.normalized, dir.magnitude, manager.GetBlockMask(),
+                        !Physics.Raycast(pPos, dir.normalized, dir.magnitude, manager.GetBlockMask(),
                             QueryTriggerInteraction.Ignore))
                     {
                         if (!checkedPoints.Contains(neighbor.index) && !toCheck.Contains(neighbor.index))
                             toCheck.Add(neighbor.index);
 
-                        point.AddConnected(neighbor.index);
+                        point.AddConnected(neighborIndex);
                         neighbor.AddConnected(point.index);
                     }
                 }
 
-                j++;
-                percent = (int) (j / (float) totalCount * 100);
+                i++;
+                percent = (int) (i / (float) totalCount * 100);
 
-                yield return null;
+                yield return 2;
             }
 
             foreach (CreepPoint creepPoint in CommonVariable.MultiDimensionalToList(creepPoints)
                          .Where(cp => cp != null && cp.active))
-                creepPoint.active = creepPoint.GetConnectedNeighbors().Length > 0;
+                creepPoint.active = creepPoint.GetConnectedNeighbors().Length >= 2;
 
             #endregion
 
-            int count = 0;
+            #region Save
 
             totalCount = CommonVariable.MultiDimensionalToList(creepPoints).Where(cp => cp != null && cp.active)
                 .Count();
@@ -178,18 +235,20 @@ namespace GameDev.Editor.Terrain
                 };
                 managerSaveData.pointSaveData.Add(pointSaveData);
 
-                count++;
+                i++;
 
-                if (count % 50 == 0)
+                if (i % 50 == 0)
                 {
-                    EditorUtility.SetDirty(manager);
+                    EditorUtility.SetDirty(managerSaveData);
                     yield return 5;
                 }
 
-                percent = (int) (count / (float) totalCount * 100);
+                percent = (int) (i / (float) totalCount * 100);
             }
 
             EditorUtility.SetDirty(manager);
+
+            #endregion
 
             generating = false;
         }

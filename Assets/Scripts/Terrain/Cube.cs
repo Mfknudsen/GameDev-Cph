@@ -42,20 +42,16 @@ namespace GameDev.Terrain
             }
         }
 
-        public void AddPoint(CreepPoint point)
+        public void AddPoint(CreepPoint point, int index)
         {
-            if (point == null) return;
+            if (index < 0 || index >= corners.Length)
+                return;
 
-            for (int i = 0; i < corners.Length; i++)
-            {
-                if (corners[i] == null)
-                {
-                    corners[i] = point;
-                    point.cubesAffected.Add(this);
+            corners[index]?.cubesAffected.Remove(this);
 
-                    break;
-                }
-            }
+            corners[index] = point;
+
+            point?.cubesAffected.Add(this);
         }
 
         public void AddToUpdate(CreepPoint point)
