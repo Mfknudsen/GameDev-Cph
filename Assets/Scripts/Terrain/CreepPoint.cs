@@ -1,6 +1,5 @@
 #region Packages
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,29 +8,28 @@ using UnityEngine;
 
 namespace GameDev.Terrain
 {
-    [Serializable]
     public class CreepPoint
     {
         #region Values
 
-         public Vector3 worldPosition, normal;
-      public Vector3Int index;
+        public Vector3 worldPosition, normal;
+        public Vector3Int index;
 
-   private List<Vector3Int> connectedNeighbors;
+        private List<Vector3Int> connectedNeighbors;
 
-         public bool active;
+        public bool active;
 
         public List<int> spreadStrength;
 
         public int vertIndex;
 
-       public List<Cube> cubesAffected;
+        public List<Cube> cubesAffected;
 
         private CreepManager manager;
 
         private bool shouldUpdate;
 
-         private float spread, perlinNoise;
+        private float spread, perlinNoise;
 
         #endregion
 
@@ -60,7 +58,7 @@ namespace GameDev.Terrain
         #endregion
 
         #region Getters
-        
+
         public int GetHighestSpreadStrength()
         {
             return spreadStrength.OrderBy(s => s).First();

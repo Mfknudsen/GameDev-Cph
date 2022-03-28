@@ -43,8 +43,9 @@ namespace GameDev.Editor.Terrain
             else
             {
                 Rect r = EditorGUILayout.BeginVertical();
+                GUILayout.Space(5);
                 EditorGUI.ProgressBar(r, (float) percent / 100, currentPart);
-                GUILayout.Space(18);
+                GUILayout.Space(20);
                 EditorGUILayout.EndVertical();
             }
         }

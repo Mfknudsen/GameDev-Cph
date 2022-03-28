@@ -164,6 +164,8 @@ namespace GameDev.Terrain
             if (PhotonNetwork.IsMasterClient)
                 StartCoroutine(UpdatePoints());
 #endif
+
+            StartCoroutine(UpdatePointSource());
         }
 
         private void Update()
@@ -189,32 +191,6 @@ namespace GameDev.Terrain
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
 
-            List<Vector3Int> toRemove = new List<Vector3Int>(),
-                toAdd = new List<Vector3Int>();
-            foreach (Vector3Int index in toUpdateSource)
-            {
-                CreepPoint creepPoint = creepPoints[index.x, index.y, index.z];
-                float spread = creepPoint.GetSpread();
-
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (spread == 1f)
-                    toRemove.Add(index);
-
-                if (spread > 0.5f)
-                {
-                    foreach (Vector3Int connectedNeighbor in creepPoint.GetConnectedNeighbors()
-                                 .Where(cp => !toAdd.Contains(cp) && !toRemove.Contains(cp)))
-                    {
-                        if (creepPoints[connectedNeighbor.x, connectedNeighbor.y, connectedNeighbor.z].GetSpread() ==
-                            0f)
-                            toAdd.Add(connectedNeighbor);
-                    }
-                }
-            }
-
-            toRemove.ForEach(cp => toUpdateSource.Remove(cp));
-            toUpdateSource.AddRange(toAdd);
-
             if (!PhotonNetwork.IsMasterClient) return;
 
             pv.RPC("RPCReceiveTriangleUpdate", RpcTarget.Others,
@@ -231,7 +207,7 @@ namespace GameDev.Terrain
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireCube(transform.position + (Vector3) fieldSize / 2, fieldSize);
+            Gizmos.DrawWireCube(transform.position + (Vector3)fieldSize / 2, fieldSize);
 
             if (creepPoints == null)
                 return;
@@ -245,7 +221,9 @@ namespace GameDev.Terrain
                 c.a = creepPoint.GetSpread();
                 Gizmos.color = c;
 
-                Gizmos.DrawWireSphere(creepPoint.worldPosition, 0.2f / pointsPerAxis);
+                Gizmos.DrawWireSphere(creepPoint.worldPosition + creepPoint.normal *
+                    (riseCurve.Evaluate(creepPoint.GetSpread()) *
+                     distanceOfSurface), 0.2f / pointsPerAxis);
 
                 if (debugSquare)
                 {
@@ -442,7 +420,7 @@ namespace GameDev.Terrain
                     ref deltaTime,
                     ref spreadPercentagePerSecond);
 
-                JobHandle jobHandler = job.Schedule(pointDataArray.Length, 1);
+                JobHandle jobHandler = job.Schedule(pointDataArray.Length, 50);
                 jobHandler.Complete();
 
                 for (int i = 0; i < pointDataArray.Length; i++)
@@ -460,6 +438,8 @@ namespace GameDev.Terrain
 
         private IEnumerator GeneratePoints()
         {
+            #region Setup
+
             Vector3 origin = transform.position;
             creepPoints = new CreepPoint[fieldSize.x * pointsPerAxis, fieldSize.y * pointsPerAxis,
                 fieldSize.z * pointsPerAxis];
@@ -470,7 +450,7 @@ namespace GameDev.Terrain
                 Vector3Int index = creepPointSaveData.index;
                 CreepPoint point = new CreepPoint(
                     index,
-                    origin + (Vector3) index / pointsPerAxis,
+                    origin + (Vector3)index / pointsPerAxis,
                     this,
                     Mathf.PerlinNoise((index.x + index.y) * 0.9f, (index.z + index.y) * 0.9f)
                 );
@@ -486,6 +466,8 @@ namespace GameDev.Terrain
                 if (i % 500 == 0)
                     yield return null;
             }
+
+            #endregion
 
             #region Point surface
 
@@ -564,6 +546,21 @@ namespace GameDev.Terrain
 
             #endregion
 
+            #region Aveage normals
+
+            foreach (CreepPoint creepPoint in CommonVariable.MultiDimensionalToList(creepPoints)
+                         .Where(cp => cp != null && cp.active))
+            {
+                Vector3 total = Vector3.zero;
+
+                foreach (Vector3Int connected in creepPoint.GetConnectedNeighbors())
+                    total = total + creepPoints[connected.x, connected.y, connected.z].normal;
+
+                creepPoint.normal = total / creepPoint.GetConnectedNeighbors().Length;
+            }
+
+            #endregion
+
             if (checkFromPoint != null)
             {
                 toUpdateSource.Add(CommonVariable.MultiDimensionalToList(creepPoints)
@@ -574,6 +571,62 @@ namespace GameDev.Terrain
             }
 
             ready = true;
+        }
+
+        private IEnumerator UpdatePointSource()
+        {
+            yield return new WaitWhile(() => !ready);
+
+            while (true)
+            {
+                List<Vector3Int> toRemove = new List<Vector3Int>(),
+                    toAdd = new List<Vector3Int>();
+                foreach (Vector3Int index in toUpdateSource)
+                {
+                    CreepPoint creepPoint = creepPoints[index.x, index.y, index.z];
+                    float spread = creepPoint.GetSpread();
+
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    if (spread == 1f)
+                        toRemove.Add(index);
+
+                    if (spread > 0.25f)
+                    {
+                        foreach (Vector3Int connectedNeighbor in creepPoint.GetConnectedNeighbors()
+                                     .Where(cp => !toAdd.Contains(cp) && !toRemove.Contains(cp)))
+                        {
+                            if (creepPoints[connectedNeighbor.x, connectedNeighbor.y, connectedNeighbor.z]
+                                    .GetSpread() ==
+                                0f)
+                                toAdd.Add(connectedNeighbor);
+                        }
+                    }
+                }
+
+
+                int i = 0;
+                foreach (Vector3Int index in toRemove)
+                {
+                    i = i + 1;
+                    toUpdateSource.Remove(index);
+
+                    if (i % 50 == 0)
+                        yield return null;
+                }
+
+                i = 0;
+                foreach (Vector3Int index in toAdd)
+                {
+                    i = i + 1;
+                    toUpdateSource.Add(index);
+
+                    if (i % 50 == 0)
+                        yield return null;
+                }
+
+                yield return null;
+            }
+            // ReSharper disable once IteratorNeverReturns
         }
 
         #region PunRPC

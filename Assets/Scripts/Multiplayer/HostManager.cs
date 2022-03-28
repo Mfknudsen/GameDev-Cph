@@ -15,9 +15,7 @@ namespace GameDev.Multiplayer
     public class HostManager : MonoBehaviourPunCallbacks
     {
         #region Values
-
-        [SerializeField] private GameObject playerManager;
-
+        
         public static HostManager instance;
 
         private PhotonView pv;
@@ -49,10 +47,6 @@ namespace GameDev.Multiplayer
             if (!pv.IsMine)
                 return;
             pv.GetComponentInChildren<CinemachineVirtualCamera>().enabled = true;
-
-#if UNITY_EDITOR
-            PhotonNetwork.Instantiate(playerManager.name, Vector3.zero, Quaternion.identity);
-#endif
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
