@@ -90,18 +90,9 @@ namespace GameDev.Terrain
 
         public void SetSpread(float set)
         {
-            if (spread == 0 && set > 0)
-            {
-                shouldUpdate = true;
-                manager.AddPointAndUpdateTriangles(this);
-            }
-            else if (spread == 0 && set < 0)
-            {
-                shouldUpdate = false;
-                manager.RemovePointAndUpdateList(this);
-            }
-
             spread = set;
+
+            shouldUpdate = spread > 0;
         }
 
         public void AddConnected(Vector3Int cpIndex)

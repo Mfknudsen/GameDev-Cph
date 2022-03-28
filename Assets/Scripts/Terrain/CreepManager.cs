@@ -18,6 +18,8 @@ namespace GameDev.Terrain
     {
         #region Values
 
+        public static CreepManager instance;
+
         [SerializeField] private PhotonView pv;
         [SerializeField] private Vector3Int fieldSize = Vector3Int.one;
         [SerializeField] private int pointsPerAxis = 1;
@@ -61,6 +63,11 @@ namespace GameDev.Terrain
 
         private void Start()
         {
+            if (instance != null)
+                Destroy(gameObject);
+
+            instance = this;
+
             if (meshFilter == null)
             {
                 GameObject obj = new GameObject("Mesh");
@@ -157,12 +164,14 @@ namespace GameDev.Terrain
             }
 
             StartCoroutine(GeneratePoints());
+            StartCoroutine(UpdateMesh());
 
 #if UNITY_EDITOR
             StartCoroutine(UpdatePoints());
 #else
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient){
                 StartCoroutine(UpdatePoints());
+                StartCoroutine(UpdateMesh());
 #endif
 
             StartCoroutine(UpdatePointSource());
@@ -394,47 +403,25 @@ namespace GameDev.Terrain
 
         #endregion
 
-        #region Internal
+        #region Out
 
-        private IEnumerator UpdatePoints()
+        public CreepPoint GetClosestToPosition(Vector3 position)
         {
-            while (!ready)
-                yield return null;
+            Vector3 origin = transform.position;
+            if (position.x < origin.x || position.y < origin.y || position.z < origin.z)
+                return creepPoints[0, 0, 0];
 
-            while (true)
-            {
-                #region Job
+            float distancesBetween = 1f / pointsPerAxis;
+            Vector3Int index = new Vector3Int(Mathf.FloorToInt(position.x / distancesBetween),
+                Mathf.FloorToInt(position.y / distancesBetween),
+                Mathf.FloorToInt(position.z / distancesBetween));
 
-                NativeArray<float> pointDataArray =
-                    new NativeArray<float>(toUpdateSource.Count, Allocator.TempJob);
-
-                for (int i = 0; i < pointDataArray.Length; i++)
-                {
-                    pointDataArray[i] = creepPoints[toUpdateSource[i].x, toUpdateSource[i].y, toUpdateSource[i].z]
-                        .GetSpread();
-                }
-
-                float deltaTime = Time.deltaTime;
-                UpdatePointJob job = new UpdatePointJob(
-                    ref pointDataArray,
-                    ref deltaTime,
-                    ref spreadPercentagePerSecond);
-
-                JobHandle jobHandler = job.Schedule(pointDataArray.Length, 50);
-                jobHandler.Complete();
-
-                for (int i = 0; i < pointDataArray.Length; i++)
-                    creepPoints[toUpdateSource[i].x, toUpdateSource[i].y, toUpdateSource[i].z]
-                        .SetSpread(pointDataArray[i]);
-
-                pointDataArray.Dispose();
-
-                #endregion
-
-                yield return null;
-            }
-            // ReSharper disable once IteratorNeverReturns
+            return creepPoints[index.x, index.y, index.z];
         }
+
+        #endregion
+
+        #region Internal
 
         private IEnumerator GeneratePoints()
         {
@@ -571,6 +558,52 @@ namespace GameDev.Terrain
             }
 
             ready = true;
+
+            Debug.Log("Done");
+        }
+
+        private IEnumerator UpdatePoints()
+        {
+            while (!ready)
+                yield return null;
+
+            while (true)
+            {
+                #region Job
+
+                NativeArray<float> pointDataArray =
+                    new NativeArray<float>(toUpdateSource.Count, Allocator.TempJob);
+
+                for (int i = 0; i < pointDataArray.Length; i++)
+                {
+                    Vector3Int index = toUpdateSource[i];
+                    pointDataArray[i] = creepPoints[index.x, index.y, index.z]
+                        .GetSpread();
+                }
+
+                float deltaTime = Time.deltaTime;
+                UpdatePointJob job = new UpdatePointJob(
+                    pointDataArray,
+                    ref deltaTime,
+                    ref spreadPercentagePerSecond);
+
+                JobHandle jobHandler = job.Schedule(pointDataArray.Length, 50);
+                jobHandler.Complete();
+
+                for (int i = 0; i < pointDataArray.Length; i++)
+                {
+                    Vector3Int index = toUpdateSource[i];
+                    creepPoints[index.x, index.y, index.z]
+                        .SetSpread(pointDataArray[i]);
+                }
+
+                pointDataArray.Dispose();
+
+                #endregion
+
+                yield return null;
+            }
+            // ReSharper disable once IteratorNeverReturns
         }
 
         private IEnumerator UpdatePointSource()
@@ -601,6 +634,8 @@ namespace GameDev.Terrain
                                 toAdd.Add(connectedNeighbor);
                         }
                     }
+
+                    yield return null;
                 }
 
 
@@ -629,6 +664,11 @@ namespace GameDev.Terrain
             // ReSharper disable once IteratorNeverReturns
         }
 
+        private IEnumerator UpdateMesh()
+        {
+            yield break;
+        }
+
         #region PunRPC
 
         [PunRPC]
@@ -653,15 +693,6 @@ namespace GameDev.Terrain
 
         #endregion
 
-        #region In Editor
-
-        public void BuildPointGrid()
-        {
-            StartCoroutine(GeneratePoints());
-        }
-
-        #endregion
-
         #endregion
     }
 
@@ -679,7 +710,7 @@ namespace GameDev.Terrain
 
         #region Build In States
 
-        public UpdatePointJob(ref NativeArray<float> pointDataArray, ref float deltaTime,
+        public UpdatePointJob(NativeArray<float> pointDataArray, ref float deltaTime,
             ref float spreadPercentagePerSecond)
         {
             this.pointDataArray = pointDataArray;
