@@ -70,9 +70,9 @@ namespace GameDev.Terrain
 
         #region Out
 
-        public int[] Calculate()
+        public int[] Calculate(CreepPoint focus)
         {
-            return TriangleGenerator.GenerateFromCube(corners);
+            return TriangleGenerator.GenerateFromCube(corners, focus);
         }
 
         #endregion

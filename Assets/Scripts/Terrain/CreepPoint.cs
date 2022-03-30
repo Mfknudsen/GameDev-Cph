@@ -17,7 +17,7 @@ namespace GameDev.Terrain
 
         private List<Vector3Int> connectedNeighbors;
 
-        public bool active;
+        public bool active, updating, partOfMesh;
 
         public List<int> spreadStrength;
 
@@ -26,8 +26,6 @@ namespace GameDev.Terrain
         public List<Cube> cubesAffected;
 
         private CreepManager manager;
-
-        private bool shouldUpdate;
 
         private float spread, perlinNoise;
 
@@ -49,7 +47,6 @@ namespace GameDev.Terrain
             vertIndex = -1;
             normal = Vector3.zero;
             active = false;
-            shouldUpdate = false;
             spread = 0f;
 
             connectedNeighbors.Add(this.index);
@@ -62,11 +59,6 @@ namespace GameDev.Terrain
         public int GetHighestSpreadStrength()
         {
             return spreadStrength.OrderBy(s => s).First();
-        }
-
-        public bool ShouldUpdate()
-        {
-            return shouldUpdate;
         }
 
         public float GetSpread()
@@ -92,7 +84,34 @@ namespace GameDev.Terrain
         {
             spread = set;
 
-            shouldUpdate = spread > 0;
+            if (spread.Equals(1f))
+            {
+                manager.RemoveUpdatePoint(index);
+
+                updating = false;
+            }
+            else if (spread > 0 && !partOfMesh)
+            {
+                manager.AddActivePoint(index);
+
+                partOfMesh = true;
+            }
+            else if (spread > 0.5f && !updating &&
+                     spreadStrength.Count > 0 && spreadStrength[0] > 0)
+            {
+                Debug.Log(spreadStrength[0]);
+                foreach (Vector3Int connectedNeighbor in GetConnectedNeighbors())
+                    manager.AddUpdatePoint(connectedNeighbor, spreadStrength[0]);
+
+                updating = true;
+            }
+            else if (spread.Equals(0f) && set < 0)
+            {
+                manager.RemoveActivePoint(index);
+
+                partOfMesh = false;
+                updating = false;
+            }
         }
 
         public void AddConnected(Vector3Int cpIndex)

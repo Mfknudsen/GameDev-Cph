@@ -20,7 +20,6 @@ namespace GameDev.Terrain
 
         public static CreepManager instance;
 
-        [SerializeField] private PhotonView pv;
         [SerializeField] private Vector3Int fieldSize = Vector3Int.one;
         [SerializeField] private int pointsPerAxis = 1;
         [SerializeField] private LayerMask createOnMask, blockConnectionMask;
@@ -32,7 +31,6 @@ namespace GameDev.Terrain
 
         [Header("Debug")] [SerializeField] private bool debugSquare;
         [SerializeField] private int[] toDeactivate;
-        [SerializeField] private Transform checkFromPoint;
 
         [SerializeField] private CreepManagerSaveData saveData;
 
@@ -54,8 +52,7 @@ namespace GameDev.Terrain
         private List<Vector3Int> vertsAdd = new List<Vector3Int>(),
             vertsRemove = new List<Vector3Int>();
 
-        private List<int> triRemove = new List<int>(),
-            triAdd = new List<int>();
+        private List<Triangle> activeTriangles = new List<Triangle>();
 
         #endregion
 
@@ -153,7 +150,7 @@ namespace GameDev.Terrain
                         verts.Add(creepPoint.worldPosition);
                 }
 
-                tris.AddRange(cube.Calculate());
+                tris.AddRange(cube.Calculate(null));
 
                 mesh.vertices = verts.ToArray();
                 mesh.triangles = tris.ToArray();
@@ -173,45 +170,6 @@ namespace GameDev.Terrain
                 StartCoroutine(UpdatePoints());
                 StartCoroutine(UpdateMesh());
 #endif
-
-            StartCoroutine(UpdatePointSource());
-        }
-
-        private void Update()
-        {
-            if (creepPoints == null || creepPoints.Length == 0)
-                return;
-
-            if (debugSquare)
-                return;
-
-            verts.Clear();
-            for (int i = 0; i < activeVertices.Count; i++)
-            {
-                CreepPoint point = creepPoints[activeVertices[i].x, activeVertices[i].y, activeVertices[i].z];
-                verts.Add(point.worldPosition +
-                          point.normal *
-                          (riseCurve.Evaluate(point.GetSpread()) * distanceOfSurface *
-                           (riseCurve.Evaluate(point.GetSpread()) > 0 ? point.GetNoise() : 1)));
-            }
-
-            mesh.vertices = verts.ToArray();
-            mesh.triangles = tris.ToArray();
-            mesh.RecalculateBounds();
-            mesh.RecalculateNormals();
-
-            if (!PhotonNetwork.IsMasterClient) return;
-
-            pv.RPC("RPCReceiveTriangleUpdate", RpcTarget.Others,
-                vertsAdd.ToArray(),
-                vertsRemove.ToArray(),
-                triAdd.ToArray(),
-                triRemove.ToArray());
-
-            vertsAdd.Clear();
-            vertsRemove.Clear();
-            triAdd.Clear();
-            triRemove.Clear();
         }
 
         private void OnDrawGizmos()
@@ -289,6 +247,11 @@ namespace GameDev.Terrain
             return saveData;
         }
 
+        public bool GetIsReady()
+        {
+            return ready;
+        }
+
         #endregion
 
         #region Setters
@@ -302,103 +265,29 @@ namespace GameDev.Terrain
 
         #region In
 
-        public void AddPointAndUpdateTriangles(CreepPoint point)
+        public void AddActivePoint(Vector3Int point)
         {
-            if (activeVertices.Contains(point.index)) return;
-
-            point.vertIndex = activeVertices.Count;
-
-            activeVertices.Add(point.index);
-
-            verts.Add(point.worldPosition);
-            vertsAdd.Add(point.index);
-
-            foreach (Cube cube in point.cubesAffected)
-            {
-                foreach (Vector3Int treePointIndex in cube.triangleIndexesOwned)
-                {
-                    for (int i = 0; i < tris.Count - 2; i++)
-                    {
-                        if (tris[i] == treePointIndex.x &&
-                            tris[i + 1] == treePointIndex.y &&
-                            tris[i + 2] == treePointIndex.z)
-                        {
-                            tris.RemoveAt(i + 2);
-                            tris.RemoveAt(i + 1);
-                            tris.RemoveAt(i);
-
-                            triRemove.Add(i + 2);
-                            triRemove.Add(i + 1);
-                            triRemove.Add(i);
-
-                            break;
-                        }
-                    }
-                }
-
-                int[] toAdd = cube.Calculate();
-                cube.triangleIndexesOwned.Clear();
-                for (int i = 0; i < toAdd.Length; i += 3)
-                    cube.triangleIndexesOwned.Add(new Vector3Int(toAdd[i], toAdd[i + 1], toAdd[i + 2]));
-
-                tris.AddRange(toAdd);
-                triAdd.AddRange(toAdd);
-            }
+            if (!vertsAdd.Contains(point))
+                vertsAdd.Add(point);
         }
 
-        public void RemovePointAndUpdateList(CreepPoint point)
+        public void RemoveActivePoint(Vector3Int point)
         {
-            if (!activeVertices.Contains(point.index)) return;
+            if (!vertsRemove.Contains(point))
+                vertsRemove.Add(point);
+        }
 
-            List<int> indexes = new List<int>();
+        public void AddUpdatePoint(Vector3Int point, int spreadStrength)
+        {
+            if (!toUpdateSource.Contains(point))
+                toUpdateSource.Add(point);
 
-            for (int i = 0; i < tris.Count; i++)
-            {
-                if (tris[i] == point.vertIndex)
-                    indexes.Add(i);
-            }
+            creepPoints[point.x, point.y, point.z].spreadStrength.Add(spreadStrength - 1);
+        }
 
-            for (int i = 0; i < indexes.Count; i++)
-            {
-                int offset = i * 3;
-                switch ((indexes[i] + 1) % 3)
-                {
-                    case 0:
-                        tris.RemoveAt(indexes[i] - offset);
-                        tris.RemoveAt(indexes[i] - 1 - offset);
-                        tris.RemoveAt(indexes[i] - 2 - offset);
-                        break;
-
-                    case 1:
-                        tris.RemoveAt(indexes[i] + 2 - offset);
-                        tris.RemoveAt(indexes[i] + 1 - offset);
-                        tris.RemoveAt(indexes[i] - offset);
-                        break;
-
-                    case 2:
-                        tris.RemoveAt(indexes[i] + 1 - offset);
-                        tris.RemoveAt(indexes[i] - offset);
-                        tris.RemoveAt(indexes[i] - 1 - offset);
-                        break;
-                }
-            }
-
-            for (int i = 0; i < tris.Count; i++)
-            {
-                if (tris[i] > point.vertIndex)
-                    tris[i]--;
-            }
-
-            foreach (Vector3Int activeVertex in activeVertices)
-            {
-                CreepPoint creepPoint = creepPoints[activeVertex.x, activeVertex.y, activeVertex.z];
-
-                if (creepPoint.vertIndex > point.vertIndex)
-                    creepPoint.vertIndex--;
-
-                Vector3Int pointIndex = creepPoint.index;
-                creepPoints[pointIndex.x, pointIndex.y, pointIndex.z] = creepPoint;
-            }
+        public void RemoveUpdatePoint(Vector3Int point)
+        {
+            toUpdateSource.Remove(point);
         }
 
         #endregion
@@ -407,16 +296,11 @@ namespace GameDev.Terrain
 
         public CreepPoint GetClosestToPosition(Vector3 position)
         {
-            Vector3 origin = transform.position;
-            if (position.x < origin.x || position.y < origin.y || position.z < origin.z)
-                return creepPoints[0, 0, 0];
-
-            float distancesBetween = 1f / pointsPerAxis;
-            Vector3Int index = new Vector3Int(Mathf.FloorToInt(position.x / distancesBetween),
-                Mathf.FloorToInt(position.y / distancesBetween),
-                Mathf.FloorToInt(position.z / distancesBetween));
-
-            return creepPoints[index.x, index.y, index.z];
+            return CommonVariable.MultiDimensionalToList(creepPoints)
+                .Where(cp =>
+                    cp != null && cp.active && Vector3.Angle(Vector3.up, cp.normal) < 45)
+                .OrderBy(cp =>
+                    Vector3.Distance(cp.worldPosition, position)).First();
         }
 
         #endregion
@@ -548,15 +432,6 @@ namespace GameDev.Terrain
 
             #endregion
 
-            if (checkFromPoint != null)
-            {
-                toUpdateSource.Add(CommonVariable.MultiDimensionalToList(creepPoints)
-                    .Where(cp =>
-                        cp != null && cp.active)
-                    .OrderBy(cp => Vector3.Distance(cp.worldPosition, checkFromPoint.position))
-                    .First().index);
-            }
-
             ready = true;
 
             Debug.Log("Done");
@@ -564,19 +439,21 @@ namespace GameDev.Terrain
 
         private IEnumerator UpdatePoints()
         {
-            while (!ready)
-                yield return null;
+            yield return new WaitWhile(() => !ready);
 
             while (true)
             {
                 #region Job
 
+                Vector3Int[] readUpdateSource = new Vector3Int[toUpdateSource.Count];
+                toUpdateSource.CopyTo(readUpdateSource);
+
                 NativeArray<float> pointDataArray =
-                    new NativeArray<float>(toUpdateSource.Count, Allocator.TempJob);
+                    new NativeArray<float>(readUpdateSource.Length, Allocator.TempJob);
 
                 for (int i = 0; i < pointDataArray.Length; i++)
                 {
-                    Vector3Int index = toUpdateSource[i];
+                    Vector3Int index = readUpdateSource[i];
                     pointDataArray[i] = creepPoints[index.x, index.y, index.z]
                         .GetSpread();
                 }
@@ -592,7 +469,7 @@ namespace GameDev.Terrain
 
                 for (int i = 0; i < pointDataArray.Length; i++)
                 {
-                    Vector3Int index = toUpdateSource[i];
+                    Vector3Int index = readUpdateSource[i];
                     creepPoints[index.x, index.y, index.z]
                         .SetSpread(pointDataArray[i]);
                 }
@@ -606,67 +483,158 @@ namespace GameDev.Terrain
             // ReSharper disable once IteratorNeverReturns
         }
 
-        private IEnumerator UpdatePointSource()
+        private IEnumerator UpdateMesh()
         {
             yield return new WaitWhile(() => !ready);
 
             while (true)
             {
-                List<Vector3Int> toRemove = new List<Vector3Int>(),
-                    toAdd = new List<Vector3Int>();
-                foreach (Vector3Int index in toUpdateSource)
+                int offset = 0;
+                if (vertsRemove.Count > 0)
                 {
-                    CreepPoint creepPoint = creepPoints[index.x, index.y, index.z];
-                    float spread = creepPoint.GetSpread();
+                    int[] readRemove =
+                        vertsRemove.Select(i =>
+                                creepPoints[i.x, i.y, i.z].vertIndex).OrderBy(i => i).Reverse()
+                            .ToArray();
+                    vertsRemove.Clear();
 
-                    // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (spread == 1f)
-                        toRemove.Add(index);
-
-                    if (spread > 0.25f)
+                    List<int> trianglesToRemove = new List<int>();
+                    foreach (int vertIndex in readRemove)
                     {
-                        foreach (Vector3Int connectedNeighbor in creepPoint.GetConnectedNeighbors()
-                                     .Where(cp => !toAdd.Contains(cp) && !toRemove.Contains(cp)))
+                        activeVertices.RemoveAt(vertIndex);
+
+                        for (int i = activeTriangles.Count - 1; i >= 0; i--)
                         {
-                            if (creepPoints[connectedNeighbor.x, connectedNeighbor.y, connectedNeighbor.z]
-                                    .GetSpread() ==
-                                0f)
-                                toAdd.Add(connectedNeighbor);
+                            if (trianglesToRemove.Contains(i)) continue;
+
+                            if (activeTriangles[i].GetAsArray().Contains(vertIndex))
+                                trianglesToRemove.Add(i);
                         }
+
+                        offset = offset + 1;
+                        if (offset % 50 == 0)
+                            yield return 1;
                     }
 
-                    yield return null;
+                    trianglesToRemove.ForEach(i => activeTriangles.RemoveAt(i));
+
+                    for (int i = 0; i < activeVertices.Count; i++)
+                    {
+                        Vector3Int tempIndex = activeVertices[i];
+                        creepPoints[tempIndex.x, tempIndex.y, tempIndex.z].vertIndex = i;
+
+                        offset = offset + 1;
+                        if (offset % 50 == 0)
+                            yield return 1;
+                    }
                 }
 
-
-                int i = 0;
-                foreach (Vector3Int index in toRemove)
+                offset = 0;
+                if (vertsAdd.Count > 0)
                 {
-                    i = i + 1;
-                    toUpdateSource.Remove(index);
+                    Vector3Int[] readAdd = new Vector3Int[vertsAdd.Count];
+                    vertsAdd.CopyTo(readAdd);
+                    vertsAdd.Clear();
 
-                    if (i % 50 == 0)
-                        yield return null;
+                    foreach (Vector3Int index in readAdd)
+                    {
+                        if (activeVertices.Contains(index)) continue;
+
+                        activeVertices.Add(index);
+                        CreepPoint added = creepPoints[index.x, index.y, index.z];
+                        added.vertIndex = activeVertices.Count - 1;
+
+                        foreach (Cube cube in added.cubesAffected)
+                        {
+                            activeTriangles.AddRange(
+                                Triangle.CreateFromArray(cube.Calculate(added)
+                                    .Select(i =>
+                                        activeVertices[i])
+                                    .Select(i =>
+                                        creepPoints[i.x, i.y, i.z])
+                                    .ToArray()));
+
+                            offset = offset + 1;
+                        }
+
+                        if (offset % 50 == 0)
+                            yield return 1;
+                    }
+
+                    yield return 1;
                 }
 
-                i = 0;
-                foreach (Vector3Int index in toAdd)
+                #region Mesh
+
+                if (activeVertices.Count > 2)
                 {
-                    i = i + 1;
-                    toUpdateSource.Add(index);
+                    #region Job
 
-                    if (i % 50 == 0)
-                        yield return null;
+                    NativeArray<Vector3> worldDataArray =
+                            new NativeArray<Vector3>(activeVertices.Count, Allocator.TempJob),
+                        normalDataArray = new NativeArray<Vector3>(activeVertices.Count, Allocator.TempJob);
+
+                    NativeArray<float> riseDataArray = new NativeArray<float>(activeVertices.Count, Allocator.TempJob),
+                        noiseDataArray = new NativeArray<float>(activeVertices.Count, Allocator.TempJob);
+
+                    NativeArray<bool> edgeDataArray = new NativeArray<bool>(activeVertices.Count, Allocator.TempJob);
+
+                    for (int i = 0; i < activeVertices.Count; i++)
+                    {
+                        Vector3Int index = activeVertices[i];
+                        CreepPoint creepPoint = creepPoints[index.x, index.y, index.z];
+
+                        worldDataArray[i] = creepPoint.worldPosition;
+                        normalDataArray[i] = creepPoint.normal;
+                        riseDataArray[i] = riseCurve.Evaluate(creepPoint.GetSpread());
+                        noiseDataArray[i] = creepPoint.GetNoise();
+                        edgeDataArray[i] = creepPoint.spreadStrength[0] > 0;
+                    }
+
+                    UpdateVertPositionJob vertPositionJob = new UpdateVertPositionJob()
+                    {
+                        worldDataArray = worldDataArray,
+                        normalDataArray = normalDataArray,
+                        riseDataArray = riseDataArray,
+                        noiseDataArray = noiseDataArray,
+                        distanceFromSurface = distanceOfSurface,
+                        edgeDataArray = edgeDataArray
+                    };
+
+                    yield return 1;
+
+                    JobHandle jobHandle = vertPositionJob.Schedule(worldDataArray.Length, 50);
+                    jobHandle.Complete();
+
+                    yield return 1;
+
+                    Vector3[] calculatedVerts = new Vector3[worldDataArray.Length];
+                    for (int i = 0; i < worldDataArray.Length; i++)
+                        calculatedVerts[i] = worldDataArray[i];
+
+                    worldDataArray.Dispose();
+                    normalDataArray.Dispose();
+                    riseDataArray.Dispose();
+                    noiseDataArray.Dispose();
+                    edgeDataArray.Dispose();
+
+                    yield return 1;
+
+                    #endregion
+
+                    mesh.vertices = calculatedVerts;
+
+                    List<int> tries = new List<int>();
+                    activeTriangles.ForEach(t => tries.AddRange(t.GetAsArray()));
+                    mesh.triangles = tries.ToArray();
+                    mesh.RecalculateNormals();
                 }
 
-                yield return null;
+                yield return 5;
+
+                #endregion
             }
             // ReSharper disable once IteratorNeverReturns
-        }
-
-        private IEnumerator UpdateMesh()
-        {
-            yield break;
         }
 
         #region PunRPC
@@ -738,5 +706,55 @@ namespace GameDev.Terrain
         #endregion
     }
 
+    [BurstCompile]
+    public struct UpdateVertPositionJob : IJobParallelFor
+    {
+        public NativeArray<Vector3> worldDataArray, normalDataArray;
+        public NativeArray<float> riseDataArray, noiseDataArray;
+        public NativeArray<bool> edgeDataArray;
+
+        public float distanceFromSurface;
+
+        public void Execute(int index)
+        {
+            float visualSpread = edgeDataArray[index] ? riseDataArray[index] : -1.5f;
+
+            worldDataArray[index] = worldDataArray[index] + normalDataArray[index] *
+                (visualSpread * noiseDataArray[index] * distanceFromSurface);
+        }
+    }
+
     #endregion
+
+    public struct Triangle
+    {
+        private CreepPoint i1, i2, i3;
+
+        public Triangle(CreepPoint i1, CreepPoint i2, CreepPoint i3)
+        {
+            this.i1 = i1;
+            this.i2 = i2;
+            this.i3 = i3;
+        }
+
+        public int[] GetAsArray()
+        {
+            return new[] { i1.vertIndex, i2.vertIndex, i3.vertIndex };
+        }
+
+        public static Triangle[] CreateFromArray(CreepPoint[] arr)
+        {
+            List<Triangle> result = new List<Triangle>();
+
+            for (int i = 0; i < arr.Length; i += 3)
+            {
+                if (i + 2 > arr.Length - 1)
+                    break;
+
+                result.Add(new Triangle(arr[i], arr[i + 1], arr[i + 2]));
+            }
+
+            return result.ToArray();
+        }
+    }
 }
