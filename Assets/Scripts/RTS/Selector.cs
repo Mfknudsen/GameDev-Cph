@@ -1,6 +1,5 @@
 #region Packages
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
@@ -16,8 +15,6 @@ namespace GameDev.RTS
     public class Selector : MonoBehaviour
     {
         #region Values
-
-        [SerializeField] private GameObject test;
 
         //Selecting
         [SerializeField] private LayerMask selectMask;
@@ -47,9 +44,7 @@ namespace GameDev.RTS
 
         private void Start()
         {
-            cam ??= GetComponent<Camera>();
-
-            ToPlaceBuilding(Instantiate(test).GetComponent<Building>());
+            cam ??= Camera.main;
         }
 
         private void Update()
@@ -59,7 +54,16 @@ namespace GameDev.RTS
 
             RaycastHit? hit = RayHit(Mathf.Infinity, placingMask);
             if (hit.HasValue)
+            {
+                if (placingObject is RestrictedBuilding &&
+                    hit.Value.transform.gameObject.GetComponent<BuildingPlacement>() is { } buildingPlacement)
+                {
+                    placingObject.transform.position = buildingPlacement.transform.position;
+                    return;
+                }
+
                 placingObject.transform.position = hit.Value.point;
+            }
         }
 
         #endregion

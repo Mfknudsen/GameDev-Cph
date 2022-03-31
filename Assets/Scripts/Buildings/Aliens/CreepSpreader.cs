@@ -40,7 +40,7 @@ namespace GameDev.Buildings.Aliens
         private IEnumerator WaitForManagerResponse()
         {
             yield return new WaitWhile(() => !creepManager.GetIsReady());
-
+            
             creepPoint = creepManager.GetClosestToPosition(transform.position);
             creepPoint.SetSpread(0.1f);
             creepManager.AddUpdatePoint(creepPoint.index,spreadStrength );

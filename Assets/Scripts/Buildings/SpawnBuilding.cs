@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameDev.Buildings
 {
-    public sealed class SpawnBuilding : RestrictedBuilding
+    public sealed class SpawnBuilding : Building
     {
         #region Values
 
@@ -29,9 +29,7 @@ namespace GameDev.Buildings
             base.OnInstantiatedStart();
 
             foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>())
-            {
                 playerManager.spawnPoints.Add(this);
-            }
         }
 
         #endregion
@@ -60,14 +58,15 @@ namespace GameDev.Buildings
                 PlayerManager.CreateController(
                     characterPrefab, 
                     spawnTransform.position, 
-                    spawnTransform.rotation));
+                    spawnTransform.rotation
+                    )
+                );
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
         }
 
         protected override void AddToActionMenu(GridMenu actionMenu)
         {
-            throw new System.NotImplementedException();
         }
 
         #endregion

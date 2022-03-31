@@ -7,6 +7,7 @@ using GameDev.UI.RTS;
 using GameDev.UI.RTS.Grid;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
@@ -24,6 +25,8 @@ namespace GameDev.Buildings
 
         private Selector currentSelector;
 
+        protected UnityEvent onBuildComplete = new UnityEvent(), onDestroy = new UnityEvent();
+
         #endregion
 
         #region Build In States
@@ -32,7 +35,7 @@ namespace GameDev.Buildings
         {
             pv ??= GetComponent<PhotonView>();
 
-            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool) pv.InstantiationData[0])
+            if (pv.InstantiationData != null && pv.InstantiationData.Length > 0 && (bool)pv.InstantiationData[0])
                 OnInstantiatedStart();
             else
                 OnLocalStart();
@@ -67,7 +70,7 @@ namespace GameDev.Buildings
         public void Place()
         {
             Transform trans = transform;
-            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] {true});
+            PhotonNetwork.Instantiate(gameObject.name, trans.position, trans.rotation, 0, new object[] { true });
             Destroy(gameObject);
         }
 
