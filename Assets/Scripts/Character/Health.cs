@@ -220,10 +220,10 @@ namespace GameDev.Character
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCUpdateOthers(float curHP, float curAP)
+        private void RPCUpdateOthers(float updatedHp, float updatedAp)
         {
-            currentArmorPoints = curAP;
-            currentHealthPoints = curHP;
+            currentArmorPoints = updatedAp;
+            currentHealthPoints = updatedHp;
         }
 
         #endregion

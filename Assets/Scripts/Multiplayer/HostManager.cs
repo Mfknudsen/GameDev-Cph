@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
@@ -14,9 +15,7 @@ namespace GameDev.Multiplayer
     public class HostManager : MonoBehaviourPunCallbacks
     {
         #region Values
-
-        [SerializeField] private GameObject playerManager;
-
+        
         public static HostManager instance;
 
         private PhotonView pv;
@@ -35,6 +34,7 @@ namespace GameDev.Multiplayer
         {
             name = name.Replace("(Clone)", "");
 
+
             if (instance != null)
                 PhotonNetwork.Destroy(gameObject);
 
@@ -44,9 +44,9 @@ namespace GameDev.Multiplayer
 
             playerPerTeam = (PhotonNetwork.CurrentRoom.MaxPlayers - 1) / 2;
 
-#if UNITY_EDITOR
-            PhotonNetwork.Instantiate(playerManager.name, Vector3.zero, Quaternion.identity);
-#endif
+            if (!pv.IsMine)
+                return;
+            pv.GetComponentInChildren<CinemachineVirtualCamera>().enabled = true;
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
@@ -102,10 +102,10 @@ namespace GameDev.Multiplayer
         {
             if (team != Team.None)
             {
-                if (actualPlayerCount[(int) team - 1] == playerPerTeam)
+                if (actualPlayerCount[(int)team - 1] == playerPerTeam)
                     return;
 
-                actualPlayerCount[(int) team - 1]++;
+                actualPlayerCount[(int)team - 1]++;
 
                 pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
 

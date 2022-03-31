@@ -1,4 +1,8 @@
+#region Packages
+
 using UnityEngine;
+
+#endregion
 
 namespace GameDev.Buildings
 {
@@ -7,9 +11,6 @@ namespace GameDev.Buildings
         #region Values
 
         [SerializeField] private string restrictedToObjectName;
-        [HideInInspector] public bool canPlace;
-
-        private bool overridePosition;
 
         #endregion
 
@@ -32,8 +33,6 @@ namespace GameDev.Buildings
         #endregion
 
         #region Internal
-
-        
 
         #endregion
     }

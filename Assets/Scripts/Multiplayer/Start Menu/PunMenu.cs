@@ -26,7 +26,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private readonly List<RoomInfo> activeServers = new List<RoomInfo>();
 
-        private string sceneToLoadOnJoin;
+        private string sceneToLoadOnJoin = "TestWorld";
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace GameDev.Multiplayer.Start_Menu
                 DontDestroyOnLoad(Camera.main.gameObject);
 
             InputManager.instance = new InputManager();
-            
+
             Application.targetFrameRate = 144;
 
             PhotonNetwork.ConnectUsingSettings();
@@ -54,7 +54,6 @@ namespace GameDev.Multiplayer.Start_Menu
         public override void OnJoinedRoom()
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
-            sceneToLoadOnJoin = "BasicDeathMatch";
             PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
         }
 
@@ -132,7 +131,7 @@ namespace GameDev.Multiplayer.Start_Menu
                 messageDisplay.text = "New Server Must A Name";
                 return;
             }
-            
+
             PhotonNetwork.CreateRoom(
                 serverNameInputField.text,
                 new RoomOptions()
