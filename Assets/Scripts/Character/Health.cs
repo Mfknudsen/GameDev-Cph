@@ -39,12 +39,28 @@ namespace GameDev.Character
         private float currentHealthPoints,
             currentArmorPoints;
 
+        private int armorLevel;
+
         private readonly string receiveCurrentHealthString = "curHealth",
             receiveCurrentArmorString = "curArmor";
 
         #endregion
 
         #region Build In States
+
+        public override void OnEnable()
+        {
+            if (!pv.IsMine) return;
+            
+            playerManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnPlayerStatChange);
+        }
+
+        public override void OnDisable()
+        {
+            if (!pv.IsMine) return;
+
+            playerManager.GetPlayerStats().onStatsChangeEvent.RemoveListener(OnPlayerStatChange);
+        }
 
         private void Start()
         {
@@ -118,6 +134,8 @@ namespace GameDev.Character
 
         private void Die()
         {
+            pv.RPC("RPCDeath", RpcTarget.Others);
+            
             playerManager.Die();
         }
 
@@ -150,6 +168,19 @@ namespace GameDev.Character
                 DamageType.Heavy => 1,
                 _ => throw new ArgumentOutOfRangeException(nameof(damageType), damageType, null)
             };
+        }
+
+        private void OnPlayerStatChange()
+        {
+            try
+            {
+                armorLevel = (int)PlayerManager.ownedManager.GetPlayerStats()
+                    .GetStatValueByKey(PlayerStat.ArmorLevel);
+            }
+            catch
+            {
+                armorLevel = 1;
+            }
         }
 
         #region Pun RPC
@@ -224,6 +255,13 @@ namespace GameDev.Character
         {
             currentArmorPoints = curAP;
             currentHealthPoints = curHP;
+        }
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCDeath()
+        {
+            PlayerManager.GetManagerByPhotonOwner(pv.Owner).Die();
         }
 
         #endregion

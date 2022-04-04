@@ -1,10 +1,10 @@
 #region Packages
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
 using GameDev.Buildings;
+using GameDev.Common;
 using GameDev.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,8 +16,6 @@ namespace GameDev.RTS
     public class Selector : MonoBehaviour
     {
         #region Values
-
-        [SerializeField] private GameObject test;
 
         //Selecting
         [SerializeField] private LayerMask selectMask;
@@ -47,9 +45,7 @@ namespace GameDev.RTS
 
         private void Start()
         {
-            cam ??= GetComponent<Camera>();
-
-            ToPlaceBuilding(Instantiate(test).GetComponent<Building>());
+            cam = Camera.main;
         }
 
         private void Update()
@@ -59,7 +55,29 @@ namespace GameDev.RTS
 
             RaycastHit? hit = RayHit(Mathf.Infinity, placingMask);
             if (hit.HasValue)
-                placingObject.transform.position = hit.Value.point;
+            {
+                placingObject.gameObject.SetActive(true);
+
+                if (placingObject is RestrictedBuilding restrictedBuilding &&
+                    CommonPhysic.GetComponentFromHit<BuildingPlacement>(hit.Value) is
+                        { } buildingPlacement)
+                {
+                    if (buildingPlacement.GetTypeAllowed().Equals(restrictedBuilding.GetBuildingType()))
+                    {
+                        placingObject.transform.position = restrictedBuilding.transform.position;
+                        restrictedBuilding.SetCanPlace(true);
+                    }
+                    else
+                    {
+                        placingObject.transform.position = hit.Value.point;
+                        restrictedBuilding.SetCanPlace(false);
+                    }
+                }
+                else
+                    placingObject.transform.position = hit.Value.point;
+            }
+            else
+                placingObject.gameObject.SetActive(false);
         }
 
         #endregion

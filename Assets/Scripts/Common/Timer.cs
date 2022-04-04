@@ -60,5 +60,14 @@ namespace GameDev.Common
         }
 
         #endregion
+
+        #region Out
+
+        public int GetPercentDone()
+        {
+            return (int)(current / duration * 100);
+        }
+
+        #endregion
     }
 }

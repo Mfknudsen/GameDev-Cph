@@ -1,6 +1,5 @@
 #region Packages
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameDev.Buildings;
@@ -8,8 +7,9 @@ using GameDev.Character;
 using GameDev.Common;
 using GameDev.Input;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Events;
 
 #endregion
 
@@ -31,8 +31,12 @@ namespace GameDev.Multiplayer
         #region Values
 
         public static PlayerManager ownedManager;
+        public static List<PlayerManager> allPlayerManagers = new List<PlayerManager>();
+
+        public UnityEvent onPlayerDeath = new UnityEvent();
 
         [SerializeField] private GameObject teamSelectUI;
+        [SerializeField] private PlayerStats stats;
 
         private PhotonView pv;
 
@@ -47,11 +51,15 @@ namespace GameDev.Multiplayer
 
         private void OnEnable()
         {
+            allPlayerManagers.Add(this);
+
             InputManager.instance.pauseEvent.AddListener(OnPauseUpdate);
         }
 
         private void OnDisable()
         {
+            allPlayerManagers.Remove(this);
+
             InputManager.instance.pauseEvent.RemoveListener(OnPauseUpdate);
         }
 
@@ -100,6 +108,11 @@ namespace GameDev.Multiplayer
             return pv;
         }
 
+        public PlayerStats GetPlayerStats()
+        {
+            return stats;
+        }
+
         #endregion
 
         #region In
@@ -108,6 +121,11 @@ namespace GameDev.Multiplayer
             Quaternion spawnRotation)
         {
             return PhotonNetwork.Instantiate(controllerPrefab.name, spawnPosition, spawnRotation);
+        }
+
+        public static GameObject CreateController(GameObject controllerPrefab, Transform spawnTransform)
+        {
+            return PhotonNetwork.Instantiate(controllerPrefab.name, spawnTransform.position, spawnTransform.rotation);
         }
 
         public void SwitchController(GameObject newController)
@@ -145,6 +163,19 @@ namespace GameDev.Multiplayer
         public void SetTeam(Team set)
         {
             pv.RPC("RPCSetTeam", RpcTarget.All, set);
+        }
+
+        public void OnHostStateChange()
+        {
+        }
+
+        #endregion
+
+        #region Out
+
+        public static PlayerManager GetManagerByPhotonOwner(Player owner)
+        {
+            return allPlayerManagers.First(pm => pm.GetPhotonView().Owner.Equals(owner));
         }
 
         #endregion

@@ -3,6 +3,7 @@
 using System;
 using ExitGames.Client.Photon;
 using GameDev.Input;
+using GameDev.Multiplayer;
 using GameDev.Weapons.Ammo;
 using GameDev.Weapons.Triggers;
 using Photon.Pun;
@@ -22,7 +23,7 @@ namespace GameDev.Weapons
         [SerializeField] protected Trigger trigger;
         [SerializeField] protected Transform origin;
         [SerializeField] protected Ammunition ammunition;
-        [SerializeField] protected int magMaxSize, magCurSize, ammoPerShot;
+        [SerializeField] protected int magMaxSize, magCurSize, ammoPerShot, weaponLevel;
 
         protected bool shooting, reloading;
 
@@ -32,24 +33,24 @@ namespace GameDev.Weapons
 
         public override void OnEnable()
         {
-            base.OnEnable();
+            if (!pv.IsMine)
+                return;
 
-            if (pv.IsMine)
-            {
-                InputManager.instance.shootEvent.AddListener(OnShootUpdate);
-                InputManager.instance.reloadEvent.AddListener(OnReloadUpdate);
-            }
+            InputManager.instance.shootEvent.AddListener(OnShootUpdate);
+            InputManager.instance.reloadEvent.AddListener(OnReloadUpdate);
+
+            PlayerManager.ownedManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnShootUpdate);
         }
 
         public override void OnDisable()
         {
-            base.OnDisable();
+            if (!pv.IsMine)
+                return;
 
-            if (pv.IsMine)
-            {
-                InputManager.instance.shootEvent.RemoveListener(OnShootUpdate);
-                InputManager.instance.reloadEvent.RemoveListener(OnReloadUpdate);
-            }
+            InputManager.instance.shootEvent.RemoveListener(OnShootUpdate);
+            InputManager.instance.reloadEvent.RemoveListener(OnReloadUpdate);
+
+            PlayerManager.ownedManager.GetPlayerStats().onStatsChangeEvent.RemoveListener(OnShootUpdate);
         }
 
         private void Start()
@@ -69,10 +70,10 @@ namespace GameDev.Weapons
             if (pv.IsMine || !pv.Owner.Equals(targetPlayer)) return;
 
             if (changedProps.ContainsKey("Shooting"))
-                shooting = (bool) changedProps["Shooting"];
+                shooting = (bool)changedProps["Shooting"];
 
             if (changedProps.ContainsKey("Reloading"))
-                reloading = (bool) changedProps["Reloading"];
+                reloading = (bool)changedProps["Reloading"];
         }
 
         #endregion
@@ -102,7 +103,7 @@ namespace GameDev.Weapons
         private void OnShootUpdate()
         {
             shooting = !shooting;
-            
+
             if (shooting && !reloading && magCurSize > 0)
                 Trigger();
 
@@ -114,10 +115,19 @@ namespace GameDev.Weapons
         private void OnReloadUpdate()
         {
             Reload();
+        }
 
-            Hashtable hash = new Hashtable();
-            hash.Add("Reloading", reloading);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        protected virtual void OnStatChange()
+        {
+            try
+            {
+                weaponLevel = (int)PlayerManager.ownedManager.GetPlayerStats()
+                    .GetStatValueByKey(PlayerStat.WeaponLevel);
+            }
+            catch
+            {
+                weaponLevel = 1;
+            }
         }
 
         #endregion

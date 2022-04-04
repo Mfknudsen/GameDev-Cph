@@ -1,7 +1,9 @@
 #region Packages
 
 using System;
+using ExitGames.Client.Photon;
 using GameDev.Common;
+using Photon.Pun;
 using UnityEngine;
 
 #endregion
@@ -21,14 +23,25 @@ namespace GameDev.Weapons
 
         protected override void Reload()
         {
-            reloading = true;
+            SwitchReload(true);
+
             magCurSize = 0;
             Timer reloadTimer = new Timer(reloadTime);
             reloadTimer.timerEvent.AddListener(() =>
             {
                 magCurSize = magMaxSize;
-                reloading = false;
+
+                SwitchReload(false);
             });
+        }
+
+        protected void SwitchReload(bool set)
+        {
+            reloading = set;
+
+            Hashtable hash = new Hashtable();
+            hash.Add("Reloading", reloading);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
 
         #endregion
