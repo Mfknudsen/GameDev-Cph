@@ -7,6 +7,7 @@ using GameDev.Weapons.Ammo;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
@@ -30,9 +31,11 @@ namespace GameDev.Character
     {
         #region Values
 
+        [SerializeField] private bool isPlayer;
         [SerializeField] private PhotonView pv;
         [SerializeField] private HealthPreset healthPreset;
-        [SerializeField] private HealthType healthType;
+        [SerializeField] private HealthType healthType; 
+        public UnityEvent onDeathEvent = new UnityEvent();
 
         private PlayerManager playerManager;
 
@@ -51,7 +54,7 @@ namespace GameDev.Character
         public override void OnEnable()
         {
             if (!pv.IsMine) return;
-            
+
             playerManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnPlayerStatChange);
         }
 
@@ -135,8 +138,11 @@ namespace GameDev.Character
         private void Die()
         {
             pv.RPC("RPCDeath", RpcTarget.Others);
-            
-            playerManager.Die();
+
+            if (isPlayer)
+                playerManager.Die();
+            else
+                onDeathEvent.Invoke();
         }
 
         private Vector2 CalculateDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
@@ -174,7 +180,7 @@ namespace GameDev.Character
         {
             try
             {
-                armorLevel = (int)PlayerManager.ownedManager.GetPlayerStats()
+                armorLevel = (int) PlayerManager.ownedManager.GetPlayerStats()
                     .GetStatValueByKey(PlayerStat.ArmorLevel);
             }
             catch
