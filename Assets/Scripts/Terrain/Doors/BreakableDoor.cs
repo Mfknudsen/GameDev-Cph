@@ -8,18 +8,17 @@ using UnityEngine;
 
 namespace GameDev.Terrain.Doors
 {
-    public class BreakableDoor : MonoBehaviour
+    public class BreakableDoor : MonoBehaviourPunCallbacks
     {
         #region Values
 
-        public bool test;
         [SerializeField] private Transform openPoint;
         [SerializeField] private float speed;
 
         private Transform visualTransform;
 
         #endregion
-        
+
         #region In
 
         public void StartOpen()
@@ -36,6 +35,7 @@ namespace GameDev.Terrain.Doors
         private IEnumerator Open()
         {
             Vector3 dir = (openPoint.position - visualTransform.position).normalized;
+            
             while (Vector3.Distance(openPoint.position, visualTransform.position) > 0.5f)
             {
                 visualTransform.position += dir * (speed * Time.deltaTime);
