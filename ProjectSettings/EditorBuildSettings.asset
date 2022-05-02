@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Start.unity
     guid: 4e8b686fcbd1f954b8bdbb794105e45b
   - enabled: 0
     path: Assets/Scenes/TestWorld.unity
     guid: d76f2b301e7be87419c7aee276e01128
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/BasicDeathMatch.unity
     guid: 4e6ef71295ba34249aa07eaea74186eb
   - enabled: 1

@@ -31,10 +31,10 @@ namespace GameDev.Character
     {
         #region Values
 
-        [SerializeField] private bool isPlayer;
+        [SerializeField] private bool isPlayer, needStartTrigger, reactToDamage;
         [SerializeField] private PhotonView pv;
         [SerializeField] private HealthPreset healthPreset;
-        [SerializeField] private HealthType healthType; 
+        [SerializeField] private HealthType healthType;
         public UnityEvent onDeathEvent = new UnityEvent();
 
         private PlayerManager playerManager;
@@ -55,14 +55,16 @@ namespace GameDev.Character
         {
             if (!pv.IsMine) return;
 
-            playerManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnPlayerStatChange);
+            if (playerManager != null)
+                playerManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnPlayerStatChange);
         }
 
         public override void OnDisable()
         {
             if (!pv.IsMine) return;
 
-            playerManager.GetPlayerStats().onStatsChangeEvent.RemoveListener(OnPlayerStatChange);
+            if (playerManager != null)
+                playerManager.GetPlayerStats().onStatsChangeEvent.RemoveListener(OnPlayerStatChange);
         }
 
         private void Start()
@@ -115,6 +117,11 @@ namespace GameDev.Character
         #endregion
 
         #region In
+
+        public void StartTrigger()
+        {
+            reactToDamage = true;
+        }
 
         public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
         {
@@ -180,7 +187,7 @@ namespace GameDev.Character
         {
             try
             {
-                armorLevel = (int) PlayerManager.ownedManager.GetPlayerStats()
+                armorLevel = (int)PlayerManager.ownedManager.GetPlayerStats()
                     .GetStatValueByKey(PlayerStat.ArmorLevel);
             }
             catch
@@ -197,7 +204,7 @@ namespace GameDev.Character
         // ReSharper disable once UnusedMember.Local
         private void RPCApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
         {
-            if (!pv.IsMine) return;
+            if (!pv.IsMine || !reactToDamage) return;
 
             //Health: x
             //Armor: y
@@ -227,7 +234,7 @@ namespace GameDev.Character
         // ReSharper disable once UnusedMember.Local
         private void RPCApplyHealHp(float heal)
         {
-            if (!pv.IsMine) return;
+            if (!pv.IsMine || !reactToDamage) return;
 
             currentHealthPoints = Mathf.Clamp(
                 currentHealthPoints + heal,
