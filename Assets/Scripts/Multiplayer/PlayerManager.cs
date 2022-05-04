@@ -125,7 +125,7 @@ namespace GameDev.Multiplayer
 
         public static GameObject CreateController(GameObject controllerPrefab, Transform spawnTransform)
         {
-            return PhotonNetwork.Instantiate(controllerPrefab.name, spawnTransform.position, spawnTransform.rotation);
+            return PhotonNetwork.Instantiate(controllerPrefab.name, spawnTransform.position, Quaternion.identity);
         }
 
         public void SwitchController(GameObject newController)

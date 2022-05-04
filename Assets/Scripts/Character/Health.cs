@@ -31,7 +31,7 @@ namespace GameDev.Character
     {
         #region Values
 
-        [SerializeField] private bool isPlayer, needStartTrigger, reactToDamage;
+        [SerializeField] private bool isPlayer, needStartTrigger, reactToDamage = true;
         [SerializeField] private PhotonView pv;
         [SerializeField] private HealthPreset healthPreset;
         [SerializeField] private HealthType healthType;
@@ -112,6 +112,11 @@ namespace GameDev.Character
         public HealthType GetHealthType()
         {
             return healthType;
+        }
+
+        public float GetMaxHp()
+        {
+            return healthPreset.GetMaxHp();
         }
 
         #endregion

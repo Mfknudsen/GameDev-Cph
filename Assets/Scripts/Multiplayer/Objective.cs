@@ -2,6 +2,7 @@
 
 using System.Linq;
 using GameDev.Character;
+using GameDev.UI.FPS;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,9 @@ namespace GameDev.Multiplayer
     {
         #region Values
 
-        public UnityEvent onEndEvent = new UnityEvent();
+        [HideInInspector] public UnityEvent onEndEvent = new UnityEvent();
+        [HideInInspector] public UnityEvent<float[]> updateUIEvent = new UnityEvent<float[]>();
+
         [SerializeField] private Objective nextObjective;
         [SerializeField] private Health[] objectivesHealth;
         [SerializeField] private PhotonView pv;
@@ -28,18 +31,27 @@ namespace GameDev.Multiplayer
 
         private void Start()
         {
-            if (!pv.IsMine) return;
+            onEndEvent.AddListener(() =>
+            {
+                nextObjective.StartObjective();
+                started = false;
+                foreach (ObjectiveUI objectiveUI in FindObjectsOfType<ObjectiveUI>())
+                    objectiveUI.UpdateCurrent(nextObjective);
+            });
 
-            onEndEvent.AddListener(nextObjective.StartObjective);
-
-            if (!isFirst) return;
+            if (!isFirst || !pv.IsMine) return;
 
             StartObjective();
         }
 
         private void Update()
         {
-            if (!started || !pv.IsMine) return;
+            if (!started) return;
+
+            float[] toUpdate = objectivesHealth.Select(o => o.GetCurrentHp() / o.GetMaxHp()).ToArray();
+            updateUIEvent.Invoke(toUpdate);
+
+            if (!pv.IsMine) return;
 
             if (objectivesHealth.Select(h => h.GetCurrentHp()).Sum() <= 0)
             {
@@ -48,6 +60,20 @@ namespace GameDev.Multiplayer
             }
             else
                 pv.RPC("RPCUpdate", RpcTarget.Others, objectivesHealth.Select(h => h.GetCurrentHp()).ToArray());
+        }
+
+        #endregion
+
+        #region Getters
+
+        public bool GetStarted()
+        {
+            return started;
+        }
+
+        public bool GetFirst()
+        {
+            return isFirst;
         }
 
         #endregion

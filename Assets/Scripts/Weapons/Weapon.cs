@@ -39,7 +39,7 @@ namespace GameDev.Weapons
             InputManager.instance.shootEvent.AddListener(OnShootUpdate);
             InputManager.instance.reloadEvent.AddListener(OnReloadUpdate);
 
-            PlayerManager.ownedManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnShootUpdate);
+            PlayerManager.ownedManager?.GetPlayerStats().onStatsChangeEvent.AddListener(OnShootUpdate);
         }
 
         public override void OnDisable()
