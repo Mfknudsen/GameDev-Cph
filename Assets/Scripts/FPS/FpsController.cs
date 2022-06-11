@@ -16,7 +16,7 @@ namespace GameDev.FPS
         #region Values
 
         [SerializeField] private Weapon weapon;
-        
+
         [SerializeField] protected float moveSpeed,
             rotSpeed,
             distance,
@@ -101,7 +101,7 @@ namespace GameDev.FPS
         }
 
         #endregion
-        
+
         #region In
 
         public virtual void SetupUI(FpsUI ui)
@@ -134,7 +134,7 @@ namespace GameDev.FPS
             rb.AddForce(objTransform.up * jumpForce, ForceMode.Impulse);
 
             isGrounded = false;
-            jumpTimer = new Timer(timeBetweenJump);
+            jumpTimer = new Timer(TimerType.Seconds, timeBetweenJump);
             jumpTimer.timerEvent.AddListener(() => jumpTimer = null);
         }
 
@@ -142,7 +142,7 @@ namespace GameDev.FPS
         {
             if (cayotyTimer == null)
             {
-                cayotyTimer = new Timer(cayotyTime);
+                cayotyTimer = new Timer(TimerType.Seconds, cayotyTime);
                 cayotyTimer.timerEvent.AddListener(() => cayotyTimer = null);
             }
 

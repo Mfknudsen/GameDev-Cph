@@ -36,7 +36,8 @@ namespace GameDev.Weapons.HitScan
                         health.ApplyDamage(
                             ammunition.GetDamage(),
                             ammunition.GetDamageType(),
-                            ammunition.GetSpecialDamageType());
+                            ammunition.GetSpecialDamageType(),
+                            team);
                 }
             }
         }

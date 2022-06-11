@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
 using GameDev.Buildings;
+using GameDev.Common;
 using GameDev.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -44,7 +45,7 @@ namespace GameDev.RTS
 
         private void Start()
         {
-            cam ??= Camera.main;
+            cam = Camera.main;
         }
 
         private void Update()
@@ -55,15 +56,28 @@ namespace GameDev.RTS
             RaycastHit? hit = RayHit(Mathf.Infinity, placingMask);
             if (hit.HasValue)
             {
-                if (placingObject is RestrictedBuilding &&
-                    hit.Value.transform.gameObject.GetComponent<BuildingPlacement>() is { } buildingPlacement)
-                {
-                    placingObject.transform.position = buildingPlacement.transform.position;
-                    return;
-                }
+                placingObject.gameObject.SetActive(true);
 
-                placingObject.transform.position = hit.Value.point;
+                if (placingObject is RestrictedBuilding restrictedBuilding &&
+                    CommonPhysic.GetComponentFromHit<BuildingPlacement>(hit.Value) is
+                        { } buildingPlacement)
+                {
+                    if (buildingPlacement.GetTypeAllowed().Equals(restrictedBuilding.GetBuildingType()))
+                    {
+                        placingObject.transform.position = restrictedBuilding.transform.position;
+                        restrictedBuilding.SetCanPlace(true);
+                    }
+                    else
+                    {
+                        placingObject.transform.position = hit.Value.point;
+                        restrictedBuilding.SetCanPlace(false);
+                    }
+                }
+                else
+                    placingObject.transform.position = hit.Value.point;
             }
+            else
+                placingObject.gameObject.SetActive(false);
         }
 
         #endregion

@@ -7,6 +7,7 @@ using GameDev.Weapons.Ammo;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.Events;
 
 #endregion
 
@@ -30,9 +31,13 @@ namespace GameDev.Character
     {
         #region Values
 
+        [SerializeField] private bool isPlayer, reactToDamage = true;
         [SerializeField] private PhotonView pv;
         [SerializeField] private HealthPreset healthPreset;
         [SerializeField] private HealthType healthType;
+        [SerializeField] private Team team;
+
+        public UnityEvent onDeathEvent = new UnityEvent();
 
         private PlayerManager playerManager;
 
@@ -45,6 +50,22 @@ namespace GameDev.Character
         #endregion
 
         #region Build In States
+
+        public override void OnEnable()
+        {
+            if (!pv.IsMine) return;
+
+            if (playerManager != null)
+                playerManager.GetPlayerStats().onStatsChangeEvent.AddListener(OnPlayerStatChange);
+        }
+
+        public override void OnDisable()
+        {
+            if (!pv.IsMine) return;
+
+            if (playerManager != null)
+                playerManager.GetPlayerStats().onStatsChangeEvent.RemoveListener(OnPlayerStatChange);
+        }
 
         private void Start()
         {
@@ -93,13 +114,26 @@ namespace GameDev.Character
             return healthType;
         }
 
+        public float GetMaxHp()
+        {
+            return healthPreset.GetMaxHp();
+        }
+
         #endregion
 
         #region In
 
-        public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        public void StartTrigger()
         {
-            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType, specialDamageType);
+            reactToDamage = true;
+        }
+
+        public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType,
+            Team shooterTeam)
+        {
+            if (shooterTeam.Equals(team)) return;
+
+            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType);
         }
 
         public void ApplyHealHp(float heal)
@@ -112,33 +146,40 @@ namespace GameDev.Character
             pv.RPC("RPCApplyHealAp", RpcTarget.All, heal);
         }
 
+        public void InstantKill()
+        {
+            onDeathEvent.Invoke();
+
+            pv.RPC("RPCDeath", RpcTarget.Others);
+        }
+
         #endregion
 
         #region Internal
 
         private void Die()
         {
-            playerManager.Die();
+            pv.RPC("RPCDeath", RpcTarget.Others);
+
+            if (isPlayer)
+                playerManager.Die();
+            else
+                onDeathEvent.Invoke();
         }
 
-        private Vector2 CalculateDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        private Vector2 CalculateDamage(float damage, DamageType damageType)
         {
             float damageArmor = damage / BasicArmorAbsorb(damageType);
             float damageHealth = 0;
 
             if (!(damageArmor > currentArmorPoints))
-                return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
+                return new Vector2(damageHealth, damageArmor);
 
             float diff = damageArmor - currentArmorPoints;
             damageArmor -= diff;
             damageHealth = diff * BasicArmorAbsorb(damageType);
 
-            return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
-        }
-
-        private static Vector2 DamageModifier(SpecialDamageType specialDamageType)
-        {
-            return Vector2.one;
+            return new Vector2(damageHealth, damageArmor);
         }
 
         private static int BasicArmorAbsorb(DamageType damageType)
@@ -152,19 +193,23 @@ namespace GameDev.Character
             };
         }
 
+        private void OnPlayerStatChange()
+        {
+        }
+
         #region Pun RPC
 
         #region Owned
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        private void RPCApplyDamage(float damage, DamageType damageType)
         {
-            if (!pv.IsMine) return;
+            if (!pv.IsMine || !reactToDamage) return;
 
             //Health: x
             //Armor: y
-            Vector2 damageTotal = CalculateDamage(damage, damageType, specialDamageType);
+            Vector2 damageTotal = CalculateDamage(damage, damageType);
 
             #region Apply Damage
 
@@ -190,7 +235,7 @@ namespace GameDev.Character
         // ReSharper disable once UnusedMember.Local
         private void RPCApplyHealHp(float heal)
         {
-            if (!pv.IsMine) return;
+            if (!pv.IsMine || !reactToDamage) return;
 
             currentHealthPoints = Mathf.Clamp(
                 currentHealthPoints + heal,
@@ -220,10 +265,20 @@ namespace GameDev.Character
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCUpdateOthers(float updatedHp, float updatedAp)
+        private void RPCUpdateOthers(float curHP, float curAP)
         {
-            currentArmorPoints = updatedAp;
-            currentHealthPoints = updatedHp;
+            currentArmorPoints = curAP;
+            currentHealthPoints = curHP;
+        }
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCDeath()
+        {
+            if (isPlayer)
+                PlayerManager.GetManagerByPhotonOwner(pv.Owner).Die();
+            else
+                onDeathEvent.Invoke();
         }
 
         #endregion

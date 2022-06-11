@@ -25,7 +25,7 @@ namespace GameDev.Interaction
 
         private void Awake()
         {
-            new Timer(1f).timerEvent.AddListener(() => UpdateClosest());
+            new Timer(TimerType.Seconds, 1f).timerEvent.AddListener(() => UpdateClosest());
         }
 
         private void OnEnable()
@@ -102,7 +102,7 @@ namespace GameDev.Interaction
                     currentUI = Instantiate(closestTrigger.GetUIPrefab(), GameObject.Find("Canvas").transform);
             }
 
-            new Timer(0.5f).timerEvent.AddListener(() => UpdateClosest());
+            new Timer(TimerType.Seconds, 0.5f).timerEvent.AddListener(() => UpdateClosest());
         }
 
         private void OnInteractUpdate()

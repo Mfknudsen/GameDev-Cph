@@ -31,12 +31,14 @@ namespace GameDev.Multiplayer
 
         private void Update()
         {
+            if (PlayerManager.ownedManager == null) return;
+
             if (PlayerManager.ownedManager.GetCurrentPlayerCharacter() == transform.root.gameObject)
             {
                 gameObject.SetActive(false);
                 return;
             }
-            
+
             if (Camera.main == null)
                 return;
 

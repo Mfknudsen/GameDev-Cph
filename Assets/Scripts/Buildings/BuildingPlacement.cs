@@ -6,18 +6,28 @@ using UnityEngine;
 
 namespace GameDev.Buildings
 {
+    #region Enums
+
+    public enum BuildingType
+    {
+        Node,
+        HQ
+    }
+
+    #endregion
+
     public class BuildingPlacement : MonoBehaviour
     {
         #region Values
 
-        [SerializeField] private string buildingNameAllowed;
+        [SerializeField] private BuildingType buildingNameAllowed;
         [SerializeField] private float snapDistance;
 
         #endregion
 
         #region Getters
 
-        public string GetName()
+        public BuildingType GetTypeAllowed()
         {
             return buildingNameAllowed;
         }

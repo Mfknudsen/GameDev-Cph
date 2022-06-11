@@ -20,6 +20,8 @@ namespace GameDev.Buildings
 
         [SerializeField] private Transform spawnTransform;
 
+        [SerializeField] private float delay;
+
         #endregion
 
         #region Build In States
@@ -29,7 +31,9 @@ namespace GameDev.Buildings
             base.OnInstantiatedStart();
 
             foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>())
+            {
                 playerManager.spawnPoints.Add(this);
+            }
         }
 
         #endregion
@@ -53,20 +57,26 @@ namespace GameDev.Buildings
             {
                 //Player Spawning Animation
             }
-            
+
             playerManager.SwitchController(
                 PlayerManager.CreateController(
-                    characterPrefab, 
-                    spawnTransform.position, 
-                    spawnTransform.rotation
-                    )
-                );
+                    characterPrefab,
+                    spawnTransform
+                )
+            );
 
             if (destroyOnSpawn) PhotonNetwork.Destroy(gameObject);
+
+            yield return new WaitForSeconds(delay);
+
+            Vector3 floatPos = transform.position;
+            Vector3Int pos = new Vector3Int((int) floatPos.x, (int) floatPos.y, (int) floatPos.z);
+            HostManager.instance.SetHostState(gameObject.name + (pos.x + pos.y, pos.z), false);
         }
 
         protected override void AddToActionMenu(GridMenu actionMenu)
         {
+            throw new System.NotImplementedException();
         }
 
         #endregion

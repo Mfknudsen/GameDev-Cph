@@ -26,7 +26,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
         private readonly List<RoomInfo> activeServers = new List<RoomInfo>();
 
-        private string sceneToLoadOnJoin = "TestWorld";
+        private string sceneToLoadOnJoin;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
             InputManager.instance = new InputManager();
 
-            Application.targetFrameRate = 144;
+            Application.targetFrameRate = 60;
 
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -54,6 +54,7 @@ namespace GameDev.Multiplayer.Start_Menu
         public override void OnJoinedRoom()
         {
             PhotonNetwork.LocalPlayer.NickName = displayNameInputField.text;
+            sceneToLoadOnJoin = "MainMap";
             PhotonNetwork.LoadLevel(sceneToLoadOnJoin);
         }
 

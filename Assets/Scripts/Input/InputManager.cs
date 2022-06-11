@@ -12,6 +12,8 @@ namespace GameDev.Input
         #region Values
 
         public static InputManager instance;
+
+        public static bool enable;
         
         public UnityEvent
             interactEvent = new UnityEvent(),
@@ -71,25 +73,25 @@ namespace GameDev.Input
             #region Button
 
             //Buttons should only be added to "performed"
-            player.Interact.performed += (context) => interactEvent.Invoke();
+            player.Interact.performed += (_) => interactEvent.Invoke();
 
-            player.Jump.performed += (context) => jumpEvent.Invoke();
+            player.Jump.performed += (_) => jumpEvent.Invoke();
 
-            player.Shoot.performed += (context) => shootEvent.Invoke();
+            player.Shoot.performed += (_) => shootEvent.Invoke();
 
-            player.Reload.performed += (context) => reloadEvent.Invoke();
+            player.Reload.performed += (_) => reloadEvent.Invoke();
 
-            player.Melee.performed += (context) => meleeEvent.Invoke();
+            player.Melee.performed += (_) => meleeEvent.Invoke();
 
-            player.Build.performed += (context) => buildEvent.Invoke();
+            player.Build.performed += (_) => buildEvent.Invoke();
 
-            player.Drop.performed += (context) => dropEvent.Invoke();
+            player.Drop.performed += (_) => dropEvent.Invoke();
 
-            player.Throw.performed += (context) => throwEvent.Invoke();
+            player.Throw.performed += (_) => throwEvent.Invoke();
 
-            player.Crouch.performed += (context) => crouchEvent.Invoke();
+            player.Crouch.performed += (_) => crouchEvent.Invoke();
 
-            player.Pause.performed += (context) => pauseEvent.Invoke();
+            player.Pause.performed += (_) => pauseEvent.Invoke();
 
             #endregion
         }

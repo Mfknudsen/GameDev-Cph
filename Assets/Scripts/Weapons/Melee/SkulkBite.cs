@@ -41,7 +41,8 @@ namespace GameDev.Weapons.Melee
                 .ApplyDamage(
                     ammunition.GetDamage(),
                     ammunition.GetDamageType(),
-                    ammunition.GetSpecialDamageType());
+                    ammunition.GetSpecialDamageType(),
+                    team);
         }
 
         private GameObject BiteHit()

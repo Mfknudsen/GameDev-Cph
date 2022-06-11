@@ -51,5 +51,10 @@ namespace GameDev.Common
 
             return closest;
         }
+
+        public static T GetComponentFromHit<T>(RaycastHit hit)
+        {
+            return hit.collider.GetComponent<T>();
+        }
     }
 }

@@ -2,10 +2,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
 using ExitGames.Client.Photon;
+using GameDev.Character;
+using GameDev.Input;
+using GameDev.Terrain.Doors;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 
 #endregion
@@ -15,7 +16,7 @@ namespace GameDev.Multiplayer
     public class HostManager : MonoBehaviourPunCallbacks
     {
         #region Values
-        
+
         public static HostManager instance;
 
         private PhotonView pv;
@@ -34,7 +35,6 @@ namespace GameDev.Multiplayer
         {
             name = name.Replace("(Clone)", "");
 
-
             if (instance != null)
                 PhotonNetwork.Destroy(gameObject);
 
@@ -46,11 +46,34 @@ namespace GameDev.Multiplayer
 
             if (!pv.IsMine)
                 return;
-            pv.GetComponentInChildren<CinemachineVirtualCamera>().enabled = true;
+
+            Hashtable hash = new Hashtable();
+            hash.Add("Stat" + PlayerStat.WeaponLevel.ToString(), 1);
+            hash.Add("Stat" + PlayerStat.ArmorLevel.ToString(), 1);
+
+            hash.Add("HumanCount", 0);
+            hash.Add("AlienCount", 0);
+
+            pv.Owner.SetCustomProperties(hash);
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnEnable()
         {
+            InputManager.instance.jumpEvent.AddListener(OnJumpChange);
+        }
+
+        public override void OnDisable()
+        {
+            InputManager.instance.jumpEvent.RemoveListener(OnJumpChange);
+        }
+
+        #endregion
+
+        #region Getters
+
+        public PhotonView GetPhotonView()
+        {
+            return pv;
         }
 
         #endregion
@@ -81,9 +104,47 @@ namespace GameDev.Multiplayer
             pv.RPC("RPCAssignTeamToPlayer", RpcTarget.MasterClient, userID, team);
         }
 
+        public void SpawnBuilding(string gameObjectName, Vector3 position, Quaternion rotation)
+        {
+            pv.RPC("RPCSpawnBuilding", RpcTarget.MasterClient, gameObjectName, position, rotation);
+        }
+
+        public void SetHostState(string hashKey, object hashValue)
+        {
+            if (hashKey == null || hashKey.Equals("") || !pv.IsMine) return;
+
+            Hashtable hash = new Hashtable();
+            hash.Add(hashKey, hashValue);
+            PhotonNetwork.MasterClient.SetCustomProperties(hash);
+
+            pv.RPC("SyncOnHostStateChange", RpcTarget.Others);
+        }
+
+        public void EndGame(Team teamWon)
+        {
+            playerManagers.ForEach(m => m.EndGame(teamWon));
+        }
+
         #endregion
 
         #region Internal
+
+        private void OnJumpChange()
+        {
+            if (!pv.IsMine) return;
+
+            if (pv.Owner.CustomProperties.ContainsKey("Start")) return;
+
+            Hashtable hash = new Hashtable();
+            // ReSharper disable once SpecifyACultureInStringConversionExplicitly
+            hash.Add("Start", System.DateTime.Now.ToString());
+            pv.Owner.SetCustomProperties(hash);
+
+            foreach (Health health in FindObjectsOfType<BreakableDoor>().Select(b => b.GetComponent<Health>()))
+                health.InstantKill();
+
+            FindObjectsOfType<Objective>().First(o => o.GetFirst()).StartObjective();
+        }
 
         #region Pun RPC
 
@@ -110,9 +171,17 @@ namespace GameDev.Multiplayer
                 pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
 
                 playerManagers
-                    .First(pm => pm.GetPhotonView().Owner.NickName.Equals(userNickName))
+                    .First(pm =>
+                        pm.GetPhotonView().Owner.NickName.Equals(userNickName))
                     .SetTeam(team);
             }
+        }
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCSpawnBuilding(string gameObjectName, Vector3 position, Quaternion rotation)
+        {
+            PhotonNetwork.Instantiate(gameObjectName, position, rotation);
         }
 
         #endregion
@@ -125,6 +194,13 @@ namespace GameDev.Multiplayer
         {
             actualPlayerCount[0] = human;
             actualPlayerCount[1] = alien;
+        }
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void SyncOnHostStateChange()
+        {
+            PlayerManager.ownedManager.OnHostStateChange();
         }
 
         #endregion

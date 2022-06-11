@@ -10,15 +10,25 @@ namespace GameDev.Buildings
     {
         #region Values
 
-        [SerializeField] private string restrictedToObjectName;
+        [SerializeField] private BuildingType buildingType;
+        private bool canPlace;
 
         #endregion
 
         #region Getters
 
-        public string GetRestrictedName()
+        public BuildingType GetBuildingType()
         {
-            return restrictedToObjectName;
+            return buildingType;
+        }
+
+        #endregion
+
+        #region Setters
+
+        public void SetCanPlace(bool set)
+        {
+            canPlace = set;
         }
 
         #endregion
@@ -27,12 +37,8 @@ namespace GameDev.Buildings
 
         public override bool CanBePlaced()
         {
-            return true;
+            return canPlace;
         }
-
-        #endregion
-
-        #region Internal
 
         #endregion
     }

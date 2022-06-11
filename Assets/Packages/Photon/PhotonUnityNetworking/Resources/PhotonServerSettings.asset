@@ -38,17 +38,21 @@ MonoBehaviour:
   - DestroyRpc
   - DestroySpaceship
   - Fire
+  - GameObjectActive
   - RespawnSpaceship
+  - RPCApplyDamage
   - RPCApplyHealAp
   - RPCApplyHealHp
-  - RPCApplyDamage
-  - GameObjectActive
-  - RPCSpawnComputerControlled
   - RPCAssignTeamToPlayer
+  - RPCDeath
   - RPCSetTeam
+  - RPCSpawnBuilding
+  - RPCSpawnComputerControlled
   - RPCUpdateOthers
+  - SyncOnHostStateChange
   - SyncPlayerCounts
-  - RPCReceiveTriangleUpdate
+  - RPCUpdate
+  - RPCEndGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

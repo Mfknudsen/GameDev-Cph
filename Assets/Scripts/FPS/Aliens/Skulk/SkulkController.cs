@@ -105,7 +105,7 @@ namespace GameDev.FPS.Aliens.Skulk
                 rb.AddForce(camTransform.forward * (jumpForce * 2) + camTransform.up * upForce, ForceMode.Impulse);
 
                 isGrounded = false;
-                jumpTimer = new Timer(timeBetweenJump);
+                jumpTimer = new Timer(TimerType.Seconds, timeBetweenJump);
                 jumpTimer.timerEvent.AddListener(() => jumpTimer = null);
             }
         }

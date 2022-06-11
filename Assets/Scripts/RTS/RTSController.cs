@@ -45,7 +45,7 @@ namespace GameDev.RTS
             if (!pv.IsMine) return;
 
             cameraController = GetComponentInChildren<CameraController>();
-            new Timer(0.01f).timerEvent.AddListener(() => cameraController.enabled = false);
+            new Timer(TimerType.Seconds,0.01f).timerEvent.AddListener(() => cameraController.enabled = false);
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
