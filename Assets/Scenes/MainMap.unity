@@ -1568,7 +1568,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1 &80499976 stripped
@@ -3976,7 +3976,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1 &198098200 stripped
@@ -5782,7 +5782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5835,11 +5835,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 309799716}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6415,7 +6415,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &336737590
@@ -7855,7 +7855,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1001 &379153458
@@ -8205,19 +8205,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 887745849084736964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049470806593421126, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891233686055, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891647500576, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Name
@@ -8229,7 +8229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281965, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: sceneViewId
@@ -8285,19 +8285,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6079196676111960361, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6825962588774843721, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6859059031184463853, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8376279581113345886, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
@@ -8358,7 +8358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -8411,11 +8411,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 396300091}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -10826,7 +10826,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &484594519
@@ -12394,7 +12394,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1 &551986133 stripped
@@ -13806,7 +13806,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1001 &617612752
@@ -14352,7 +14352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -14405,11 +14405,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 636669118}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -14540,7 +14540,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1001 &637608406
@@ -15826,7 +15826,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1 &698901147
@@ -18035,7 +18035,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1001 &796827097
@@ -19083,7 +19083,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &827589864
@@ -19214,7 +19214,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1 &838449405 stripped
@@ -19379,7 +19379,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1001 &859628964
@@ -19655,7 +19655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19703,11 +19703,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 862518868}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -20803,7 +20803,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &925803138
@@ -22692,7 +22692,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &1014165389
@@ -25081,7 +25081,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1 &1093963144
@@ -26983,7 +26983,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1 &1196439043 stripped
@@ -27194,7 +27194,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -27589,7 +27589,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1 &1224251843 stripped
@@ -28072,7 +28072,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &1249443621
@@ -30304,7 +30304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -30357,11 +30357,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 1342152883}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -31001,7 +31001,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1361020005477660580, guid: 34492e247e8e5ab4eaab756d6bdebb39, type: 3}
 --- !u!1001 &1388905106
@@ -33843,7 +33843,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1 &1513200620 stripped
@@ -35464,7 +35464,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1001 &1564714852
@@ -36690,7 +36690,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &1630867636
@@ -39721,7 +39721,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1 &1745287758 stripped
@@ -39934,7 +39934,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7513980875647069023, guid: ef48b2bdeaa04c740b44d1c3a3721371, type: 3}
 --- !u!1001 &1757692144
@@ -46604,7 +46604,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5800875139185102363, guid: 7a1964a861276264dab4b15158af1a7a, type: 3}
 --- !u!1001 &2081225252
@@ -47901,7 +47901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -47954,11 +47954,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  needStartTrigger: 1
-  reactToDamage: 1
+  reactToDamage: 0
   pv: {fileID: 2142900235}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -48161,7 +48161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 887745849084736964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049470806593421126, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48169,7 +48169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1049470806593421126, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891233686055, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48177,7 +48177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891233686055, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891647500576, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48185,7 +48185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891647500576, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Name
@@ -48197,11 +48197,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281964, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281965, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430444891703281967, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
+      propertyPath: speed
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3430444891703281968, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_RootOrder
@@ -48253,7 +48257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6079196676111960361, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6825962588774843721, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48261,7 +48265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6825962588774843721, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6859059031184463853, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48269,7 +48273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6859059031184463853, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8376279581113345886, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_Layer
@@ -48277,7 +48281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8376279581113345886, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eab5d1bccf0ea804e801ddbeae2e31ae, type: 3}

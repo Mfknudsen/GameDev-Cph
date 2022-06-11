@@ -7,22 +7,36 @@ using UnityEngine.Events;
 
 namespace GameDev.Common
 {
+    #region Enums
+
+    public enum TimerType
+    {
+        Frames,
+        Seconds
+    };
+
+    #endregion
+
     public class Timer
     {
         #region Values
 
-        private readonly float duration;
-        private float current;
         public readonly UnityEvent timerEvent;
+        private readonly TimerType timerType;
+        private readonly float duration;
+        private readonly bool repeat;
+        private float current;
         private bool done;
 
         #endregion
 
         #region Build In States
 
-        public Timer(float duration)
+        public Timer(TimerType timerType, float duration, bool? repeat = false)
         {
             this.duration = duration;
+            this.repeat = repeat.HasValue ? repeat.Value : false;
+            this.timerType = timerType;
 
             current = 0;
 
@@ -48,7 +62,7 @@ namespace GameDev.Common
         {
             if (done) return;
 
-            current += Time.deltaTime;
+            current += timerType == TimerType.Seconds ? Time.deltaTime : 1;
 
             if (current < duration)
                 return;
@@ -56,6 +70,20 @@ namespace GameDev.Common
             done = true;
 
             timerEvent.Invoke();
+
+            if (!repeat)
+            {
+                TimerUpdater.instance.timers.Remove(this);
+                return;
+            }
+
+            current = 0;
+            done = false;
+        }
+
+        public void ForceEnd()
+        {
+            done = true;
             TimerUpdater.instance.timers.Remove(this);
         }
 

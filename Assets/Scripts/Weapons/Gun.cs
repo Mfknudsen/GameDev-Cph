@@ -26,7 +26,7 @@ namespace GameDev.Weapons
             SwitchReload(true);
 
             magCurSize = 0;
-            Timer reloadTimer = new Timer(reloadTime);
+            Timer reloadTimer = new Timer(TimerType.Seconds, reloadTime);
             reloadTimer.timerEvent.AddListener(() =>
             {
                 magCurSize = magMaxSize;

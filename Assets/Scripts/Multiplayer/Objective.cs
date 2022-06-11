@@ -1,8 +1,8 @@
 #region Packages
 
+using System;
 using System.Linq;
 using GameDev.Character;
-using GameDev.UI.FPS;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +14,8 @@ namespace GameDev.Multiplayer
     public class Objective : MonoBehaviourPunCallbacks
     {
         #region Values
+
+        public static readonly int minCount = 6;
 
         [HideInInspector] public UnityEvent onEndEvent = new UnityEvent();
         [HideInInspector] public UnityEvent<float[]> updateUIEvent = new UnityEvent<float[]>();
@@ -29,21 +31,6 @@ namespace GameDev.Multiplayer
 
         #region Build In States
 
-        private void Start()
-        {
-            onEndEvent.AddListener(() =>
-            {
-                nextObjective.StartObjective();
-                started = false;
-                foreach (ObjectiveUI objectiveUI in FindObjectsOfType<ObjectiveUI>())
-                    objectiveUI.UpdateCurrent(nextObjective);
-            });
-
-            if (!isFirst || !pv.IsMine) return;
-
-            StartObjective();
-        }
-
         private void Update()
         {
             if (!started) return;
@@ -53,13 +40,22 @@ namespace GameDev.Multiplayer
 
             if (!pv.IsMine) return;
 
+            pv.RPC("RPCUpdate", RpcTarget.Others,
+                objectivesHealth.Select(h => h.GetCurrentHp() / h.GetMaxHp()).ToArray());
+
             if (objectivesHealth.Select(h => h.GetCurrentHp()).Sum() <= 0)
             {
+                if (nextObjective != null)
+                    nextObjective.StartObjective();
+                else
+                    HostManager.instance.EndGame(Team.Alien);
+
                 onEndEvent.Invoke();
                 Destroy(gameObject);
             }
-            else
-                pv.RPC("RPCUpdate", RpcTarget.Others, objectivesHealth.Select(h => h.GetCurrentHp()).ToArray());
+            else if (int.Parse((DateTime.Parse((string)PhotonNetwork.MasterClient.CustomProperties["Start"])
+                         .AddMinutes(minCount) - DateTime.Now).ToString(@"mm")) <= 0)
+            HostManager.instance.EndGame(Team.Human);
         }
 
         #endregion
@@ -84,6 +80,8 @@ namespace GameDev.Multiplayer
         {
             foreach (Health health in objectivesHealth)
                 health.StartTrigger();
+
+            started = true;
         }
 
         #endregion
@@ -92,12 +90,9 @@ namespace GameDev.Multiplayer
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCUpdate(int[] input)
+        private void RPCUpdate(float[] input)
         {
-            if (pv.IsMine) return;
-
-            if (input.Sum() <= 0)
-                Debug.Log("First Objective Destroyed");
+            updateUIEvent.Invoke(input);
         }
 
         #endregion

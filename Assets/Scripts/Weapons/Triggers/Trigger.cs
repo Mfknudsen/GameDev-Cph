@@ -34,7 +34,7 @@ namespace GameDev.Weapons.Triggers
         {
             canFire = false;
 
-            inBetweenDelay = new Timer(timerDuration);
+            inBetweenDelay = new Timer(TimerType.Seconds, timerDuration);
             inBetweenDelay.timerEvent.AddListener(() =>
             {
                 canFire = true;

@@ -1,6 +1,5 @@
 #region Packages
 
-using System.Linq;
 using GameDev.Multiplayer;
 using UnityEngine;
 
@@ -20,21 +19,10 @@ namespace GameDev.UI.FPS
 
         #region Build In States
 
-        private void Awake()
+        private void Start()
         {
-            current = FindObjectsOfType<Objective>().First(o => o.GetFirst());
-            current.updateUIEvent.AddListener(UpdateBars);
-        }
-
-        #endregion
-
-        #region In
-
-        public void UpdateCurrent(Objective obj)
-        {
-            current.updateUIEvent.RemoveListener(UpdateBars);
-            current = obj;
-            current.updateUIEvent.AddListener(UpdateBars);
+            foreach (Objective objective in FindObjectsOfType<Objective>())
+                objective.updateUIEvent.AddListener(UpdateBars);
         }
 
         #endregion

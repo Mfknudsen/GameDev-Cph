@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfb1dd4415d21a40a4810ad9df899df, type: 3}
   m_Name: Objective
   m_EditorClassIdentifier: 
-  maxHp: 200
+  maxHp: 1000
   maxAp: 0

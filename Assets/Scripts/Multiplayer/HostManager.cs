@@ -3,6 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
+using GameDev.Character;
+using GameDev.Input;
+using GameDev.Terrain.Doors;
 using Photon.Pun;
 using UnityEngine;
 
@@ -52,6 +55,16 @@ namespace GameDev.Multiplayer
             hash.Add("AlienCount", 0);
 
             pv.Owner.SetCustomProperties(hash);
+        }
+
+        public override void OnEnable()
+        {
+            InputManager.instance.jumpEvent.AddListener(OnJumpChange);
+        }
+
+        public override void OnDisable()
+        {
+            InputManager.instance.jumpEvent.RemoveListener(OnJumpChange);
         }
 
         #endregion
@@ -107,9 +120,31 @@ namespace GameDev.Multiplayer
             pv.RPC("SyncOnHostStateChange", RpcTarget.Others);
         }
 
+        public void EndGame(Team teamWon)
+        {
+            playerManagers.ForEach(m => m.EndGame(teamWon));
+        }
+
         #endregion
 
         #region Internal
+
+        private void OnJumpChange()
+        {
+            if (!pv.IsMine) return;
+
+            if (pv.Owner.CustomProperties.ContainsKey("Start")) return;
+
+            Hashtable hash = new Hashtable();
+            // ReSharper disable once SpecifyACultureInStringConversionExplicitly
+            hash.Add("Start", System.DateTime.Now.ToString());
+            pv.Owner.SetCustomProperties(hash);
+
+            foreach (Health health in FindObjectsOfType<BreakableDoor>().Select(b => b.GetComponent<Health>()))
+                health.InstantKill();
+
+            FindObjectsOfType<Objective>().First(o => o.GetFirst()).StartObjective();
+        }
 
         #region Pun RPC
 
@@ -136,7 +171,7 @@ namespace GameDev.Multiplayer
                 pv.RPC("SyncPlayerCounts", RpcTarget.Others, actualPlayerCount[0], actualPlayerCount[1]);
 
                 playerManagers
-                    .First(pm => 
+                    .First(pm =>
                         pm.GetPhotonView().Owner.NickName.Equals(userNickName))
                     .SetTeam(team);
             }

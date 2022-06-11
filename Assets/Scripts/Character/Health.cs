@@ -31,18 +31,18 @@ namespace GameDev.Character
     {
         #region Values
 
-        [SerializeField] private bool isPlayer, needStartTrigger, reactToDamage = true;
+        [SerializeField] private bool isPlayer, reactToDamage = true;
         [SerializeField] private PhotonView pv;
         [SerializeField] private HealthPreset healthPreset;
         [SerializeField] private HealthType healthType;
+        [SerializeField] private Team team;
+
         public UnityEvent onDeathEvent = new UnityEvent();
 
         private PlayerManager playerManager;
 
         private float currentHealthPoints,
             currentArmorPoints;
-
-        private int armorLevel;
 
         private readonly string receiveCurrentHealthString = "curHealth",
             receiveCurrentArmorString = "curArmor";
@@ -128,9 +128,12 @@ namespace GameDev.Character
             reactToDamage = true;
         }
 
-        public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType,
+            Team shooterTeam)
         {
-            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType, specialDamageType);
+            if (shooterTeam.Equals(team)) return;
+
+            pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType);
         }
 
         public void ApplyHealHp(float heal)
@@ -141,6 +144,13 @@ namespace GameDev.Character
         public void ApplyHealAp(float heal)
         {
             pv.RPC("RPCApplyHealAp", RpcTarget.All, heal);
+        }
+
+        public void InstantKill()
+        {
+            onDeathEvent.Invoke();
+
+            pv.RPC("RPCDeath", RpcTarget.Others);
         }
 
         #endregion
@@ -157,24 +167,19 @@ namespace GameDev.Character
                 onDeathEvent.Invoke();
         }
 
-        private Vector2 CalculateDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        private Vector2 CalculateDamage(float damage, DamageType damageType)
         {
             float damageArmor = damage / BasicArmorAbsorb(damageType);
             float damageHealth = 0;
 
             if (!(damageArmor > currentArmorPoints))
-                return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
+                return new Vector2(damageHealth, damageArmor);
 
             float diff = damageArmor - currentArmorPoints;
             damageArmor -= diff;
             damageHealth = diff * BasicArmorAbsorb(damageType);
 
-            return new Vector2(damageHealth, damageArmor) * DamageModifier(specialDamageType);
-        }
-
-        private static Vector2 DamageModifier(SpecialDamageType specialDamageType)
-        {
-            return Vector2.one;
+            return new Vector2(damageHealth, damageArmor);
         }
 
         private static int BasicArmorAbsorb(DamageType damageType)
@@ -190,15 +195,6 @@ namespace GameDev.Character
 
         private void OnPlayerStatChange()
         {
-            try
-            {
-                armorLevel = (int)PlayerManager.ownedManager.GetPlayerStats()
-                    .GetStatValueByKey(PlayerStat.ArmorLevel);
-            }
-            catch
-            {
-                armorLevel = 1;
-            }
         }
 
         #region Pun RPC
@@ -207,13 +203,13 @@ namespace GameDev.Character
 
         [PunRPC]
         // ReSharper disable once UnusedMember.Local
-        private void RPCApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType)
+        private void RPCApplyDamage(float damage, DamageType damageType)
         {
             if (!pv.IsMine || !reactToDamage) return;
 
             //Health: x
             //Armor: y
-            Vector2 damageTotal = CalculateDamage(damage, damageType, specialDamageType);
+            Vector2 damageTotal = CalculateDamage(damage, damageType);
 
             #region Apply Damage
 
@@ -279,7 +275,10 @@ namespace GameDev.Character
         // ReSharper disable once UnusedMember.Local
         private void RPCDeath()
         {
-            PlayerManager.GetManagerByPhotonOwner(pv.Owner).Die();
+            if (isPlayer)
+                PlayerManager.GetManagerByPhotonOwner(pv.Owner).Die();
+            else
+                onDeathEvent.Invoke();
         }
 
         #endregion

@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3430444891703281968}
   m_RootOrder: 1
@@ -39,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3430444891647500577}
+  - component: {fileID: 2256745747338115096}
   m_Layer: 8
   m_Name: Visual
   m_TagString: Untagged
@@ -56,6 +58,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 422116326511011324}
   - {fileID: 9184340794917404132}
@@ -66,6 +69,19 @@ Transform:
   m_Father: {fileID: 3430444891703281968}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2256745747338115096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3430444891647500576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 6, z: 7.25}
+  m_Center: {x: 0, y: 2.9, z: 0}
 --- !u!1 &3430444891703281964
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +94,6 @@ GameObject:
   - component: {fileID: 3430444891703281967}
   - component: {fileID: 3430444891703281966}
   - component: {fileID: 3430444891703281965}
-  - component: {fileID: 5348587462731644160}
   m_Layer: 8
   m_Name: Breakable Door
   m_TagString: Untagged
@@ -96,6 +111,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.68, y: 0, z: 8.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3430444891647500577}
   - {fileID: 3430444891233686056}
@@ -115,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openPoint: {fileID: 3430444891233686056}
+  visualTransform: {fileID: 3430444891647500577}
   speed: 0.5
 --- !u!114 &3430444891703281966
 MonoBehaviour:
@@ -129,9 +146,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
+  needStartTrigger: 0
+  reactToDamage: 1
   pv: {fileID: 3430444891703281965}
   healthPreset: {fileID: 11400000, guid: 248dfe8b27b7fce4f8013974a99b0d3a, type: 2}
   healthType: 2
+  team: 0
   onDeathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -169,19 +189,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!65 &5348587462731644160
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3430444891703281964}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 6, z: 7.25}
-  m_Center: {x: 0, y: 2.9, z: 0}
 --- !u!1001 &40675284127107221
 PrefabInstance:
   m_ObjectHideFlags: 0

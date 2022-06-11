@@ -6,6 +6,7 @@ using GameDev.Buildings;
 using GameDev.Character;
 using GameDev.Common;
 using GameDev.Input;
+using GameDev.UI.FPS;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -147,7 +148,7 @@ namespace GameDev.Multiplayer
                 currentPlayerCharacter = null;
             }
 
-            Timer respawnTimer = new Timer(1);
+            Timer respawnTimer = new Timer(TimerType.Seconds, 1);
             respawnTimer.timerEvent.AddListener(() =>
             {
                 spawnPoints.AddRange(FindObjectsOfType<SpawnBuilding>()
@@ -167,6 +168,11 @@ namespace GameDev.Multiplayer
 
         public void OnHostStateChange()
         {
+        }
+
+        public void EndGame(Team teamWon)
+        {
+            pv.RPC("RPCEndGame", RpcTarget.Others, teamWon);
         }
 
         #endregion
@@ -214,6 +220,19 @@ namespace GameDev.Multiplayer
             if (!reset || !pv.IsMine) return;
 
             Die();
+        }
+
+        [PunRPC]
+        // ReSharper disable once UnusedMember.Local
+        private void RPCEndGame(Team teamWon)
+        {
+            if (!pv.IsMine) return;
+
+            InputManager.enable = false;
+
+            bool won = teamWon == team;
+
+            VictoryScreenUI.instance.DisplayMessage(won);
         }
 
         #endregion

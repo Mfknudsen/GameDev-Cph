@@ -39,7 +39,7 @@ namespace GameDev.Multiplayer.Start_Menu
 
             InputManager.instance = new InputManager();
 
-            Application.targetFrameRate = 144;
+            Application.targetFrameRate = 60;
 
             PhotonNetwork.ConnectUsingSettings();
         }

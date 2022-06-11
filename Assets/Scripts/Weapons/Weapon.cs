@@ -24,7 +24,8 @@ namespace GameDev.Weapons
         [SerializeField] protected Transform origin;
         [SerializeField] protected Ammunition ammunition;
         [SerializeField] protected int magMaxSize, magCurSize, ammoPerShot, weaponLevel;
-
+        [SerializeField] protected Team team;
+        
         protected bool shooting, reloading;
 
         #endregion

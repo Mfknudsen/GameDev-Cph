@@ -1,5 +1,6 @@
 #region Packages
 
+using System;
 using System.Collections;
 using Photon.Pun;
 using UnityEngine;
@@ -11,11 +12,40 @@ namespace GameDev.Terrain.Doors
     public class BreakableDoor : MonoBehaviourPunCallbacks
     {
         #region Values
-
-        [SerializeField] private Transform openPoint;
+        
+        [SerializeField] private Transform openPoint, visualTransform;
         [SerializeField] private float speed;
 
-        private Transform visualTransform;
+        private Vector3 startPoint;
+
+        #endregion
+
+        #region Build In States
+
+        private void Start()
+        {
+            startPoint = visualTransform.position;
+
+            if (PhotonNetwork.MasterClient.CustomProperties.ContainsKey("Start"))
+            {
+                // ReSharper disable once Unity.InefficientPropertyAccess
+                Vector3 dir = (openPoint.position - visualTransform.position).normalized;
+
+                float seconds = DateTime
+                    .Parse((string)PhotonNetwork.MasterClient.CustomProperties["Start"])
+                    .Subtract(DateTime.Now).Seconds;
+                seconds = Mathf.Abs(seconds);
+
+                // ReSharper disable once Unity.InefficientPropertyAccess
+                visualTransform.position += dir * (speed * seconds);
+
+                if (Vector3.Distance(openPoint.position, startPoint) <
+                    Vector3.Distance(visualTransform.position, startPoint))
+                    Destroy(gameObject);
+                else
+                    StartCoroutine(Open());
+            }
+        }
 
         #endregion
 
@@ -23,8 +53,6 @@ namespace GameDev.Terrain.Doors
 
         public void StartOpen()
         {
-            visualTransform = transform.GetChild(0);
-
             StartCoroutine(Open());
         }
 
@@ -35,15 +63,21 @@ namespace GameDev.Terrain.Doors
         private IEnumerator Open()
         {
             Vector3 dir = (openPoint.position - visualTransform.position).normalized;
-            
-            while (Vector3.Distance(openPoint.position, visualTransform.position) > 0.5f)
+
+            while (true)
             {
                 visualTransform.position += dir * (speed * Time.deltaTime);
 
+                if (Vector3.Distance(openPoint.position, startPoint) <
+                    Vector3.Distance(visualTransform.position, startPoint))
+                {
+                    Destroy(gameObject);
+
+                    yield break;
+                }
+                
                 yield return null;
             }
-
-            PhotonNetwork.Destroy(gameObject);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 #region Packages
 
 using GameDev.Character;
+using GameDev.Multiplayer;
 using GameDev.Weapons.Ammo;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace GameDev.Terrain
         private void OnTriggerEnter(Collider other)
         {
             if (other.transform.root.GetComponent<Health>() is { } h)
-                h.ApplyDamage(Mathf.Infinity, DamageType.Normal, SpecialDamageType.Structural);
+                h.ApplyDamage(Mathf.Infinity, DamageType.Normal, SpecialDamageType.Structural, Team.None);
         }
 
         #endregion
