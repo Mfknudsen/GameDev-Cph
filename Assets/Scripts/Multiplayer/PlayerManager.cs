@@ -131,13 +131,18 @@ namespace GameDev.Multiplayer
 
         public void SwitchController(GameObject newController)
         {
-            // ReSharper disable once Unity.NoNullPropagation
-            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsNonPlayer();
+            if (currentPlayerCharacter != null)
+            {
+                if (currentPlayerCharacter.GetComponent<VisualManager>() is { } vBefore)
+                    vBefore.SetAsNonPlayer();
+            }
 
             currentPlayerCharacter = newController;
 
-            // ReSharper disable once Unity.NoNullPropagation
-            currentPlayerCharacter?.GetComponent<VisualManager>().SetAsPlayer();
+            if (currentPlayerCharacter == null) return;
+
+            if (currentPlayerCharacter.GetComponent<VisualManager>() is { } vCurrent)
+                vCurrent.SetAsPlayer();
         }
 
         public void Die()
