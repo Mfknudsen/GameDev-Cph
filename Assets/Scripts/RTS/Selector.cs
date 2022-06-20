@@ -59,7 +59,7 @@ namespace GameDev.RTS
                 placingObject.gameObject.SetActive(true);
 
                 if (placingObject is RestrictedBuilding restrictedBuilding &&
-                    CommonPhysic.GetComponentFromHit<BuildingPlacement>(hit.Value) is
+                    CommonPhysic.HitComponent<BuildingPlacement>(hit.Value) is
                         { } buildingPlacement)
                 {
                     if (buildingPlacement.GetTypeAllowed().Equals(restrictedBuilding.GetBuildingType()))

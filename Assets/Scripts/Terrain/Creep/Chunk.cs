@@ -4,7 +4,7 @@ using UnityEngine;
 
 #endregion
 
-namespace GameDev.Terrain
+namespace GameDev.Terrain.Creep
 {
     public class Chunk : MonoBehaviour
     {

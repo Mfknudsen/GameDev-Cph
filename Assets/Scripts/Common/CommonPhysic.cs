@@ -15,8 +15,7 @@ namespace GameDev.Common
             Collider[] colliders = Physics.OverlapSphere(
                 originPosition,
                 checkDistance,
-                mask,
-                QueryTriggerInteraction.Ignore);
+                mask);
 
             Collider closest = null;
             if (colliders.Length > 0)
@@ -52,7 +51,7 @@ namespace GameDev.Common
             return closest;
         }
 
-        public static T GetComponentFromHit<T>(RaycastHit hit)
+        public static T HitComponent<T>(RaycastHit hit)
         {
             return hit.collider.GetComponent<T>();
         }

@@ -53,12 +53,16 @@ namespace GameDev.Multiplayer
                 onEndEvent.Invoke();
                 Destroy(gameObject);
             }
-            else if (int.Parse((DateTime.Parse((string)PhotonNetwork.MasterClient.CustomProperties["Start"])
-                         .AddMinutes(minCount) - DateTime.Now).ToString(@"mm")) <= 0)
-            HostManager.instance.EndGame(Team.Human);
+            else if (PhotonNetwork.MasterClient.CustomProperties.ContainsKey("Start"))
+            {
+                if (int.Parse((DateTime.Parse((string)PhotonNetwork.MasterClient.CustomProperties["Start"])
+                        .AddMinutes(minCount) - DateTime.Now).ToString(@"mm")) <= 0)
+                    HostManager.instance.EndGame(Team.Human);
+            }
         }
+    
 
-        #endregion
+    #endregion
 
         #region Getters
 
