@@ -55,6 +55,14 @@ namespace GameDev.Multiplayer
                 PhotonNetwork.IsMasterClient ? hostManagerPrefab.name : playerManagerPrefab.name,
                 Vector3.zero,
                 Quaternion.identity);
+
+#if UNITY_EDITOR
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("D");
+                PhotonNetwork.Instantiate(playerManagerPrefab.name, Vector3.zero, Quaternion.identity);
+            }
+#endif
         }
 
         #endregion
