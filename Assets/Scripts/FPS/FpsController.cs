@@ -41,9 +41,7 @@ namespace GameDev.FPS
         {
             base.Start();
 
-
             rb ??= GetComponent<Rigidbody>();
-
 
             if (!pv.IsMine)
             {
@@ -75,20 +73,18 @@ namespace GameDev.FPS
 
         protected virtual void Update()
         {
-            if (pv.IsMine)
-            {
-                Rotate();
-                Jump();
-            }
+            if (!pv.IsMine) return;
+
+            Rotate();
+            Jump();
         }
 
         protected virtual void FixedUpdate()
         {
-            if (pv.IsMine)
-            {
-                GroundDetect();
-                Move();
-            }
+            if (!pv.IsMine) return;
+
+            GroundDetect();
+            Move();
         }
 
         #endregion
@@ -140,17 +136,13 @@ namespace GameDev.FPS
 
         protected virtual void GroundDetect()
         {
-            if (cayotyTimer == null)
-            {
-                cayotyTimer = new Timer(TimerType.Seconds, cayotyTime);
-                cayotyTimer.timerEvent.AddListener(() => cayotyTimer = null);
-            }
-
             if (isGrounded || jumpTimer != null) return;
-
+            
             Ray ray = new Ray(objTransform.position, -objTransform.up);
             if (Physics.Raycast(ray, distance, groundedMask))
                 isGrounded = true;
+            
+            Debug.DrawRay(ray.origin, ray.direction, Color.white);
         }
 
         #region Input

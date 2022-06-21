@@ -33,7 +33,7 @@ namespace GameDev.Multiplayer
 
         private void Update()
         {
-            if (!started) return;
+            if (!started || !PhotonNetwork.MasterClient.CustomProperties.ContainsKey("Start")) return;
 
             float[] toUpdate = objectivesHealth.Select(o => o.GetCurrentHp() / o.GetMaxHp()).ToArray();
             updateUIEvent.Invoke(toUpdate);

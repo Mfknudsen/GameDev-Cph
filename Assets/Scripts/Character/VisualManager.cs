@@ -14,9 +14,9 @@ namespace GameDev.Character
         #region Values
 
         [SerializeField] private PhotonView pv;
-        [SerializeField] private GameObject playerVisual, nonPlayerVisual;
+        [SerializeField] private GameObject[] playerVisual, nonPlayerVisual;
 
-        private Animator animator;
+       [SerializeField] private Animator animator;
 
         private Vector3 dir = Vector3.zero;
 
@@ -41,7 +41,6 @@ namespace GameDev.Character
 
         private void Awake()
         {
-            animator = nonPlayerVisual.transform.GetChild(0).GetComponent<Animator>();
 
             if (pv.IsMine)
                 SetAsPlayer();
@@ -63,18 +62,28 @@ namespace GameDev.Character
 
         public void SetAsNonPlayer()
         {
-            playerVisual.SetActive(false);
-            foreach (Renderer meshRenderer in
-                     CommonGameObject.GetAllComponentsByRoot<Renderer>(nonPlayerVisual))
-                meshRenderer.enabled = true;
+            foreach (GameObject o in playerVisual)
+                o.SetActive(false);
+
+            foreach (GameObject nGameObject in nonPlayerVisual)
+            {
+                foreach (Renderer meshRenderer in
+                         CommonGameObject.GetAllComponentsByRoot<Renderer>(nGameObject))
+                    meshRenderer.enabled = true;
+            }
         }
 
         public void SetAsPlayer()
         {
-            playerVisual.SetActive(true);
-            foreach (Renderer meshRenderer in
-                     CommonGameObject.GetAllComponentsByRoot<Renderer>(nonPlayerVisual))
-                meshRenderer.enabled = false;
+            foreach (GameObject o in playerVisual)
+                o.SetActive(true);
+
+            foreach (GameObject nGameObject in nonPlayerVisual)
+            {
+                foreach (Renderer meshRenderer in
+                         CommonGameObject.GetAllComponentsByRoot<Renderer>(nGameObject))
+                    meshRenderer.enabled = false;
+            }
         }
 
         #endregion

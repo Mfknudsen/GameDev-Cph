@@ -18,11 +18,15 @@ namespace GameDev.FPS.Aliens.Skulk
 
         [SerializeField] private float maxDashSpeed, checkDistance, gravityForce = 9.81f;
 
+        [SerializeField] private Animator anim;
+
         private Vector3 currentUp = Vector3.up;
 
         private bool onWall;
 
         private CameraController cameraController;
+
+        private static readonly int Walking = Animator.StringToHash("Walking");
 
         #endregion
 
@@ -174,15 +178,32 @@ namespace GameDev.FPS.Aliens.Skulk
         {
             if (isGrounded || jumpTimer != null) return;
 
-            Ray ray = new Ray(objTransform.position, -currentUp);
-            if (Physics.Raycast(ray, distance, groundedMask, QueryTriggerInteraction.Ignore))
+            Ray ray = new Ray(moveTransform.position, -currentUp * distance);
+            if (Physics.Raycast(ray, out RaycastHit hit, groundedMask))
+            {
+                Debug.Log(hit.collider.gameObject.name);
                 isGrounded = true;
+            }
+
+            Debug.DrawRay(ray.origin, ray.direction.normalized * distance, Color.white);
         }
 
         private void AddGravity()
         {
             rb.AddForce(-currentUp * (rb.mass * gravityForce), ForceMode.Force);
         }
+
+        #region Overrides
+
+        protected override void OnMoveAxisUpdate(Vector2 input)
+        {
+            base.OnMoveAxisUpdate(input);
+
+            if (pv.IsMine)
+                anim.SetBool(Walking, input != Vector2.zero);
+        }
+
+        #endregion
 
         #endregion
     }

@@ -57,7 +57,7 @@ namespace GameDev.Input
 
         #region Internal
 
-        private void OnMoveAxisUpdate(Vector2 input)
+        protected virtual void OnMoveAxisUpdate(Vector2 input)
         {
             moveDir = input;
         }

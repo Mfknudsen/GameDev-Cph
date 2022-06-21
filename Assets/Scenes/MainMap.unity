@@ -487,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 111430, guid: dc8f0d303746c2a4b89ee60884906304, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 111430, guid: dc8f0d303746c2a4b89ee60884906304, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1456,7 +1456,7 @@ GameObject:
   - component: {fileID: 79253571}
   - component: {fileID: 79253573}
   - component: {fileID: 79253572}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2349,7 +2349,7 @@ GameObject:
   - component: {fileID: 120429029}
   - component: {fileID: 120429030}
   - component: {fileID: 120429031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3089,7 +3089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3267,7 +3267,7 @@ GameObject:
   - component: {fileID: 166907087}
   - component: {fileID: 166907089}
   - component: {fileID: 166907088}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (34)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3841,7 +3841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4434,7 +4434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 119512, guid: 5578b82f17c954843901e8b68ca21dcc, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 119512, guid: 5578b82f17c954843901e8b68ca21dcc, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5769,7 +5769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5992,7 +5992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6049,7 +6049,7 @@ MonoBehaviour:
   pv: {fileID: 309799716}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6173,7 +6173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 160260, guid: 36cf43d46aeb7494b82aa54d61da3bd7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6272,7 +6272,7 @@ GameObject:
   - component: {fileID: 326860471}
   - component: {fileID: 326860473}
   - component: {fileID: 326860472}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (37)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7018,7 +7018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7520,7 +7520,7 @@ GameObject:
   - component: {fileID: 361172383}
   - component: {fileID: 361172384}
   - component: {fileID: 361172385}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7992,7 +7992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 166244, guid: 78a4b58c8edc1884e932497bbb0da899, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 166244, guid: 78a4b58c8edc1884e932497bbb0da899, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -8701,7 +8701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -8758,7 +8758,7 @@ MonoBehaviour:
   pv: {fileID: 396300091}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -8934,7 +8934,7 @@ GameObject:
   - component: {fileID: 404516384}
   - component: {fileID: 404516385}
   - component: {fileID: 404516386}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9287,7 +9287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -9367,7 +9367,7 @@ GameObject:
   - component: {fileID: 412755821}
   - component: {fileID: 412755823}
   - component: {fileID: 412755822}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11417,7 +11417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -11729,7 +11729,7 @@ GameObject:
   - component: {fileID: 514765578}
   - component: {fileID: 514765580}
   - component: {fileID: 514765579}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11901,7 +11901,7 @@ GameObject:
   - component: {fileID: 526403114}
   - component: {fileID: 526403116}
   - component: {fileID: 526403115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12411,7 +12411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 138554, guid: ccbe3c5efe0bbed4bbe4b8651efb2db8, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 138554, guid: ccbe3c5efe0bbed4bbe4b8651efb2db8, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -12905,7 +12905,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2022736944}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &560337685
 MeshCollider:
@@ -12989,7 +12989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 138554, guid: ccbe3c5efe0bbed4bbe4b8651efb2db8, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 138554, guid: ccbe3c5efe0bbed4bbe4b8651efb2db8, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -13429,7 +13429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 120164, guid: 61b490990a08faa419b1bb6a6708ad09, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 120164, guid: 61b490990a08faa419b1bb6a6708ad09, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -14441,7 +14441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 631641882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14715,7 +14715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -14772,7 +14772,7 @@ MonoBehaviour:
   pv: {fileID: 636669118}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -16203,7 +16203,7 @@ GameObject:
   - component: {fileID: 698901148}
   - component: {fileID: 698901150}
   - component: {fileID: 698901149}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18895,7 +18895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 174596, guid: 41dcf1459594f434a8a9bae6ae03eab0, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 174596, guid: 41dcf1459594f434a8a9bae6ae03eab0, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19272,7 +19272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 188592, guid: bcd44f8d0f766b340b72d555a8df8a72, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 188592, guid: bcd44f8d0f766b340b72d555a8df8a72, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19958,7 +19958,7 @@ GameObject:
   - component: {fileID: 861923655}
   - component: {fileID: 861923656}
   - component: {fileID: 861923657}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20119,7 +20119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20171,7 +20171,7 @@ MonoBehaviour:
   pv: {fileID: 862518868}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -20721,7 +20721,7 @@ GameObject:
   - component: {fileID: 890978895}
   - component: {fileID: 890978896}
   - component: {fileID: 890978897}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21147,7 +21147,7 @@ GameObject:
   - component: {fileID: 914696647}
   - component: {fileID: 914696649}
   - component: {fileID: 914696648}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22230,7 +22230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 119512, guid: 5578b82f17c954843901e8b68ca21dcc, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 119512, guid: 5578b82f17c954843901e8b68ca21dcc, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -22312,7 +22312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 163546, guid: 329d0b0187f24cd4da9f775d83708bd6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 163546, guid: 329d0b0187f24cd4da9f775d83708bd6, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -25063,7 +25063,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2022736944}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!64 &1067468894
 MeshCollider:
@@ -25353,7 +25353,7 @@ GameObject:
   - component: {fileID: 1088487050}
   - component: {fileID: 1088487052}
   - component: {fileID: 1088487051}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (35)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25662,7 +25662,7 @@ GameObject:
   - component: {fileID: 1093963145}
   - component: {fileID: 1093963147}
   - component: {fileID: 1093963146}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (33)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28589,7 +28589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -31000,7 +31000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -31057,7 +31057,7 @@ MonoBehaviour:
   pv: {fileID: 1342152883}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -33731,7 +33731,7 @@ GameObject:
   - component: {fileID: 1491509496}
   - component: {fileID: 1491509497}
   - component: {fileID: 1491509498}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33924,7 +33924,7 @@ GameObject:
   - component: {fileID: 1498266964}
   - component: {fileID: 1498266965}
   - component: {fileID: 1498266966}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (32)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35351,7 +35351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 185300, guid: 105b83a46d287294bbe7892a1e1f2ea3, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185300, guid: 105b83a46d287294bbe7892a1e1f2ea3, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -35450,7 +35450,7 @@ GameObject:
   - component: {fileID: 1537911961}
   - component: {fileID: 1537911962}
   - component: {fileID: 1537911963}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sun Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36020,7 +36020,7 @@ GameObject:
   - component: {fileID: 1557311803}
   - component: {fileID: 1557311805}
   - component: {fileID: 1557311804}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (38)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36467,7 +36467,7 @@ GameObject:
   - component: {fileID: 1568145779}
   - component: {fileID: 1568145781}
   - component: {fileID: 1568145780}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36601,7 +36601,7 @@ GameObject:
   - component: {fileID: 1569593308}
   - component: {fileID: 1569593310}
   - component: {fileID: 1569593309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (36)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37061,7 +37061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 163546, guid: 329d0b0187f24cd4da9f775d83708bd6, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 163546, guid: 329d0b0187f24cd4da9f775d83708bd6, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -39596,7 +39596,7 @@ GameObject:
   - component: {fileID: 1708557572}
   - component: {fileID: 1708557573}
   - component: {fileID: 1708557574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41238,7 +41238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 181472, guid: e9661e4c2bfea8344a07064944abe034, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41606,7 +41606,7 @@ GameObject:
   - component: {fileID: 1792603607}
   - component: {fileID: 1792603608}
   - component: {fileID: 1792603609}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41721,7 +41721,7 @@ GameObject:
   - component: {fileID: 1794972271}
   - component: {fileID: 1794972273}
   - component: {fileID: 1794972272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42259,7 +42259,7 @@ MonoBehaviour:
   debugSquare: 0
   toDeactivate: 
   saveData: {fileID: 11400000, guid: 4e4b431436851efe4858977500c1dac8, type: 2}
-  debugStrength: 5
+  debugStrength: 0
 --- !u!4 &1815317299
 Transform:
   m_ObjectHideFlags: 0
@@ -44595,7 +44595,7 @@ GameObject:
   - component: {fileID: 1924883629}
   - component: {fileID: 1924883630}
   - component: {fileID: 1924883631}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46276,9 +46276,9 @@ Transform:
   - {fileID: 1045389499}
   - {fileID: 944376698}
   - {fileID: 1528531364}
+  - {fileID: 2086807815}
   - {fileID: 560337684}
   - {fileID: 1067468893}
-  - {fileID: 2086807815}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46871,7 +46871,7 @@ GameObject:
   - component: {fileID: 2045312171}
   - component: {fileID: 2045312172}
   - component: {fileID: 2045312173}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47567,7 +47567,7 @@ GameObject:
   - component: {fileID: 2070484982}
   - component: {fileID: 2070484983}
   - component: {fileID: 2070484984}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48036,7 +48036,7 @@ Transform:
   - {fileID: 1369481172}
   - {fileID: 1348540904}
   m_Father: {fileID: 2022736944}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2089639665
 PrefabInstance:
@@ -48238,7 +48238,7 @@ GameObject:
   - component: {fileID: 2096416396}
   - component: {fileID: 2096416398}
   - component: {fileID: 2096416397}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48456,7 +48456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 110398, guid: f584b275cfb132f48a2ec91fd9d1b576, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -49105,7 +49105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 043e656905b02704bbb185740a0ffb7b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -49162,7 +49162,7 @@ MonoBehaviour:
   pv: {fileID: 2142900235}
   healthPreset: {fileID: 11400000, guid: 53b0b482fe4eae94089cbf5afc874021, type: 2}
   healthType: 2
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []

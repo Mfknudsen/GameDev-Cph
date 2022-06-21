@@ -418,9 +418,6 @@ namespace GameDev.Terrain.Creep
             p.spreadStrength.Add(debugStrength);
             p.SetSpread(.75f);
 
-            Debug.Log(CommonVariable.MultiDimensionalToList(creepPoints).Count(e => e != null));
-            Debug.Log("Done");
-
             closestValidPoint.position = p.worldPosition;
 
             StartCoroutine(UpdatePoints());

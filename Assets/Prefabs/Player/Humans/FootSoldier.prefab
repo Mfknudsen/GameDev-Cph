@@ -737,12 +737,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642ef0afe4835784796f020e72537d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
-  reactToDamage: 0
+  isPlayer: 1
+  reactToDamage: 1
   pv: {fileID: 4970067498224136342}
   healthPreset: {fileID: 11400000, guid: f00d7e0f49b2ab34fa4c744bd85959df, type: 2}
   healthType: 0
-  team: 0
+  team: 1
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -759,8 +759,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 4970067498224136342}
-  playerVisual: {fileID: 2987137336423842543}
-  nonPlayerVisual: {fileID: 290305781147279744}
+  playerVisual:
+  - {fileID: 2987137336423842543}
+  nonPlayerVisual:
+  - {fileID: 290305781147279744}
+  animator: {fileID: 6426846049962894777}
 --- !u!114 &3400118522709157707
 MonoBehaviour:
   m_ObjectHideFlags: 0
