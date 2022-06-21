@@ -176,16 +176,16 @@ namespace GameDev.FPS.Aliens.Skulk
 
         protected override void GroundDetect()
         {
+            Debug.DrawRay(objTransform.position, -currentUp * distance, Color.white);
             if (isGrounded || jumpTimer != null) return;
 
-            Ray ray = new Ray(moveTransform.position, -currentUp * distance);
-            if (Physics.Raycast(ray, out RaycastHit hit, groundedMask))
+            Ray ray = new Ray(objTransform.position, -currentUp * distance);
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, distance, groundedMask,
+                    QueryTriggerInteraction.Ignore))
             {
-                Debug.Log(hit.collider.gameObject.name);
+                Debug.LogError(hit.collider.gameObject.name);
                 isGrounded = true;
             }
-
-            Debug.DrawRay(ray.origin, ray.direction.normalized * distance, Color.white);
         }
 
         private void AddGravity()

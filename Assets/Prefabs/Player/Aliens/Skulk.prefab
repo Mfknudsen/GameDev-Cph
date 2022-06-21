@@ -115,8 +115,8 @@ MonoBehaviour:
   weapon: {fileID: 6304387947308149207}
   moveSpeed: 10
   rotSpeed: 50
-  distance: 0.55
-  jumpForce: 4
+  distance: 0.8
+  jumpForce: 8
   timeBetweenJump: 0.5
   cayotyTime: 0
   groundedMask:
@@ -208,7 +208,7 @@ MonoBehaviour:
   pv: {fileID: 1585060460346686969}
   healthPreset: {fileID: 11400000, guid: 426d1686726b32b44be75cacef24f4c3, type: 2}
   healthType: 3
-  team: 0
+  team: 2
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -131,7 +131,10 @@ namespace GameDev.Character
         public void ApplyDamage(float damage, DamageType damageType, SpecialDamageType specialDamageType,
             Team shooterTeam)
         {
-            if (shooterTeam.Equals(team)) return;
+            Debug.Log(shooterTeam.ToString());
+            Debug.Log(team.ToString());
+            
+            if (shooterTeam == team) return;
 
             pv.RPC("RPCApplyDamage", RpcTarget.All, damage, damageType);
         }

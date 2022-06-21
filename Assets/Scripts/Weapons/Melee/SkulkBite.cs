@@ -72,7 +72,7 @@ namespace GameDev.Weapons.Melee
             return closestHit;
         }
 
-        private Health TryGetToRoot(GameObject obj)
+        private static Health TryGetToRoot(GameObject obj)
         {
             if (obj == null) return null;
 
@@ -83,10 +83,7 @@ namespace GameDev.Weapons.Melee
 
             Transform p = obj.transform.parent;
 
-            if (p == null)
-                return null;
-            else
-                return TryGetToRoot(p.gameObject);
+            return p == null ? null : TryGetToRoot(p.gameObject);
         }
 
         #endregion
